@@ -4,50 +4,13 @@
 #include <string.h>
 #include <vector>
 #include <time.h>
-
-class opornik{
-public:
-    opornik(int i,opornik* p){
-        id=i;
-        parent=p;
-    }
-    void makeKids(int count){
-            int max_childs = (count<4) ? count : 4;
-            int rand_childs = (random()%max_childs) + 1;
-            count-=rand_childs;
-            int childNodes[4]={0,0,0,0};
-            for(int i=0;i<count;i++)
-                childNodes[random()%rand_childs]++;
-            int currId=id+1;
-            for(int i=0;i<rand_childs;i++){
-                opornik *op = new opornik(currId,this);
-                if(childNodes[i]>0)
-                    op->makeKids(childNodes[i]);
-                childs.push_back(op);
-                currId+=childNodes[i]+1;
-            }
-    }
-    void run(int rank){
-        for(int i=0;i<childs.size();i++)
-            childs[i]->run(rank);
-
-        if(rank==id){
-            printf("Hello from node: %d\n",id);
-        }
-    }
-
-private:
-    int id;
-    std::vector<opornik*> childs;
-    opornik *parent;
-};
-
-
+#include "struct_const.h"
+#include "opornik.hpp"
 
 int main(int argc, char **argv)
 {
     srand(time(NULL));
-    opornik root = opornik(0,NULL);
+    Opornik root = Opornik(0,NULL);
     root.makeKids(16);
 
     int rank, size;

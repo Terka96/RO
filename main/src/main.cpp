@@ -6,12 +6,17 @@
 #include <time.h>
 #include "struct_const.h"
 #include "opornik.hpp"
+#include "book.hpp"
+#include "dvd.hpp"
+#include "acceptor_token.hpp"
+#include "constants.hpp"
 
 int main(int argc, char **argv)
 {
     srand(time(NULL));
     Opornik root = Opornik(0,NULL);
-    root.makeKids(16);
+    root.makeKids(NUM_CONSPIR);
+	root.initBooks(0,&root);
 
     int rank, size;
 

@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string>
 #include "constants.hpp"
 
 #define DEBUGLOG 1
@@ -22,17 +23,26 @@ int inline Opornik::debug_log(const char* format, ...){
 };
 
 Opornik::Opornik(){
-    int rank,size;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+    clock=0;
+    acceptorToken=NONE;
+    makeTree();
+    MPI_Barrier(MPI_COMM_WORLD);
+    distributeAcceptorsAndResources();
+    //Bariera synchronizacyjna (czy to legalne? jeśli tak to można usunąć acki przy tworzeniu drzewa, chociaż debug ułatwiają)
+    MPI_Barrier(MPI_COMM_WORLD);
+}
+
+void Opornik::makeTree(){
+    int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     id=rank;
 
     srand(time(NULL)+id*size);//give every process (even on same machine) different random seed
     if(id==0)
     {
-        parent=-1;
+        parent=NONE;
         makeKids(size-1);
-        //initBooks(0,me);
     }
     else
     {
@@ -41,37 +51,55 @@ Opornik::Opornik(){
         MPI_Recv(&order,2+MAX_CHILDREN,MPI_INT,MPI_ANY_SOURCE,ORDER_MAKEKIDS,MPI_COMM_WORLD,&status);
         parent=order.parent;
         for(int i=0;i<MAX_CHILDREN;i++)
-            if(order.neighbors[i]!=-1 && order.neighbors[i]!=id)
+            if(order.neighbors[i]!=NONE && order.neighbors[i]!=id)
                 neighbors.push_back(order.neighbors[i]);
         makeKids(order.count);
     }
-    clock=0;
 }
-
-/*int Opornik::initBooks(int c_books, Opornik* o){
-	//todo powinno przydzielac w losowych miejscach?
-	for (Opornik* child : o->childs)
-	{  
-	    if(c_books<NUM_BOOK)
-			createBook(c_books++, child);
-		c_books = initBooks(c_books, child);
-	}
-	return c_books;
+void Opornik::distributeAcceptorsAndResources(){
+    if(id==0){
+        init_resources* table = new init_resources[size];
+        for(int i=0;i<size;i++){
+            table[i].acceptorTokenId=NONE;
+            table[i].resourceCount=0;
+        }
+        for(int i=0;i<NUM_ACCEPTORS;i++){
+            int randValue=rand()%size;
+            if(table[randValue].acceptorTokenId!=NONE)
+                continue;
+            table[randValue].acceptorTokenId=i;
+        }
+        for(int i=0;i<NUM_RESOURCES;i++){
+            int randValue=rand()%size;
+            /*practically it isn't important if resource is book or dvd, but we can code that information in resource id*/
+            if(rand()%2)
+                table[randValue].resourceIds[table[randValue].resourceCount]=i*2;
+            else
+                table[randValue].resourceIds[table[randValue].resourceCount]=i*2+1;
+            table[randValue].resourceCount++;
+        }
+        for(int i=1;i<size;i++){
+            MPI_Send(&table[i],2+table[i].resourceCount,MPI_INT,i,INIT_RESOURES,MPI_COMM_WORLD);
+        }
+        if(table[0].acceptorTokenId!=NONE)
+            acceptorToken=table[0].acceptorTokenId;
+        for(int j=0;j<table[0].resourceCount;j++)
+            resources.push_back(table[0].resourceIds[j]);
+        delete[] table;
+    }
+    else
+    {
+        init_resources init;
+        MPI_Recv(&init,2+NUM_RESOURCES,MPI_INT,0,INIT_RESOURES,MPI_COMM_WORLD,NULL);
+        if(init.acceptorTokenId!=NONE)
+            acceptorToken=init.acceptorTokenId;
+        for(int i=0;i<init.resourceCount;i++)
+            resources.push_back(init.resourceIds[i]);
+    }
 }
-
-int Opornik::initDvds(int c_dvds, Opornik* o){
-	//todo powinno przydzielac w losowych miejscach?
-	for (Opornik* child : o->childs)
-	{  
-		if(c_dvds<NUM_DVD)
-			createDvd(c_dvds++, child);
-		c_dvds = initDvds(c_dvds, child);
-	}
-	return c_dvds;
-}*/
 
 void Opornik::makeKids(int count){
-    int ackCount=count;
+    //int ackCount=count;
     int grandchildrenCount=0;
     if(count>0)
     {
@@ -80,7 +108,7 @@ void Opornik::makeKids(int count){
         grandchildrenCount=count-rand_childs;
         //WARNING: STUPID STATIC CLEAR
         int grandchildrenInNodes[MAX_CHILDREN]={0,0,0,0};
-        int childrenNodes[MAX_CHILDREN]={-1,-1,-1,-1};
+        int childrenNodes[MAX_CHILDREN]={NONE,NONE,NONE,NONE};
         //Distribution of grandchildren
         for(int i=0;i<grandchildrenCount;i++)
             grandchildrenInNodes[random()%rand_childs]++;
@@ -100,7 +128,9 @@ void Opornik::makeKids(int count){
             MPI_Bsend(&order,2+MAX_CHILDREN,MPI_INT,childrenNodes[i],ORDER_MAKEKIDS,MPI_COMM_WORLD);
             childs.push_back(childrenNodes[i]);
         }
-        MPI_Status status;
+    //Code bellow isn't needed if we can use MPI_Barrier()
+    }
+        /*MPI_Status status;
         for(int i=0;i<rand_childs;i++){
             ack_makekids ack;
             ack.count=-1;
@@ -120,15 +150,11 @@ void Opornik::makeKids(int count){
     }
     else
         printf("ERROR: node %d ordered %d remaining acks %d from childs %d\n",id,count,ackCount,childs.size());
+*/
 }
 
 void Opornik::run(){
-    printf("Node %d [%d]:Hello, my parent is: %d",id,clock,parent);
-    if(neighbors.size()>0)
-        printf(" and my neighbors are ");
-    for(int i=0; i<neighbors.size();i++)
-        printf(" %d",neighbors[i]);
-    printf("\n");
+    introduce();
 
     for(int i=0;i<100;i++)//or while(true)
     {
@@ -136,7 +162,7 @@ void Opornik::run(){
         int actionRand=rand()%1001;          //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
         if(actionRand>=975)
             debug_log("Chcę zorganizować spotkanie!\n");//+send info
-        else if(actionRand>=950 && true)//drugi warunek- jestem akceptorem (not implemented yet)
+        else if(actionRand>=950 && acceptorToken!=NONE)
             debug_log("Nie chcę już być akceptorem!\n");//+send info
 
         //non-blocking recv (Brecv czy coś)
@@ -147,7 +173,26 @@ void Opornik::run(){
     }
 }
 
-void Opornik::createDvd(int id, Opornik* owner){
+void Opornik::introduce(){
+    std::string info = "Node " +std::to_string(id) + ":Hello, my parent is: " + std::to_string(parent);
+    if(resources.size()>0){
+       info+= " I have: ";
+        for(int i=0;i<resources.size();i++)
+            if(resources[i]%2)
+                info+= "book(" + std::to_string(resources[i])+") ";
+            else
+                info+= "dvd(" + std::to_string(resources[i])+") ";
+    }
+    if(neighbors.size()>0)
+        info+= " and my neighbors are";
+    for(int i=0; i<neighbors.size();i++)
+        info+=" " + std::to_string(neighbors[i]);
+    if(acceptorToken!=NONE)
+        info+= "  I'm acceptor("+std::to_string(acceptorToken)+")";
+    printf("%s\n",info.c_str());
+}
+
+/*void Opornik::createDvd(int id, Opornik* owner){
 	Dvd *r = new Dvd(id,owner);
 	owner->resources.push_back(r);
 	printf("Konspirator %d spiracił nową płytę DVD o id: %d\n",owner->id, id);
@@ -157,7 +202,31 @@ void Opornik::createBook(int id, Opornik* owner){
 	Book *r = new Book(id,owner);
 	owner->resources.push_back(r);
 	printf("Konspirator %d przepisał książkę o id: %d\n",owner->id, id);
+}*/
+
+/*int Opornik::initBooks(int c_books, Opornik* o){
+    //todo powinno przydzielac w losowych miejscach?
+    for (Opornik* child : o->childs)
+    {
+        if(c_books<NUM_BOOK)
+            createBook(c_books++, child);
+        c_books = initBooks(c_books, child);
+    }
+    return c_books;
 }
+
+int Opornik::initDvds(int c_dvds, Opornik* o){
+    //todo powinno przydzielac w losowych miejscach?
+    for (Opornik* child : o->childs)
+    {
+        if(c_dvds<NUM_DVD)
+            createDvd(c_dvds++, child);
+        c_dvds = initDvds(c_dvds, child);
+    }
+    return c_dvds;
+}*/
+
+
 /*
 void Opornik::send_mpi_message(int sender_id, int company_id, int info_type, int timestamp, int data, int tag, int receiver){
    struct Message send_data;

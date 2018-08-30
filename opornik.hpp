@@ -9,8 +9,8 @@
 class Opornik{
 public:
     Opornik();
-    void makeKids(int count);
     void run();
+    void introduce();
 	int initBooks(int c_books, Opornik* o);
     int initDvds(int c_dvds, Opornik* o);
 
@@ -21,12 +21,18 @@ public:
     void reveive_mpi_message(int tag);
 
 private:
+    void makeTree();
+    void makeKids(int count);
+    void distributeAcceptorsAndResources();
+
     int id;
-    std::vector<int> neighbors;
-    std::vector<int> childs;
-	std::vector<Resource*> resources;
+    int size;
     int parent;
     int clock;
+    int acceptorToken;
+    std::vector<int> neighbors;
+    std::vector<int> childs;
+    std::vector<int> resources;
 
     int inline debug_log(const char* format, ...);
 };

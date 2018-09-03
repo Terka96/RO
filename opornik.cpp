@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string>
+#include <iostream>
+#include <pthread.h>
 #include "constants.hpp"
 
 #define DEBUGLOG 1
@@ -154,23 +156,49 @@ void Opornik::makeKids(int count){
 }
 
 void Opornik::run(){
-    introduce();
+	// https://stackoverflow.com/questions/12043057/cannot-convert-from-type-voidclassname-to-type-voidvoid
+	pthread_t thread_1, thread_2;
 
-    for(int i=0;i<100;i++)//or while(true)
-    {
-        sleep(1);//1 sec- or use nanosleep instead
-        int actionRand=rand()%1001;          //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
-        if(actionRand>=975)
-            debug_log("Chcę zorganizować spotkanie!\n");//+send info
-        else if(actionRand>=950 && acceptorToken!=NONE)
-            pass_acceptor();
+    	introduce();
+	
+	pthread_create(&thread_1, NULL, &Opornik::live_starter, (void*)*this);
+	// pthread_create(&thread_2, NULL, &Opornik::listen, NULL);
 
-        //non-blocking recv (Brecv czy coś)
-        //switch(tag)
-        //{
-        //  tutaj syf związany z obsługą komunikatów
-        //}
-    }
+}
+
+void *Opornik::live_starter(void *arg)
+{
+	Opornik *op = (Opornik *)arg;
+    	op->live();
+}
+
+void Opornik::live()
+{
+	for(int i=0;i<100;i++)//or while(true)
+   	{
+       		sleep(1);	// 1 sec- or use nanosleep instead
+        	int actionRand=rand()%1001;          //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
+        	if(actionRand>=975)
+            		debug_log("Chcę zorganizować spotkanie!\n");//+send info
+        	else if(actionRand>=950 && acceptorToken!=NONE)
+            		pass_acceptor();
+        	//non-blocking recv (Brecv czy coś)
+       		//switch(tag)
+        	//{
+        	//  tutaj syf związany z obsługą komunikatów
+        	//}
+   	 }
+
+}
+
+void *Opornik::listen_starter(void * arg)
+{
+
+}
+
+void Opornik::listen()
+{
+
 }
 
 void Opornik::pass_acceptor()

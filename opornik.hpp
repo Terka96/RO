@@ -25,6 +25,10 @@ private:
     void makeKids(int count);
     void distributeAcceptorsAndResources();
     void pass_acceptor();
+    static void *live_starter(void * arg);  
+    static void *listen_starter(void * arg);
+    void live();
+    void listen();
 
     int id;
     int size;

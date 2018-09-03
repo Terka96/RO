@@ -24,6 +24,7 @@ private:
     void makeTree();
     void makeKids(int count);
     void distributeAcceptorsAndResources();
+    void pass_acceptor();
 
     int id;
     int size;

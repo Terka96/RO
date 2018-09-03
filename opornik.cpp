@@ -163,7 +163,7 @@ void Opornik::run(){
         if(actionRand>=975)
             debug_log("Chcę zorganizować spotkanie!\n");//+send info
         else if(actionRand>=950 && acceptorToken!=NONE)
-            debug_log("Nie chcę już być akceptorem!\n");//+send info
+            pass_acceptor();
 
         //non-blocking recv (Brecv czy coś)
         //switch(tag)
@@ -171,6 +171,39 @@ void Opornik::run(){
         //  tutaj syf związany z obsługą komunikatów
         //}
     }
+}
+
+void Opornik::pass_acceptor()
+{
+	debug_log("Nie chcę już być akceptorem!\n");
+
+	// losowanie kierunku przekazania akceptora
+	int rand = random() % 100;
+	int new_acceptor;
+
+	try
+	{
+		// todo: iteracja po całym drzewie i dodanie kandydatów do vectora, następnie wylosowanie kandydata i próba przekazania akceptora
+		if (rand < 10) //gora
+		{
+			debug_log("Chcę przekazać akceptora w górę!\n");
+		}
+		else if (rand < 20) //dol
+		{
+			debug_log("Chcę przkazać akceptora w dół!\n");
+
+		}
+		else //ten sam poziom
+		{
+			debug_log("Chcę przekazać akceptora na swoim poziomie!\n");
+		}
+	}
+	catch (const std::exception& e)
+	{
+		// przyk. być może padło na kierunek, gdzie nie ma już więcej elemetów
+		debug_log("Mam pecha, nie mogę przekazać akceptora w wylosowanym kierunku. Jeszcze jedna próba!\n");
+		pass_acceptor();
+	}
 }
 
 void Opornik::introduce(){

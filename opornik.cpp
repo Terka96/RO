@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <string>
 #include <iostream>
-#include <pthread.h>
+#include <thread>
 #include "constants.hpp"
 
 #define DEBUGLOG 1
@@ -157,12 +157,16 @@ void Opornik::makeKids(int count){
 
 void Opornik::run(){
 	// https://stackoverflow.com/questions/12043057/cannot-convert-from-type-voidclassname-to-type-voidvoid
-	pthread_t thread_1, thread_2;
+	std::thread thread_1(live_starter, this);
+       	std::thread thread_2(listen_starter, this);
 
     	introduce();
 	
-	pthread_create(&thread_1, NULL, &Opornik::live_starter, (void*)*this);
-	// pthread_create(&thread_2, NULL, &Opornik::listen, NULL);
+	// pthread_create(&thread_1, NULL, &Opornik::live_starter, (void*)this);
+	// pthread_create(&thread_2, NULL, &Opornik::listen, (void*)this);
+
+	thread_1.join();
+	thread_2.join();
 
 }
 
@@ -193,7 +197,8 @@ void Opornik::live()
 
 void *Opornik::listen_starter(void * arg)
 {
-
+	Opornik *op = (Opornik *)arg;
+	op->listen();
 }
 
 void Opornik::listen()

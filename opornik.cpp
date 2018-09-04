@@ -130,29 +130,7 @@ void Opornik::makeKids(int count){
             MPI_Bsend(&order,2+MAX_CHILDREN,MPI_INT,childrenNodes[i],ORDER_MAKEKIDS,MPI_COMM_WORLD);
             childs.push_back(childrenNodes[i]);
         }
-    //Code bellow isn't needed if we can use MPI_Barrier()
     }
-        /*MPI_Status status;
-        for(int i=0;i<rand_childs;i++){
-            ack_makekids ack;
-            ack.count=-1;
-            MPI_Recv(&ack,1,MPI_INT,MPI_ANY_SOURCE,ACK_MAKEKIDS,MPI_COMM_WORLD,&status);
-            ackCount-=(ack.count+1);
-            debug_log("Recv ack(%d) from %d node\n",ack.count,status.MPI_SOURCE);
-        }
-    }
-
-    if(ackCount==0){
-        if(parent!=-1)
-        {
-            ack_makekids ack;
-            ack.count=count;
-            MPI_Send(&ack,1,MPI_INT,parent,ACK_MAKEKIDS,MPI_COMM_WORLD);
-        }
-    }
-    else
-        printf("ERROR: node %d ordered %d remaining acks %d from childs %d\n",id,count,ackCount,childs.size());
-*/
 }
 
 void Opornik::run(){
@@ -161,9 +139,6 @@ void Opornik::run(){
        	std::thread thread_2(listen_starter, this);
 
     	introduce();
-	
-	// pthread_create(&thread_1, NULL, &Opornik::live_starter, (void*)this);
-	// pthread_create(&thread_2, NULL, &Opornik::listen, (void*)this);
 
 	thread_1.join();
 	thread_2.join();
@@ -178,7 +153,7 @@ void *Opornik::live_starter(void *arg)
 
 void Opornik::live()
 {
-	for(int i=0;i<100;i++)//or while(true)
+	while (true)
    	{
        		sleep(1);	// 1 sec- or use nanosleep instead
         	int actionRand=rand()%1001;          //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
@@ -203,7 +178,22 @@ void *Opornik::listen_starter(void * arg)
 
 void Opornik::listen()
 {
+	int buffer[MAX_BUFFER_SIZE];
+	MPI_Status status;
 
+	while (true)
+	{
+		MPI_Recv(&buffer, MAX_BUFFER_SIZE, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+
+		switch (status.MPI_TAG)
+		{
+			case TAG_PASS_ACCEPTOR:
+				debug_log("Muszę przekazać dalej prośbę o zwolnienie akceptora\n");
+			default:
+				debug_log("Otrzymano nieznany typ wiadomości\n");
+				
+		}	
+	}
 }
 
 void Opornik::pass_acceptor()
@@ -213,22 +203,66 @@ void Opornik::pass_acceptor()
 	// losowanie kierunku przekazania akceptora
 	int rand = random() % 100;
 	int new_acceptor;
+	int buffer[MAX_BUFFER_SIZE];
 
 	try
 	{
 		// todo: iteracja po całym drzewie i dodanie kandydatów do vectora, następnie wylosowanie kandydata i próba przekazania akceptora
+		// trzeba dodać licznik, któr będzie zwiększany gdy wiadomośc pójdzie w górę, zmniejszany kiedy w dół. W ten sposób będzie wiadomo, kto może zostać nowym akceptorem.
+		// 0 - ten sam poziom
+		// 1 - wyższy
+		// -1 - niższy
+		// (-inf; +inf)\{-1,0,1} zostają pominięte
 		if (rand < 10) //gora
 		{
 			debug_log("Chcę przekazać akceptora w górę!\n");
+			
+			if (parent != -1)
+			{
+				// Wystarczy przekazać w górę
+				MPI_Send(&buffer, MAX_BUFFER_SIZE, MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+				// MPI_recv()
+			}
+			else
+			{
+				debug_log("Nie mogę przekazać akceptora w górę, jestem na szczycie!\n");
+			}
 		}
 		else if (rand < 20) //dol
 		{
-			debug_log("Chcę przkazać akceptora w dół!\n");
+			if (parent != -1)
+                        {
+
+				// Trzeba przekazać w górę i do dzieci
+				debug_log("Chcę przkazać akceptora w dół!\n");
+				MPI_Send(&buffer, MAX_BUFFER_SIZE, MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+				// MPI_recv()
+			}
+			if (childs.size() > 0)
+			{
+				for (int i = 0; i < childs.size(); i++)
+				{
+					MPI_Send(&buffer, MAX_BUFFER_SIZE, MPI_INT, childs[i], TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+					// MPI_recv()
+
+				}
+			}
 
 		}
 		else //ten sam poziom
 		{
-			debug_log("Chcę przekazać akceptora na swoim poziomie!\n");
+			if (parent != -1)
+                        {
+				//Wystarczy przekazać w górę
+				debug_log("Chcę przekazać akceptora na swoim poziomie!\n");
+				MPI_Send(&buffer, MAX_BUFFER_SIZE, MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+				// MPI_recv()
+			}
+                        else
+                        {
+                                debug_log("Nie mogę przekazać na ten sam poziom, jestem na szczycie!\n");
+                        }
+
 		}
 	}
 	catch (const std::exception& e)
@@ -257,52 +291,4 @@ void Opornik::introduce(){
         info+= "  I'm acceptor("+std::to_string(acceptorToken)+")";
     printf("%s\n",info.c_str());
 }
-
-/*void Opornik::createDvd(int id, Opornik* owner){
-	Dvd *r = new Dvd(id,owner);
-	owner->resources.push_back(r);
-	printf("Konspirator %d spiracił nową płytę DVD o id: %d\n",owner->id, id);
-}
-
-void Opornik::createBook(int id, Opornik* owner){
-	Book *r = new Book(id,owner);
-	owner->resources.push_back(r);
-	printf("Konspirator %d przepisał książkę o id: %d\n",owner->id, id);
-}*/
-
-/*int Opornik::initBooks(int c_books, Opornik* o){
-    //todo powinno przydzielac w losowych miejscach?
-    for (Opornik* child : o->childs)
-    {
-        if(c_books<NUM_BOOK)
-            createBook(c_books++, child);
-        c_books = initBooks(c_books, child);
-    }
-    return c_books;
-}
-
-int Opornik::initDvds(int c_dvds, Opornik* o){
-    //todo powinno przydzielac w losowych miejscach?
-    for (Opornik* child : o->childs)
-    {
-        if(c_dvds<NUM_DVD)
-            createDvd(c_dvds++, child);
-        c_dvds = initDvds(c_dvds, child);
-    }
-    return c_dvds;
-}*/
-
-
-/*
-void Opornik::send_mpi_message(int sender_id, int company_id, int info_type, int timestamp, int data, int tag, int receiver){
-   struct Message send_data;
-  		 //todo
-   MPI_Send(&send_data, 1, MPI_INT, receiver, tag, MPI_COMM_WORLD);
-}
-
-struct Message Opornik::reveive_mpi_message(int tag){
-   struct Message data;
-		//todo
-   return data;
-}*/
 

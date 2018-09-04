@@ -6,6 +6,11 @@
 #define ACK_MAKEKIDS 2
 #define INIT_RESOURES 3
 
+// 100+ to wiadomości zwykłego typu
+
+// 200+ to wiadomości typu broadcast
+#define TAG_PASS_ACCEPTOR 200
+
 /*zamówienie u konspiratora zrobienia dzieci w ilości count, przyjęcia postawy konspiratora i zapamiętania przełożonego i sąsiadów*/
 struct order_makekids{
     int parent;

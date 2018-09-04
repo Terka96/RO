@@ -1,6 +1,7 @@
 #ifndef constants_hpp
 #define constants_hpp
 
+#define MAX_BUFFER_SIZE 64
 #define MAX_CHILDREN 4
 #define NUM_RESOURCES 6
 #define NUM_ACCEPTORS 4

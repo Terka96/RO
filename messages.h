@@ -30,4 +30,14 @@ struct init_resources{
     int resourceIds[NUM_RESOURCES];
 };
 
+// Wiadomość generowana do zmiany akceptora
+struct Msg_pass_acceptor
+{
+	int clock; // zegar
+	int initializaotr_id; // Id akceptora, który chce zostać zmieniony
+	int candidate_id; // Id opornika, który może zostać nowym akceptorem (wiadomośc zwrotna)
+	int distance;	// Aktualna różnica wysokości pomiędzy akceptorem, a kandydatem
+	int target_distance; // -1: chcemy przekazać w dół, 0: ten sam poziom, 1: w górę
+};
+
 #endif // MESSAGES_H

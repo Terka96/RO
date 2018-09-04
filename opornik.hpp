@@ -30,6 +30,8 @@ private:
     	void live();
     	void listen();
 
+		void handleAcceptorMsg(int sender, Msg_pass_acceptor msg);
+
     	int id;
     	int size;
     	int parent;

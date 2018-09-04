@@ -27,6 +27,7 @@ int inline Opornik::debug_log(const char* format, ...){
 Opornik::Opornik(){
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     clock=0;
+    blocked = false;
     acceptorToken=NONE;
     makeTree();
     MPI_Barrier(MPI_COMM_WORLD);
@@ -156,16 +157,21 @@ void Opornik::live()
 	while (true)
    	{
        		sleep(1);	// 1 sec- or use nanosleep instead
+
         	int actionRand=rand()%1001;          //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
-        	if(actionRand>=975)
+
+		if (blocked)
+		{
+			if (actionRand >= 975)
+			{
+                       		debug_log("Chcem, ale nie mogem! Jestem zablokowany!\n");
+			}
+			continue;
+       		}
+		else if (actionRand>=975)
             		debug_log("Chcę zorganizować spotkanie!\n");//+send info
-        	else if(actionRand>=950 && acceptorToken!=NONE)
+        	else if (actionRand>=950 && acceptorToken!=NONE)
             		pass_acceptor();
-        	//non-blocking recv (Brecv czy coś)
-       		//switch(tag)
-        	//{
-        	//  tutaj syf związany z obsługą komunikatów
-        	//}
    	 }
 
 }
@@ -178,6 +184,8 @@ void *Opornik::listen_starter(void * arg)
 
 void Opornik::listen()
 {
+	// blocked = true;
+
 	int buffer[MAX_BUFFER_SIZE];
 	MPI_Status status;
 

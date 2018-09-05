@@ -8,6 +8,11 @@
 #define INVITATION_MSG 4
 #define ENDOFMEETING 5
 
+// 100+ to wiadomości zwykłego typu
+
+// 200+ to wiadomości typu broadcast
+#define TAG_PASS_ACCEPTOR 200
+
 /*zamówienie u konspiratora zrobienia dzieci w ilości count, przyjęcia postawy konspiratora i zapamiętania przełożonego i sąsiadów*/
 struct order_makekids{
     int parent;
@@ -39,6 +44,16 @@ struct meetingInfo{
 struct endOfMeeting{
     int uniqueTag;
     int meetingId;
+};
+
+// Wiadomość generowana do zmiany akceptora
+struct Msg_pass_acceptor
+{
+	int clock; // zegar
+	int initializaotr_id; // Id akceptora, który chce zostać zmieniony
+	int candidate_id; // Id opornika, który może zostać nowym akceptorem (wiadomośc zwrotna)
+	int distance;	// Aktualna różnica wysokości pomiędzy akceptorem, a kandydatem
+	int target_distance; // -1: chcemy przekazać w dół, 0: ten sam poziom, 1: w górę
 };
 
 #endif // MESSAGES_H

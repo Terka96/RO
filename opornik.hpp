@@ -18,6 +18,14 @@ private:
 
     void organizeMeeting();
     void endMeeting();
+   	void pass_acceptor();
+
+   	static void *live_starter(void * arg);  
+   	static void *listen_starter(void * arg);
+   	void live();
+   	void listen();
+
+	void handleAcceptorMsg(int sender, Msg_pass_acceptor msg);
 
     void receiveForwardMsg(int*,int,int);
     void receiveResponseMsg(int*,int,msgBcastInfo*);
@@ -30,6 +38,7 @@ private:
     int parent;
     int clock;
     int acceptorToken;
+	bool blocked;
     int meeting;                         //przechowuje id spotkania w którym uczestniczy
     int tagGeneratorCounter;             //licznik do generowania unikalnego id
     std::vector<int> neighbors;

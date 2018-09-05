@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string>
+#include <iostream>
+#include <thread>
 #include "constants.hpp"
 
 #define DEBUGLOG 1
@@ -25,6 +27,7 @@ int inline Opornik::debug_log(const char* format, ...){
 Opornik::Opornik(){
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     clock=0;
+    blocked = false;
     acceptorToken=NONE;
     meeting=NONE;
     tagGeneratorCounter=0;
@@ -100,7 +103,6 @@ void Opornik::distributeAcceptorsAndResources(){
 }
 
 void Opornik::makeKids(int count){
-    //int ackCount=count;
     int grandchildrenCount=0;
     if(count>0)
     {
@@ -129,73 +131,207 @@ void Opornik::makeKids(int count){
             MPI_Bsend(&order,2+MAX_CHILDREN,MPI_INT,childrenNodes[i],ORDER_MAKEKIDS,MPI_COMM_WORLD);
             children.push_back(childrenNodes[i]);
         }
-    //Code bellow isn't needed if we can use MPI_Barrier()
     }
-        /*MPI_Status status;
-        for(int i=0;i<rand_childs;i++){
-            ack_makekids ack;
-            ack.count=-1;
-            MPI_Recv(&ack,1,MPI_INT,MPI_ANY_SOURCE,ACK_MAKEKIDS,MPI_COMM_WORLD,&status);
-            ackCount-=(ack.count+1);
-            debug_log("Recv ack(%d) from %d node\n",ack.count,status.MPI_SOURCE);
-        }
-    }
-
-    if(ackCount==0){
-        if(parent!=-1)
-        {
-            ack_makekids ack;
-            ack.count=count;
-            MPI_Send(&ack,1,MPI_INT,parent,ACK_MAKEKIDS,MPI_COMM_WORLD);
-        }
-    }
-    else
-        printf("ERROR: node %d ordered %d remaining acks %d from childs %d\n",id,count,ackCount,childs.size());
-*/
 }
 
 void Opornik::run(){
+	// https://stackoverflow.com/questions/12043057/cannot-convert-from-type-voidclassname-to-type-voidvoid
+	std::thread thread_1(live_starter, this);
+    std::thread thread_2(listen_starter, this);
+
     introduce();
-    int buffer[MAX_BUFFER_SIZE];
-    MPI_Request request;
-    MPI_Status stat;
-    int reqComplete=0;
 
-    //Powiedz że będziesz oczekiwał wiadomości, ale nie masz teraz na nią czasu
-    MPI_Irecv(&buffer,MAX_BUFFER_SIZE,MPI_INT,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&request);
+	thread_1.join();
+	thread_2.join();
+
+}
 
 
-    while(1)
-    {
-        int actionRand=rand()%10001;//promilowy podział prawdopodobieństwa dla pojedynczego procesu
-        if(actionRand>=9950)
-            organizeMeeting();
-        else if(actionRand>=9900)
-            endMeeting();
-        else if(actionRand>=9800 && acceptorToken!=NONE)
-            ;//debug_log("Nie chcę już być akceptorem!\n");
+void *Opornik::live_starter(void *arg)
+{
+	Opornik *op = (Opornik *)arg;
+    	op->live();
+}
+
+void Opornik::live()
+{
+	while (true)
+   	{
         usleep(100000);//0.1 sec
 
+		int actionRand=rand()%1001; //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
 
-        MPI_Test(&request,&reqComplete,&stat);
-        if(reqComplete)
-        {
-            bool exist=false;
-            for(std::list<msgBcastInfo>::iterator x=bcasts.begin();x!=bcasts.end();x++)
-                if(buffer[0]==x->uniqueTag){
-                    exist=true;
-                    receiveResponseMsg(buffer,stat.MPI_TAG,&(*x));
+		if (blocked)
+		{
+            if (actionRand >= 995)
+			{
+                debug_log("Chcem, ale nie mogem! Jestem zablokowany!\n");
+			}
+			continue;
+       	}
+        else if (actionRand>=995)
+            organizeMeeting();
+        else if(actionRand>=990)
+            endMeeting();
+        else if (actionRand>=985 && acceptorToken!=NONE)
+        	pass_acceptor();
+   	 }
+
+}
+
+void *Opornik::listen_starter(void * arg)
+{
+	Opornik *op = (Opornik *)arg;
+	op->listen();
+}
+
+void Opornik::listen()
+{
+	// blocked = true;
+
+	int buffer[MAX_BUFFER_SIZE];
+	MPI_Status status;
+
+	while (true)
+	{
+		MPI_Recv(&buffer, MAX_BUFFER_SIZE, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+
+		switch (status.MPI_TAG)
+		{
+			case TAG_PASS_ACCEPTOR:
+				{
+					Msg_pass_acceptor msg = {buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]};
+					handleAcceptorMsg(status.MPI_SOURCE, msg);
+					break;
+				}
+            case INVITATION_MSG:
+            case ENDOFMEETING:
+                {
+                    bool exist=false;
+                    for(std::list<msgBcastInfo>::iterator x=bcasts.begin();x!=bcasts.end();x++)
+                        if(buffer[0]==x->uniqueTag){
+                            exist=true;
+                            receiveResponseMsg(buffer,status.MPI_TAG,&(*x));
+                            break;
+                        }
+                    if(!exist)
+                        receiveForwardMsg(buffer,status.MPI_TAG,status.MPI_SOURCE);
                     break;
                 }
-            if(!exist)
-                receiveForwardMsg(buffer,stat.MPI_TAG,stat.MPI_SOURCE);
-
-            reqComplete=0;
-            MPI_Irecv(&buffer,MAX_BUFFER_SIZE,MPI_INT,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&request);
-
-        }
-    }
+			default:
+				{
+					debug_log("Otrzymano nieznany typ wiadomości\n");
+				}
+		}	
+	}
 }
+
+void Opornik::handleAcceptorMsg(int sender, Msg_pass_acceptor msg)
+{
+	if (msg.distance == msg.target_distance)
+	{
+		debug_log("Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać!\n");
+	}
+	else if (msg.distance > msg.target_distance)
+	{
+		debug_log("Muszę przekazać prośbę o zwolnienie akceptora W DÓŁ!\n");
+	}
+	else // (msg.target_distance > msg.distance)
+	{
+		if (sender == parent) // Dostałem tę wiadomość od rodzica (wiadomość idzie w dół)
+		{
+			debug_log("Nikt niżej nie będzie mógł zostać akceptorem, a wiadomość dostałem od rodzica! Ignoruję wiadomość.\n");	
+		}
+		else // Wiadomość idzie w górę, aby dotrzeć na inną stronę drzewa
+		{
+			debug_log("Muszę przekazać prośbę o zwolnienie akceptora W GÓRĘ!\n");
+
+		}
+	}
+}
+
+void Opornik::pass_acceptor()
+{
+	debug_log("Nie chcę już być akceptorem!\n");
+
+	// losowanie kierunku przekazania akceptora
+	int rand = random() % 100;
+	int new_acceptor;
+	int buffer[MAX_BUFFER_SIZE];
+
+	try
+	{
+		Msg_pass_acceptor msg;
+		// todo: iteracja po całym drzewie i dodanie kandydatów do vectora, następnie wylosowanie kandydata i próba przekazania akceptora
+		// trzeba dodać licznik, któr będzie zwiększany gdy wiadomośc pójdzie w górę, zmniejszany kiedy w dół. W ten sposób będzie wiadomo, kto może zostać nowym akceptorem.
+		// 0 - ten sam poziom
+		// 1 - wyższy
+		// -1 - niższy
+		// (-inf; +inf)\{-1,0,1} zostają pominięte
+		if (rand < 10) //gora
+		{
+			debug_log("Chcę przekazać akceptora w górę!\n");
+			
+			if (parent != -1)
+			{
+				msg = {clock, id, NONE, 1, 1}; // distance = 1, bo przekazujemy w górę
+				// Wystarczy przekazać w górę
+				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+				// MPI_recv()
+			}
+			else
+			{
+				debug_log("Nie mogę przekazać akceptora w górę, jestem na szczycie!\n");
+			}
+		}
+		else if (rand < 20) //dol
+		{
+			if (parent != -1)
+            {
+				msg = {clock, id, NONE, 1, -1};  // distance = 1, bo przekazujemy w górę
+
+				// Trzeba przekazać w górę i do dzieci
+				debug_log("Chcę przkazać akceptora w dół!\n");
+				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+				// MPI_recv()
+			}
+            if (children.size() > 0)
+			{
+                for (int i = 0; i < children.size(); i++)
+				{
+                    MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+					// MPI_recv()
+
+				}
+			}
+
+		}
+		else //ten sam poziom
+		{
+			if (parent != -1)
+            {
+				msg = {clock, id, NONE, 1, 0};  // distance = 1, bo przekazujemy w górę
+
+				//Wystarczy przekazać w górę
+				debug_log("Chcę przekazać akceptora na swoim poziomie!\n");
+				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+				// MPI_recv()
+			}
+            else
+            {
+            	debug_log("Nie mogę przekazać na ten sam poziom, jestem na szczycie!\n");
+            }
+
+		}
+	}
+	catch (const std::exception& e)
+	{
+		// przyk. być może padło na kierunek, gdzie nie ma już więcej elemetów
+		debug_log("Mam pecha, nie mogę przekazać akceptora w wylosowanym kierunku. Jeszcze jedna próba!\n");
+		pass_acceptor();
+	}
+}
+
 void Opornik::organizeMeeting(){
     if(meeting==NONE)
     {

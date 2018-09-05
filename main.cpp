@@ -4,8 +4,6 @@
 #include <string.h>
 #include <vector>
 #include "opornik.hpp"
-#include "book.hpp"
-#include "dvd.hpp"
 #include "acceptor_token.hpp"
 #include "constants.hpp"
 

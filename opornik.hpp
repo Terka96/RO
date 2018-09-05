@@ -1,38 +1,39 @@
 #include <vector>
+#include <list>
 #ifndef opornik_hpp
 #define opornik_hpp
 #include"messages.h"
-#include"resource.hpp"
-#include"dvd.hpp"
-#include"book.hpp"
 
 class Opornik{
 public:
     Opornik();
     void run();
     void introduce();
-	int initBooks(int c_books, Opornik* o);
-    int initDvds(int c_dvds, Opornik* o);
-
-	void createDvd(int id,Opornik* owner);
-	void createBook(int id,Opornik* owner);
-
-	void send_mpi_message(int sender_id, int company_id, int info_type, int timestamp, int data, int tag, int receiver);
-    void reveive_mpi_message(int tag);
 
 private:
     void makeTree();
     void makeKids(int count);
     void distributeAcceptorsAndResources();
+    void organizeMeeting();
+    void endMeeting();
+
+    void receiveForwardMsg(int*,int,int);
+    void receiveResponseMsg(int*,int,msgBcastInfo*);
+    void sendForwardMsg(int*,int,int,int);
+    void sendResponseMsg(int*,int,msgBcastInfo*);
+
 
     int id;
     int size;
     int parent;
     int clock;
     int acceptorToken;
+    int meeting;                         //przechowuje id spotkania w którym uczestniczy
+    int tagGeneratorCounter;             //licznik do generowania unikalnego id
     std::vector<int> neighbors;
-    std::vector<int> childs;
+    std::vector<int> children;
     std::vector<int> resources;
+    std::list<msgBcastInfo> bcasts;
 
     int inline debug_log(const char* format, ...);
 };

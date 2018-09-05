@@ -26,10 +26,11 @@ Opornik::Opornik(){
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     clock=0;
     acceptorToken=NONE;
+    meeting=NONE;
+    tagGeneratorCounter=0;
     makeTree();
     MPI_Barrier(MPI_COMM_WORLD);
     distributeAcceptorsAndResources();
-    //Bariera synchronizacyjna (czy to legalne? jeśli tak to można usunąć acki przy tworzeniu drzewa, chociaż debug ułatwiają)
     MPI_Barrier(MPI_COMM_WORLD);
 }
 
@@ -126,7 +127,7 @@ void Opornik::makeKids(int count){
             order.count=grandchildrenInNodes[i];
             debug_log("Sending order(%d) to node %d\n",grandchildrenInNodes[i],childrenNodes[i]);
             MPI_Bsend(&order,2+MAX_CHILDREN,MPI_INT,childrenNodes[i],ORDER_MAKEKIDS,MPI_COMM_WORLD);
-            childs.push_back(childrenNodes[i]);
+            children.push_back(childrenNodes[i]);
         }
     //Code bellow isn't needed if we can use MPI_Barrier()
     }
@@ -155,22 +156,183 @@ void Opornik::makeKids(int count){
 
 void Opornik::run(){
     introduce();
+    int buffer[MAX_BUFFER_SIZE];
+    MPI_Request request;
+    MPI_Status stat;
+    int reqComplete=0;
 
-    for(int i=0;i<100;i++)//or while(true)
+    //Powiedz że będziesz oczekiwał wiadomości, ale nie masz teraz na nią czasu
+    MPI_Irecv(&buffer,MAX_BUFFER_SIZE,MPI_INT,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&request);
+
+
+    for(int i=0;i<1000;i++)//100sec or while(true)
     {
-        sleep(1);//1 sec- or use nanosleep instead
-        int actionRand=rand()%1001;          //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
-        if(actionRand>=975)
-            debug_log("Chcę zorganizować spotkanie!\n");//+send info
-        else if(actionRand>=950 && acceptorToken!=NONE)
-            debug_log("Nie chcę już być akceptorem!\n");//+send info
+        int actionRand=rand()%10001;//promilowy podział prawdopodobieństwa dla pojedynczego procesu
+        if(actionRand>=9995){
+            debug_log("Chcę zorganizować spotkanie!\n");
+            organizeMeeting();
+        }
+        else if(actionRand>=9900 && id==meeting){
+            debug_log("Rozejść się!\n");
+            endMeeting();
+        }
+        else if(actionRand>=9900 && acceptorToken!=NONE)
+            debug_log("Nie chcę już być akceptorem!\n");
+        usleep(100000);//0.1 sec
 
-        //non-blocking recv (Brecv czy coś)
-        //switch(tag)
-        //{
-        //  tutaj syf związany z obsługą komunikatów
-        //}
+
+        MPI_Test(&request,&reqComplete,&stat);
+        if(reqComplete)
+        {
+            bool exist=false;
+            for(std::list<msgBcastInfo>::iterator x=bcasts.begin();x!=bcasts.end();x++)
+                if(buffer[0]==x->uniqueTag){
+                    exist=true;
+                    receiveResponseMsg(buffer,stat.MPI_TAG,&(*x));
+                }
+            if(!exist)
+                receiveForwardMsg(buffer,stat.MPI_TAG,stat.MPI_SOURCE);
+
+            reqComplete=0;
+            MPI_Irecv(&buffer,MAX_BUFFER_SIZE,MPI_INT,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&request);
+
+        }
     }
+}
+void Opornik::organizeMeeting(){
+    if(meeting==NONE)
+    {
+        meeting=id;
+        meetingInfo info;
+        //generate unique tag
+        info.uniqueTag=size*tagGeneratorCounter+id;
+        tagGeneratorCounter++;
+
+        info.meetingId=id;
+        info.participants=0;
+        info.haveResource=NONE;
+
+        receiveForwardMsg((int*)(&info),INVITATION_MSG,id);
+    }
+}
+
+void Opornik::endMeeting(){
+        endOfMeeting end;
+        //generate unique tag
+        end.uniqueTag=size*tagGeneratorCounter+id;
+        tagGeneratorCounter++;
+
+        end.meetingId=id;
+        receiveForwardMsg((int*)(&end),ENDOFMEETING,id);
+}
+
+void Opornik::receiveForwardMsg(int* buffer,int tag,int source){
+    int msgSize;
+    switch(tag)
+    {
+        case INVITATION_MSG:
+        {
+            msgSize=4;
+            meetingInfo* info=(meetingInfo*)buffer;
+            if(meeting==NONE) // THEN: zgódź się :D
+            {
+                debug_log("Zaproszono mnie do spotkania %d\n",info->meetingId);
+                meeting=info->meetingId;
+            }
+            break;
+        }
+        case ENDOFMEETING:
+            msgSize=2;
+            break;
+    }
+    sendForwardMsg(buffer,tag,source,msgSize);
+}
+
+void Opornik::receiveResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
+    bcast->waitingForResponse--;
+    switch(tag)
+    {
+        case INVITATION_MSG:
+        {
+            meetingInfo* info=(meetingInfo*)buffer;
+            meetingInfo* sumaric=(meetingInfo*)bcast->buffer;
+            sumaric->participants+=info->participants;
+
+            if(bcast->waitingForResponse<=0)//jeżeli dostałeś już odpowiedzi od wszystkich
+            {
+                if(meeting==info->meetingId)
+                    sumaric->participants++;
+                info->participants=sumaric->participants;
+            }
+            break;
+        }
+        case ENDOFMEETING:
+        {
+            endOfMeeting* end=(endOfMeeting*)buffer;
+            if(meeting==end->meetingId)
+                meeting=NONE;
+            break;
+        }
+    }
+    if(bcast->waitingForResponse<=0)//jeżeli dostałeś już odpowiedzi od wszystkich
+    {
+        sendResponseMsg(buffer,tag,bcast);
+        //TODO: THIS BELOW
+        //bcasts.remove(*bcast);
+    }
+}
+
+void Opornik::sendForwardMsg(int* buffer,int tag,int source,int msgSize){
+    msgBcastInfo bcast;
+    bcast.uniqueTag=buffer[0];
+    bcast.respondTo=source;
+    bcast.msgSize=msgSize;
+    bcast.waitingForResponse=children.size();
+    if(parent!=NONE)
+        bcast.waitingForResponse++;
+    if(source!=id)
+        bcast.waitingForResponse--;
+
+    switch(tag)//inicjalizacja bufora broadcastu
+    {
+        case INVITATION_MSG:
+        {
+            meetingInfo* sumaric=(meetingInfo*)bcast.buffer;
+            sumaric->participants=0;
+            break;
+        }
+        case ENDOFMEETING:
+            //Nothing special
+            break;
+    }
+    bcasts.push_back(bcast);
+
+    if(bcast.waitingForResponse==0) //jeżeli to już liść
+        receiveResponseMsg(buffer,tag,&bcasts.back());
+
+    for(int i=0;i<children.size();i++)
+        if(children[i]!=source)
+            MPI_Send(buffer,bcast.msgSize,MPI_INT,children[i],tag,MPI_COMM_WORLD);
+    if(parent!=NONE && parent!=source)
+        MPI_Send(buffer,bcast.msgSize,MPI_INT,parent,tag,MPI_COMM_WORLD);
+}
+
+void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
+    if(id==bcast->respondTo)//Jeżeli odpowiedź dotarła do inicjatora
+        switch (tag)
+        {
+            case INVITATION_MSG:
+            {
+                meetingInfo* info=(meetingInfo*)buffer;
+                    debug_log("Na moje spotkanie przyjdzie %d\n",info->participants);
+                break;
+            }
+        case ENDOFMEETING:
+                debug_log("Wszyscy poszli już do domu po moim spotkaniu\n");
+                break;
+        }
+    else
+        MPI_Send(buffer,bcast->msgSize,MPI_INT,bcast->respondTo,tag,MPI_COMM_WORLD);
 }
 
 void Opornik::introduce(){
@@ -191,52 +353,4 @@ void Opornik::introduce(){
         info+= "  I'm acceptor("+std::to_string(acceptorToken)+")";
     printf("%s\n",info.c_str());
 }
-
-/*void Opornik::createDvd(int id, Opornik* owner){
-	Dvd *r = new Dvd(id,owner);
-	owner->resources.push_back(r);
-	printf("Konspirator %d spiracił nową płytę DVD o id: %d\n",owner->id, id);
-}
-
-void Opornik::createBook(int id, Opornik* owner){
-	Book *r = new Book(id,owner);
-	owner->resources.push_back(r);
-	printf("Konspirator %d przepisał książkę o id: %d\n",owner->id, id);
-}*/
-
-/*int Opornik::initBooks(int c_books, Opornik* o){
-    //todo powinno przydzielac w losowych miejscach?
-    for (Opornik* child : o->childs)
-    {
-        if(c_books<NUM_BOOK)
-            createBook(c_books++, child);
-        c_books = initBooks(c_books, child);
-    }
-    return c_books;
-}
-
-int Opornik::initDvds(int c_dvds, Opornik* o){
-    //todo powinno przydzielac w losowych miejscach?
-    for (Opornik* child : o->childs)
-    {
-        if(c_dvds<NUM_DVD)
-            createDvd(c_dvds++, child);
-        c_dvds = initDvds(c_dvds, child);
-    }
-    return c_dvds;
-}*/
-
-
-/*
-void Opornik::send_mpi_message(int sender_id, int company_id, int info_type, int timestamp, int data, int tag, int receiver){
-   struct Message send_data;
-  		 //todo
-   MPI_Send(&send_data, 1, MPI_INT, receiver, tag, MPI_COMM_WORLD);
-}
-
-struct Message Opornik::reveive_mpi_message(int tag){
-   struct Message data;
-		//todo
-   return data;
-}*/
 

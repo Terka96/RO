@@ -12,6 +12,7 @@
 
 // 200+ to wiadomości typu broadcast
 #define TAG_PASS_ACCEPTOR 200
+#define TAG_ACCEPTOR_CANDIDATE 201
 
 /*zamówienie u konspiratora zrobienia dzieci w ilości count, przyjęcia postawy konspiratora i zapamiętania przełożonego i sąsiadów*/
 struct order_makekids{
@@ -50,7 +51,7 @@ struct endOfMeeting{
 struct Msg_pass_acceptor
 {
 	int clock; // zegar
-	int initializaotr_id; // Id akceptora, który chce zostać zmieniony
+	int initializator_id; // Id akceptora, który chce zostać zmieniony
 	int candidate_id; // Id opornika, który może zostać nowym akceptorem (wiadomośc zwrotna)
 	int distance;	// Aktualna różnica wysokości pomiędzy akceptorem, a kandydatem
 	int target_distance; // -1: chcemy przekazać w dół, 0: ten sam poziom, 1: w górę

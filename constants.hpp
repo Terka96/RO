@@ -22,5 +22,12 @@ struct msgBcastInfo{
     }
 };
 
+enum status_enum
+{
+    idle = 0, //zamiast średników stosuje się przecinki
+    busy = 1,
+    blocked = 2
+};
+
 
 #endif

@@ -27,7 +27,7 @@ int inline Opornik::debug_log(const char* format, ...){
 Opornik::Opornik(){
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     clock=0;
-    blocked = false;
+    status = idle;
     acceptorToken=NONE;
     meeting=NONE;
     tagGeneratorCounter=0;
@@ -50,9 +50,9 @@ void Opornik::makeTree(){
     }
     else
     {
-        MPI_Status status;
+        MPI_Status mpi_status;
         order_makekids order;
-        MPI_Recv(&order,2+MAX_CHILDREN,MPI_INT,MPI_ANY_SOURCE,ORDER_MAKEKIDS,MPI_COMM_WORLD,&status);
+        MPI_Recv(&order,2+MAX_CHILDREN,MPI_INT,MPI_ANY_SOURCE,ORDER_MAKEKIDS,MPI_COMM_WORLD,&mpi_status);
         parent=order.parent;
         for(int i=0;i<MAX_CHILDREN;i++)
             if(order.neighbors[i]!=NONE && order.neighbors[i]!=id)
@@ -161,7 +161,7 @@ void Opornik::live()
 
 		int actionRand=rand()%1001; //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
 
-		if (blocked)
+		if (status == blocked)
 		{
             if (actionRand >= 995)
 			{
@@ -171,8 +171,10 @@ void Opornik::live()
        	}
         else if (actionRand>=995)
             organizeMeeting();
+//            continue;
         else if(actionRand>=990)
             endMeeting();
+//            continue;
         else if (actionRand>=985 && acceptorToken!=NONE)
         	pass_acceptor();
    	 }
@@ -187,65 +189,168 @@ void *Opornik::listen_starter(void * arg)
 
 void Opornik::listen()
 {
-	// blocked = true;
+	// blocked = true
+
+	try
+	{
 
 	int buffer[MAX_BUFFER_SIZE];
-	MPI_Status status;
+	MPI_Status mpi_status;	
 
 	while (true)
 	{
-		MPI_Recv(&buffer, MAX_BUFFER_SIZE, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+		MPI_Recv(&buffer, MAX_BUFFER_SIZE, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &mpi_status);
+		
+		debug_log("Dostałem wiadomość typu %d od %d\t", mpi_status.MPI_TAG, mpi_status.MPI_SOURCE);
 
-		switch (status.MPI_TAG)
+		switch (mpi_status.MPI_TAG)
 		{
 			case TAG_PASS_ACCEPTOR:
-				{
-					Msg_pass_acceptor msg = {buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]};
-					handleAcceptorMsg(status.MPI_SOURCE, msg);
-					break;
-				}
+			{
+				Msg_pass_acceptor msg = {buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]};
+				handleAcceptorMsg(mpi_status.MPI_SOURCE, msg);
+				break;
+			}
+			case TAG_ACCEPTOR_CANDIDATE:
+			{
+				Msg_pass_acceptor msg = {buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]};
+				handleACandidateMsg(mpi_status.MPI_SOURCE, msg);
+			}
             case INVITATION_MSG:
             case ENDOFMEETING:
-                {
-                    bool exist=false;
-                    for(std::list<msgBcastInfo>::iterator x=bcasts.begin();x!=bcasts.end();x++)
-                        if(buffer[0]==x->uniqueTag){
-                            exist=true;
-                            receiveResponseMsg(buffer,status.MPI_TAG,&(*x));
-                            break;
-                        }
-                    if(!exist)
-                        receiveForwardMsg(buffer,status.MPI_TAG,status.MPI_SOURCE);
-                    break;
-                }
+            {
+                bool exist=false;
+                for(std::list<msgBcastInfo>::iterator x=bcasts.begin();x!=bcasts.end();x++)
+                    if(buffer[0]==x->uniqueTag){
+                        exist=true;
+  		                receiveResponseMsg(buffer,mpi_status.MPI_TAG,&(*x));
+                        break;
+                    }
+                if(!exist)
+                    receiveForwardMsg(buffer,mpi_status.MPI_TAG,mpi_status.MPI_SOURCE);
+                break;
+            }
 			default:
-				{
-					debug_log("Otrzymano nieznany typ wiadomości\n");
-				}
+			{
+				debug_log("Otrzymano nieznany typ wiadomości\n");
+			}
 		}	
+	}
+	}
+	catch (std::exception &e)
+	{
+		debug_log("%s", e.what());
+	}
+}
+
+void Opornik::handleACandidateMsg(int sender, Msg_pass_acceptor msg)
+{
+	if (msg.initializator_id == id)
+	{
+		debug_log("Dostałem zgłoszenie na KANDYDATa do zmiany akceptora!\n");
+	}
+	else
+	{
+    	if (msg.distance == msg.target_distance && sender != parent && parent != NONE)
+    	{
+			debug_log("Przekazuję kandydata w GÓRĘ\n");
+			// warto przekazać jedynie w górę; więc jeśli otrzymane od rodzica, to ignore
+			msg.distance += 1;
+        	MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_ACCEPTOR_CANDIDATE, MPI_COMM_WORLD);
+    	}
+    	else if (msg.distance > msg.target_distance)
+    	{
+			debug_log("Przekazuję kandydata w DÓŁ i potencjalnie w GÓRĘ\n");
+        	// W górę; jeśli nie dostaliśmy od rodzica
+        	msg.distance += 1;
+        	if (parent != -1 && sender != parent)
+        	{
+            	MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_ACCEPTOR_CANDIDATE, MPI_COMM_WORLD);
+        	}
+
+        	// I w dół
+        	msg.distance -= 2; // 2, ponieważ zwiększyliśmy na potrzeby wysłania do rodzica
+        	if (children.size() > 0)
+        	{
+            	for (int i = 0; i < children.size(); i++)
+            	{
+					if (children[i] != sender)
+					{
+                		MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], TAG_ACCEPTOR_CANDIDATE, MPI_COMM_WORLD);
+					}
+				}
+        	}
+    	}
+    	else if (msg.distance < msg.target_distance)
+    	{
+        	if (sender == parent) // Dostałem tę wiadomość od rodzica (wiadomość idzie w dół)
+        	{
+            	 debug_log("Nikt niżej nie będzie mógł przekazać kandydata, a wiadomość dostałem od rodzica! Ignoruję wiadomość.\n");
+        	}
+        	else // Wiadomość idzie w górę, aby dotrzeć na inną gałąź
+        	{
+            	msg.distance += 1;
+            	if (parent != -1)
+            	{
+                	MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+            	}
+    	    }
+   	 	}
 	}
 }
 
 void Opornik::handleAcceptorMsg(int sender, Msg_pass_acceptor msg)
 {
-	if (msg.distance == msg.target_distance)
+	if (msg.distance == msg.target_distance && msg.initializator_id != id && status != busy)
 	{
-		debug_log("Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać!\n");
+		// Uwaga! Możemy dostać to samo zgłoszenie kilka razy (sąsiedzi rozprowadzają je przez rodzica), niby status.busy częściowo rozwiązuje problem TODO
+		status = busy;
+		msg.candidate_id = id;
+		msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1; 
+		debug_log("(from %d) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać! dist = %d\n", sender, msg.distance);
+		MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_CANDIDATE, MPI_COMM_WORLD);
+		debug_log("Wysłałem swoją kandydaturę do %d\n", sender);
+		// Można by przekazać jeszcze wyżej i przeskoczyć na inne gałęzie lub do sąsiadów, ale nie robimy sobie konkurencji
 	}
 	else if (msg.distance > msg.target_distance)
 	{
-		debug_log("Muszę przekazać prośbę o zwolnienie akceptora W DÓŁ!\n");
+		// w dół i górę, ponieważ przez podanie do góry możemy dotrzeć do innej gałęzi
+		debug_log("Muszę przekazać prośbę o zwolnienie akceptora W DÓŁ oraz potencjalnie W GÓRĘ! dist = %d\n", msg.distance);
+
+		// W górę
+		msg.distance += 1;
+		if (parent != -1 && sender != parent)
+        {
+            MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+        }
+
+		// I w dół
+		msg.distance -= 2; // 2, ponieważ zwiększyliśmy na potrzeby wysłania do rodzica
+		if (children.size() > 0)
+        {
+        	for (int i = 0; i < children.size(); i++)
+            {
+				if (children[i] != sender)
+                {
+            		MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+				}
+			}
+        }
 	}
-	else // (msg.target_distance > msg.distance)
+	else if (msg.distance < msg.target_distance || msg.distance == msg.target_distance) // 2-gi warunek ponieważ potencjalny kandydat jest busy i nie może przyjąć kandydatury
 	{
 		if (sender == parent) // Dostałem tę wiadomość od rodzica (wiadomość idzie w dół)
 		{
-			debug_log("Nikt niżej nie będzie mógł zostać akceptorem, a wiadomość dostałem od rodzica! Ignoruję wiadomość.\n");	
+			debug_log("Nikt niżej nie będzie mógł zostać akceptorem, a wiadomość dostałem od rodzica! Ignoruję wiadomość. dist = %d\n", msg.distance);	
 		}
 		else // Wiadomość idzie w górę, aby dotrzeć na inną stronę drzewa
 		{
-			debug_log("Muszę przekazać prośbę o zwolnienie akceptora W GÓRĘ!\n");
-
+			debug_log("Muszę przekazać prośbę o zwolnienie akceptora W GÓRĘ! dist = %d\n", msg.distance);
+			msg.distance += 1;
+			if (parent != -1)
+            {
+                MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+            }
 		}
 	}
 }
@@ -253,7 +358,7 @@ void Opornik::handleAcceptorMsg(int sender, Msg_pass_acceptor msg)
 void Opornik::pass_acceptor()
 {
 	debug_log("Nie chcę już być akceptorem!\n");
-
+	status = blocked;
 	// losowanie kierunku przekazania akceptora
 	int rand = random() % 100;
 	int new_acceptor;
@@ -277,11 +382,11 @@ void Opornik::pass_acceptor()
 				msg = {clock, id, NONE, 1, 1}; // distance = 1, bo przekazujemy w górę
 				// Wystarczy przekazać w górę
 				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
-				// MPI_recv()
 			}
 			else
 			{
 				debug_log("Nie mogę przekazać akceptora w górę, jestem na szczycie!\n");
+				status = idle;
 			}
 		}
 		else if (rand < 20) //dol
@@ -292,16 +397,14 @@ void Opornik::pass_acceptor()
 
 				// Trzeba przekazać w górę i do dzieci
 				debug_log("Chcę przkazać akceptora w dół!\n");
+				// TODO UWAGA! Konspirator może być na samym dole, ale nie ma o tym wiedzy. Wtedy pomimo czekania, nie dostanie żadnego kandydata. timeout??
 				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
-				// MPI_recv()
 			}
             if (children.size() > 0)
 			{
                 for (int i = 0; i < children.size(); i++)
 				{
                     MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
-					// MPI_recv()
-
 				}
 			}
 
@@ -315,11 +418,11 @@ void Opornik::pass_acceptor()
 				//Wystarczy przekazać w górę
 				debug_log("Chcę przekazać akceptora na swoim poziomie!\n");
 				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
-				// MPI_recv()
 			}
             else
             {
             	debug_log("Nie mogę przekazać na ten sam poziom, jestem na szczycie!\n");
+				status = idle;
             }
 
 		}

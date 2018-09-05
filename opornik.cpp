@@ -189,6 +189,7 @@ void Opornik::run(){
                 if(buffer[0]==x->uniqueTag){
                     exist=true;
                     receiveResponseMsg(buffer,stat.MPI_TAG,&(*x));
+                    break;
                 }
             if(!exist)
                 receiveForwardMsg(buffer,stat.MPI_TAG,stat.MPI_SOURCE);
@@ -230,7 +231,7 @@ void Opornik::receiveForwardMsg(int* buffer,int tag,int source){
             meetingInfo* info=(meetingInfo*)buffer;
             if(meeting==NONE) // THEN: zgódź się :D
             {
-                debug_log("Zaproszono mnie do spotkania %d\n",info->meetingId);
+                //debug_log("Zaproszono mnie do spotkania %d\n",info->meetingId);
                 meeting=info->meetingId;
             }
             break;
@@ -261,6 +262,7 @@ void Opornik::receiveResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
             break;
         }
         case ENDOFMEETING:
+        if(bcast->waitingForResponse<=0)//jeżeli dostałeś już odpowiedzi od wszystkich
         {
             endOfMeeting* end=(endOfMeeting*)buffer;
             if(meeting==end->meetingId)
@@ -271,8 +273,7 @@ void Opornik::receiveResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
     if(bcast->waitingForResponse<=0)//jeżeli dostałeś już odpowiedzi od wszystkich
     {
         sendResponseMsg(buffer,tag,bcast);
-        //TODO: THIS BELOW
-        //bcasts.remove(*bcast);
+        bcasts.remove(*bcast);
     }
 }
 

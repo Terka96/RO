@@ -16,6 +16,10 @@ struct msgBcastInfo{
     int waitingForResponse;
     int msgSize;
     int buffer[MAX_BUFFER_SIZE];
+    bool operator ==(const msgBcastInfo& x) {
+        return x.uniqueTag==uniqueTag;
+    }
 };
+
 
 #endif

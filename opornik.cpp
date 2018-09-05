@@ -165,19 +165,15 @@ void Opornik::run(){
     MPI_Irecv(&buffer,MAX_BUFFER_SIZE,MPI_INT,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&request);
 
 
-    for(int i=0;i<1000;i++)//100sec or while(true)
+    while(1)
     {
         int actionRand=rand()%10001;//promilowy podział prawdopodobieństwa dla pojedynczego procesu
-        if(actionRand>=9995){
-            debug_log("Chcę zorganizować spotkanie!\n");
+        if(actionRand>=9950)
             organizeMeeting();
-        }
-        else if(actionRand>=9900 && id==meeting){
-            debug_log("Rozejść się!\n");
+        else if(actionRand>=9900)
             endMeeting();
-        }
-        else if(actionRand>=9900 && acceptorToken!=NONE)
-            debug_log("Nie chcę już być akceptorem!\n");
+        else if(actionRand>=9800 && acceptorToken!=NONE)
+            ;//debug_log("Nie chcę już być akceptorem!\n");
         usleep(100000);//0.1 sec
 
 
@@ -203,6 +199,7 @@ void Opornik::run(){
 void Opornik::organizeMeeting(){
     if(meeting==NONE)
     {
+        debug_log("Organizuję spotkanie!\n");
         meeting=id;
         meetingInfo info;
         info.uniqueTag=generateUniqueTag();
@@ -215,10 +212,14 @@ void Opornik::organizeMeeting(){
 }
 
 void Opornik::endMeeting(){
+    if(id==meeting)
+    {
+        debug_log("Rozejść się!\n");
         endOfMeeting end;
         end.uniqueTag=generateUniqueTag();
         end.meetingId=id;
         receiveForwardMsg((int*)(&end),ENDOFMEETING,id);
+    }
 }
 
 void Opornik::receiveForwardMsg(int* buffer,int tag,int source){
@@ -232,7 +233,8 @@ void Opornik::receiveForwardMsg(int* buffer,int tag,int source){
             if(meeting==NONE) // THEN: zgódź się :D
             {
                 //debug_log("Zaproszono mnie do spotkania %d\n",info->meetingId);
-                meeting=info->meetingId;
+                if(rand()%4>0)// 75% szans na dołączenie do spotkania
+                    meeting=info->meetingId;
             }
             break;
         }
@@ -319,7 +321,7 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
             case INVITATION_MSG:
             {
                 meetingInfo* info=(meetingInfo*)buffer;
-                    debug_log("Na moje spotkanie przyjdzie %d\n",info->participants);
+                    debug_log("Na moje spotkanie przyjdzie %d oporników\n",info->participants);
                 break;
             }
         case ENDOFMEETING:

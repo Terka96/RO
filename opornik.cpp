@@ -204,10 +204,7 @@ void Opornik::organizeMeeting(){
     {
         meeting=id;
         meetingInfo info;
-        //generate unique tag
-        info.uniqueTag=size*tagGeneratorCounter+id;
-        tagGeneratorCounter++;
-
+        info.uniqueTag=generateUniqueTag();
         info.meetingId=id;
         info.participants=0;
         info.haveResource=NONE;
@@ -218,10 +215,7 @@ void Opornik::organizeMeeting(){
 
 void Opornik::endMeeting(){
         endOfMeeting end;
-        //generate unique tag
-        end.uniqueTag=size*tagGeneratorCounter+id;
-        tagGeneratorCounter++;
-
+        end.uniqueTag=generateUniqueTag();
         end.meetingId=id;
         receiveForwardMsg((int*)(&end),ENDOFMEETING,id);
 }

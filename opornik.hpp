@@ -14,6 +14,8 @@ private:
     void makeTree();
     void makeKids(int count);
     void distributeAcceptorsAndResources();
+    int generateUniqueTag(){tagGeneratorCounter++; return size*tagGeneratorCounter+id;};
+
     void organizeMeeting();
     void endMeeting();
 

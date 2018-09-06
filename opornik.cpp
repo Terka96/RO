@@ -176,7 +176,7 @@ void Opornik::live()
             endMeeting();
 //            continue;
         else if (actionRand>=985 && acceptorToken!=NONE)
-        	pass_acceptor();
+            ;//pass_acceptor();
    	 }
 
 }
@@ -201,7 +201,7 @@ void Opornik::listen()
 	{
 		MPI_Recv(&buffer, MAX_BUFFER_SIZE, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &mpi_status);
 		
-		debug_log("Dostałem wiadomość typu %d od %d\t", mpi_status.MPI_TAG, mpi_status.MPI_SOURCE);
+        //debug_log("Dostałem wiadomość typu %d od %d\t", mpi_status.MPI_TAG, mpi_status.MPI_SOURCE);
 
 		switch (mpi_status.MPI_TAG)
 		{
@@ -444,9 +444,15 @@ void Opornik::organizeMeeting(){
         info.uniqueTag=generateUniqueTag();
         info.meetingId=id;
         info.participants=0;
-        info.haveResource=NONE;
+        if(!resources.empty()){
+            info.haveResource=resources.back();
+            busyResource=resources.back();
+            resources.pop_back();
+        }
+        else
+            info.haveResource=NONE;
 
-        receiveForwardMsg((int*)(&info),INVITATION_MSG,id);
+        receiveForwardMsg((int*)(&info),INVITATION_MSG,id); //TODO: pomyśleć czy tak może być ;)
     }
 }
 
@@ -457,7 +463,7 @@ void Opornik::endMeeting(){
         endOfMeeting end;
         end.uniqueTag=generateUniqueTag();
         end.meetingId=id;
-        receiveForwardMsg((int*)(&end),ENDOFMEETING,id);
+        receiveForwardMsg((int*)(&end),ENDOFMEETING,id); //TODO: pomyśleć czy tak może być ;)
     }
 }
 
@@ -474,6 +480,10 @@ void Opornik::receiveForwardMsg(int* buffer,int tag,int source){
                 //debug_log("Zaproszono mnie do spotkania %d\n",info->meetingId);
                 if(rand()%4>0)// 75% szans na dołączenie do spotkania
                     meeting=info->meetingId;
+            }
+            if(info->haveResource==NONE && !resources.empty()){
+                    info->haveResource=resources.back();
+                    resources.pop_back();
             }
             break;
         }
@@ -493,12 +503,20 @@ void Opornik::receiveResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
             meetingInfo* info=(meetingInfo*)buffer;
             meetingInfo* sumaric=(meetingInfo*)bcast->buffer;
             sumaric->participants+=info->participants;
+            if(info->haveResource!=NONE)
+            {
+                if(sumaric->haveResource==NONE)
+                    sumaric->haveResource=info->haveResource;
+                else if(sumaric->haveResource!=info->haveResource)
+                    resources.push_back(info->haveResource);
+            }
 
             if(bcast->waitingForResponse<=0)//jeżeli dostałeś już odpowiedzi od wszystkich
             {
                 if(meeting==info->meetingId)
                     sumaric->participants++;
                 info->participants=sumaric->participants;
+                info->haveResource=sumaric->haveResource;
             }
             break;
         }
@@ -535,6 +553,7 @@ void Opornik::sendForwardMsg(int* buffer,int tag,int source,int msgSize){
         {
             meetingInfo* sumaric=(meetingInfo*)bcast.buffer;
             sumaric->participants=0;
+            sumaric->haveResource=NONE;
             break;
         }
         case ENDOFMEETING:
@@ -560,10 +579,13 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
             case INVITATION_MSG:
             {
                 meetingInfo* info=(meetingInfo*)buffer;
-                    debug_log("Na moje spotkanie przyjdzie %d oporników\n",info->participants);
+                    busyResource=info->haveResource;
+                    debug_log("Na moje spotkanie przyjdzie %d oporników i użyjemy zasobu %d\n",info->participants,info->haveResource);
                 break;
             }
         case ENDOFMEETING:
+                resources.push_back(busyResource);
+                busyResource=NONE;
                 debug_log("Wszyscy poszli już do domu po moim spotkaniu\n");
                 break;
         }

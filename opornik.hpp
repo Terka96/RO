@@ -42,6 +42,7 @@ private:
 	status_enum status;
     int meeting;                         //przechowuje id spotkania w którym uczestniczy
     int tagGeneratorCounter;             //licznik do generowania unikalnego id
+    int busyResource;
     std::vector<int> neighbors;
     std::vector<int> children;
     std::vector<int> resources;

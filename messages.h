@@ -6,7 +6,8 @@
 #define ACK_MAKEKIDS 2
 #define INIT_RESOURES 3
 #define INVITATION_MSG 4
-#define ENDOFMEETING 5
+#define RESOURCE_GATHER 5
+#define ENDOFMEETING 6
 
 // 100+ to wiadomości zwykłego typu
 
@@ -21,11 +22,6 @@ struct order_makekids{
     int neighbors[MAX_CHILDREN];
 };
 
-/*potwierdzenie ukończenia tworzenia dzieci*/
-struct ack_makekids {
-    int count;
-};
-
 /*inicjalizacja/dystrybucja roli akceptora i zasobów*/
 struct init_resources{
     int acceptorTokenId;
@@ -38,6 +34,12 @@ struct meetingInfo{
     int uniqueTag;
     int meetingId;
     int participants;
+    int haveResource;
+};
+
+/*zebranie zasobu*/
+struct resourceGatherMsg{
+    int uniqueTag;
     int haveResource;
 };
 

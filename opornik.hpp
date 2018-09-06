@@ -17,6 +17,7 @@ private:
     int generateUniqueTag(){tagGeneratorCounter++; return size*tagGeneratorCounter+id;};
 
     void organizeMeeting();
+    void resourceGather();
     void endMeeting();
    	void pass_acceptor();
 

@@ -217,6 +217,7 @@ void Opornik::listen()
 				handleACandidateMsg(mpi_status.MPI_SOURCE, msg);
 			}
             case INVITATION_MSG:
+            case RESOURCE_GATHER:
             case ENDOFMEETING:
             {
                 bool exist=false;
@@ -456,8 +457,20 @@ void Opornik::organizeMeeting(){
     }
 }
 
+void Opornik::resourceGather(){
+    if(busyResource==NONE)
+    {
+        debug_log("Dajcie mi zasób!\n");
+        resourceGatherMsg res;
+        res.uniqueTag=generateUniqueTag();
+        res.haveResource=NONE;
+
+        receiveForwardMsg((int*)(&res),RESOURCE_GATHER,id); //TODO: pomyśleć czy tak może być ;)
+    }
+}
+
 void Opornik::endMeeting(){
-    if(id==meeting)
+    if(id==meeting)//TODO: pomyśleć czy spotkanie musi się zacząć?
     {
         debug_log("Rozejść się!\n");
         endOfMeeting end;
@@ -478,11 +491,20 @@ void Opornik::receiveForwardMsg(int* buffer,int tag,int source){
             if(meeting==NONE) // THEN: zgódź się :D
             {
                 //debug_log("Zaproszono mnie do spotkania %d\n",info->meetingId);
-                if(rand()%4>0)// 75% szans na dołączenie do spotkania
-                    meeting=info->meetingId;
+                meeting=info->meetingId;
             }
             if(info->haveResource==NONE && !resources.empty()){
                     info->haveResource=resources.back();
+                    resources.pop_back();
+            }
+            break;
+        }
+        case RESOURCE_GATHER:
+        {
+            msgSize=2;
+            resourceGatherMsg* res=(resourceGatherMsg*)buffer;
+            if(res->haveResource==NONE && !resources.empty()){
+                    res->haveResource=resources.back();
                     resources.pop_back();
             }
             break;
@@ -502,6 +524,7 @@ void Opornik::receiveResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
         {
             meetingInfo* info=(meetingInfo*)buffer;
             meetingInfo* sumaric=(meetingInfo*)bcast->buffer;
+
             sumaric->participants+=info->participants;
             if(info->haveResource!=NONE)
             {
@@ -518,6 +541,23 @@ void Opornik::receiveResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
                 info->participants=sumaric->participants;
                 info->haveResource=sumaric->haveResource;
             }
+            break;
+        }
+        case RESOURCE_GATHER:
+        {
+            resourceGatherMsg* res=(resourceGatherMsg*)buffer;
+            resourceGatherMsg* sumaric=(resourceGatherMsg*)bcast->buffer;
+
+            if(res->haveResource!=NONE)
+            {
+                if(sumaric->haveResource==NONE)
+                    sumaric->haveResource=res->haveResource;
+                else if(sumaric->haveResource!=res->haveResource)
+                    resources.push_back(res->haveResource);
+            }
+
+            if(bcast->waitingForResponse<=0)//jeżeli dostałeś już odpowiedzi od wszystkich
+                res->haveResource=sumaric->haveResource;
             break;
         }
         case ENDOFMEETING:
@@ -537,22 +577,34 @@ void Opornik::receiveResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
 }
 
 void Opornik::sendForwardMsg(int* buffer,int tag,int source,int msgSize){
+    std::list<int> sendTo;
     msgBcastInfo bcast;
     bcast.uniqueTag=buffer[0];
     bcast.respondTo=source;
     bcast.msgSize=msgSize;
-    bcast.waitingForResponse=children.size();
-    if(parent!=NONE)
-        bcast.waitingForResponse++;
-    if(source!=id)
-        bcast.waitingForResponse--;
+    for(int i=0;i<children.size();i++)
+        if(children[i]!=source)
+            sendTo.push_back(children[i]);
+    if(parent!=NONE && parent!=source)
+        sendTo.push_back(parent);
 
-    switch(tag)//inicjalizacja bufora broadcastu
+    bcast.waitingForResponse=sendTo.size();
+    switch(tag)//inicjalizacja bufora broadcastu i wybór odbiorców
     {
         case INVITATION_MSG:
         {
             meetingInfo* sumaric=(meetingInfo*)bcast.buffer;
+            //Send only to children
+            sendTo.remove(parent);
+            bcast.waitingForResponse=sendTo.size();
+
             sumaric->participants=0;
+            sumaric->haveResource=NONE;
+            break;
+        }
+        case RESOURCE_GATHER:
+        {
+            resourceGatherMsg* sumaric=(resourceGatherMsg*)bcast.buffer;
             sumaric->haveResource=NONE;
             break;
         }
@@ -565,11 +617,9 @@ void Opornik::sendForwardMsg(int* buffer,int tag,int source,int msgSize){
     if(bcast.waitingForResponse==0) //jeżeli to już liść
         receiveResponseMsg(buffer,tag,&bcasts.back());
 
-    for(int i=0;i<children.size();i++)
-        if(children[i]!=source)
-            MPI_Send(buffer,bcast.msgSize,MPI_INT,children[i],tag,MPI_COMM_WORLD);
-    if(parent!=NONE && parent!=source)
-        MPI_Send(buffer,bcast.msgSize,MPI_INT,parent,tag,MPI_COMM_WORLD);
+    for(auto i : sendTo)
+        MPI_Send(buffer,bcast.msgSize,MPI_INT,i,tag,MPI_COMM_WORLD);
+
 }
 
 void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
@@ -580,12 +630,28 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
             {
                 meetingInfo* info=(meetingInfo*)buffer;
                     busyResource=info->haveResource;
-                    debug_log("Na moje spotkanie przyjdzie %d oporników i użyjemy zasobu %d\n",info->participants,info->haveResource);
+                    if(busyResource!=NONE)
+                        debug_log("Na moje spotkanie przyjdzie %d oporników i użyjemy zasobu %d\n",info->participants,info->haveResource);
+                    else{
+                        debug_log("Jest %d chętnych na spotkanie, ale nie mamy zasobu\n",info->participants);
+                        resourceGather();
+                    }
                 break;
             }
-        case ENDOFMEETING:
+            case RESOURCE_GATHER:
+            {
+                resourceGatherMsg* res=(resourceGatherMsg*)buffer;
+                    busyResource=res->haveResource;
+                    if(busyResource!=NONE)
+                        debug_log("Otrzymałem zasób %d\n",res->haveResource);
+                    else
+                        debug_log("Wszystkie zasoby są pozajmowane\n");
+                break;
+            }
+            case ENDOFMEETING:
                 resources.push_back(busyResource);
                 busyResource=NONE;
+                //TODO: timeout spotkaniowy "Następnie rozchodzą się i przez pewien czas nie biorą udziału w zebraniach."
                 debug_log("Wszyscy poszli już do domu po moim spotkaniu\n");
                 break;
         }

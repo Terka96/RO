@@ -4,7 +4,6 @@
 #include <string.h>
 #include <vector>
 #include "opornik.hpp"
-#include "acceptor_token.hpp"
 #include "constants.hpp"
 
 Opornik *me;

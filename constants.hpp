@@ -29,5 +29,4 @@ enum status_enum
     blocked = 2
 };
 
-
 #endif

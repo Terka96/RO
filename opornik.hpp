@@ -28,6 +28,9 @@ private:
 
 	void handleAcceptorMsg(int sender, Msg_pass_acceptor msg);
 	void handleACandidateMsg(int sender, Msg_pass_acceptor msg);
+	void handleAResponseMsg(int sender, Msg_pass_acceptor msg);
+
+	void basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag);
 
     void receiveForwardMsg(int*,int,int);
     void receiveResponseMsg(int*,int,msgBcastInfo*);
@@ -39,7 +42,7 @@ private:
     int size;
     int parent;
     int clock;
-    int acceptorToken;
+    acceptor_enum acceptorToken;
 	status_enum status;
     int meeting;                         //przechowuje id spotkania w którym uczestniczy
     int tagGeneratorCounter;             //licznik do generowania unikalnego id

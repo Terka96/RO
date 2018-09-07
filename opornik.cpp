@@ -28,7 +28,7 @@ Opornik::Opornik(){
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     clock=0;
     status = idle;
-    acceptorToken=NONE;
+    acceptorToken=notAcceptor;
     meeting=NONE;
     duringMyMeeting=false;
     meetingTimeout=0;
@@ -88,8 +88,8 @@ void Opornik::distributeAcceptorsAndResources(){
         for(int i=1;i<size;i++){
             MPI_Send(&table[i],2+table[i].resourceCount,MPI_INT,i,INIT_RESOURES,MPI_COMM_WORLD);
         }
-        if(table[0].acceptorTokenId!=NONE)
-            acceptorToken=table[0].acceptorTokenId;
+        if(table[0].acceptorTokenId!=notAcceptor)
+            acceptorToken=static_cast<acceptor_enum>(table[0].acceptorTokenId);
         for(int j=0;j<table[0].resourceCount;j++)
             resources.push_back(table[0].resourceIds[j]);
         delete[] table;
@@ -98,8 +98,8 @@ void Opornik::distributeAcceptorsAndResources(){
     {
         init_resources init;
         MPI_Recv(&init,2+NUM_RESOURCES,MPI_INT,0,INIT_RESOURES,MPI_COMM_WORLD,NULL);
-        if(init.acceptorTokenId!=NONE)
-            acceptorToken=init.acceptorTokenId;
+        if(init.acceptorTokenId!=notAcceptor)
+            acceptorToken=static_cast<acceptor_enum>(init.acceptorTokenId);
         for(int i=0;i<init.resourceCount;i++)
             resources.push_back(init.resourceIds[i]);
     }
@@ -174,12 +174,11 @@ void Opornik::live()
        	}
         else if (actionRand>=995)
             organizeMeeting();
-//            continue;
         else if(actionRand>=990)
-            if(duringMyMeeting) endMeeting();
-//            continue;
+            if(duringMyMeeting) 
+				endMeeting();
         else if (actionRand>=985 && acceptorToken!=NONE)
-            ;//pass_acceptor();
+            pass_acceptor();
    	 }
 
 }
@@ -189,8 +188,6 @@ void *Opornik::listen_starter(void * arg)
 	Opornik *op = (Opornik *)arg;
 	op->listen();
 }
-
-
 
 void Opornik::introduce(){
     std::string info = "Node " +std::to_string(id) + ":Hello, my parent is: " + std::to_string(parent);

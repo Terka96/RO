@@ -29,4 +29,14 @@ enum status_enum
     blocked = 2
 };
 
+enum acceptor_enum
+{
+	notAcceptor = 0,
+	isAcceptor = 1,
+	findingCandidates = 2,
+	passingToken = 3,
+	candidate = 4,
+	accepted = 5
+};
+
 #endif

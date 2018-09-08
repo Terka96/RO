@@ -173,10 +173,10 @@ void Opornik::live()
 			continue;
        	}
         else if (actionRand>=995)
-            organizeMeeting();
+;//            organizeMeeting();
         else if(actionRand>=990)
-            if(duringMyMeeting) 
-				endMeeting();
+;//            if(duringMyMeeting) 
+//				endMeeting();
         else if (actionRand>=985 && acceptorToken!=NONE)
             pass_acceptor();
    	 }
@@ -208,3 +208,22 @@ void Opornik::introduce(){
     printf("%s\n",info.c_str());
 }
 
+void Opornik::setStatus(status_enum s)
+{
+	switch(s)
+	{
+		case idle: // Musisz przejrzeć kolejkę otrzymanych próśb inicjalizujących zmianę akceptora (Msg_pass_acceptor)
+		{
+			debug_log("Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (%d)...\n", passAcceptorMsg_vector.size());
+			while (passAcceptorMsg_vector.size() != 0)
+			{
+				Msg_pass_acceptor msg = passAcceptorMsg_vector.back();
+				acceptorMsgSend(msg, msg.sender); 
+				passAcceptorMsg_vector.pop_back();
+			}
+			status = idle;
+			debug_log("IDLE\n");
+			break;
+		}
+	}
+}

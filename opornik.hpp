@@ -30,19 +30,23 @@ private:
 	void handleACandidateMsg(int sender, Msg_pass_acceptor msg);
 	void handleAResponseMsg(int sender, Msg_pass_acceptor msg);
 
-	void basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag);
+	void acceptorMsgSend(Msg_pass_acceptor msg, int sender); // Odpowiedź, jeśli jesteśmy dobrym kandydatem na akceptora
+	void basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag); // Odpowiedź wykorzystywana w każdym z handleA*. (przekazuje wiadomośc dalej w drzewie, bo dany opornik jest nieznaczący)
 
     void receiveForwardMsg(int*,int,int);
     void receiveResponseMsg(int*,int,msgBcastInfo*);
     void sendForwardMsg(int*,int,int,int);
     void sendResponseMsg(int*,int,msgBcastInfo*);
 
+	void setStatus(status_enum);
+
 
     int id;
     int size;
     int parent;
     int clock;
-    acceptor_enum acceptorToken;
+	int acceptorToken;
+    acceptor_enum acceptorStatus;
 	status_enum status;
     int meeting;                         //przechowuje id spotkania w którym uczestniczy
     int tagGeneratorCounter;             //licznik do generowania unikalnego id
@@ -53,6 +57,8 @@ private:
     std::vector<int> children;
     std::vector<int> resources;
     std::list<msgBcastInfo> bcasts;
+
+	std::vector<Msg_pass_acceptor> passAcceptorMsg_vector; // kolejka otrzymanych próśb o zmianę akceptora, podczas gdy byliśmy "busy"
 
     int inline debug_log(const char* format, ...);
 };

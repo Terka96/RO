@@ -59,6 +59,10 @@ struct Msg_pass_acceptor
 	int distance;	// Aktualna różnica wysokości pomiędzy akceptorem, a kandydatem
 	int target_distance; // -1: chcemy przekazać w dół, 0: ten sam poziom, 1: w górę
 	int failure;
+	int sender; // id opornika, od którego dostaliśmy wiadomość
+	int tokenId; // id Tokena do przekazania
+	int counter; // liczba oporników na spotkaniach
+	int complete; // Czy nowy akceptor już wszystko ustawił
 };
 
 #endif // MESSAGES_H

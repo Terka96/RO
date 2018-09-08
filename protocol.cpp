@@ -76,6 +76,7 @@ void Opornik::listen()
 
 void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
 {
+	// debug_log("%d %d %d %d %d\n", msg.initializator_id, sender, tag, msg.distance, msg.target_distance);
 	if (msg.distance == msg.target_distance && sender != parent && parent != NONE)
 	{
 		msg.distance += 1;
@@ -122,30 +123,50 @@ void Opornik::handleAResponseMsg(int sender, Msg_pass_acceptor msg)
 {
 	if (msg.candidate_id == id)
 	{
+		// Chyba od razu można przypisać akceptora. Grunt, żeby stary akceptor odblokował się i usunął dopiero po otrzymaniu odp. zwrotnej
 		if (msg.failure == 0)
 		{
-			acceptorToken = accepted;
-			debug_log("Mogę zostać NOWYM AKCEPTOREM!\n");
+			// acceptorToken = accepted;
+			debug_log("Zostałem NOWYM AKCEPTOREM (%d)!\n", msg.tokenId);
+
+			// Uzupełnienie wartości (nowy akceptor)
+			acceptorToken = msg.tokenId;
+			acceptorStatus = isAcceptor;
+			msg.complete = 1;
+			//TODO zapisanie liczby uczestników na spotkaniach
+			
+			msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
+			MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD);
+
 		}
 		else
 		{
-			status = idle;
-			acceptorToken = notAcceptor;
+			setStatus(idle);
+			acceptorStatus = notAcceptor;
 			debug_log("Zostałem ODRZUCONY na nowego akceptora.\n");
 		}
 	}
+	else if (msg.initializator_id == id && msg.complete == 1) // stary akceptor dostał odpowiedź od nowego
+	{
+		// TODO 1: tutaj być może trzeba poczekać na eventy związane ze spotkaniami. (oporniki mogą kierować wiadomości do starego opornika.)
+		// TODO 2: Nie wiem jak działają spotkania, ale jeśli opornik ma status "busy", to nie powinien dawać odpowiedzi, czy jest akceptorem, tylko poczekać do zmiany statusu na "idle".
+		debug_log("Uff, już NIE jestem akceptorem. Został nim %d)\n", msg.candidate_id);
+		setStatus(idle);
+		acceptorToken = NONE;
+	}
 	else
 	{
-		basicAcceptorSend(msg, sender, TAG_ACCEPTOR_CANDIDATE);
+		basicAcceptorSend(msg, sender, TAG_ACCEPTOR_RESPONSE);
     }
 }
 void Opornik::handleACandidateMsg(int sender, Msg_pass_acceptor msg)
 {
 	if (msg.initializator_id == id)
 	{
-		if (acceptorToken == findingCandidates)
+		msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
+		if (acceptorStatus == findingCandidates)
 		{
-			acceptorToken = passingToken;
+			acceptorStatus = passingToken;
 			debug_log("Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!\n Nowym akceptorem zostanie: %d!\n", msg.candidate_id);
 
 			//przekaż dobrą nowinę kandydatowi (wiadomośc zwrotna)
@@ -169,22 +190,36 @@ void Opornik::handleACandidateMsg(int sender, Msg_pass_acceptor msg)
 
 void Opornik::handleAcceptorMsg(int sender, Msg_pass_acceptor msg)
 {
-	if (msg.distance == msg.target_distance && msg.initializator_id != id && status != busy)
+	if (msg.distance == msg.target_distance && msg.initializator_id != id)
 	{
-		// Uwaga! Możemy dostać to samo zgłoszenie kilka razy (sąsiedzi rozprowadzają je przez rodzica), niby status.busy częściowo rozwiązuje problem TODO
-		status = busy;
-		acceptorToken = candidate;
-		msg.candidate_id = id;
-		msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
-		debug_log("(from %d) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać! dist = %d\n", sender, msg.distance);
-		MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_CANDIDATE, MPI_COMM_WORLD);
-		debug_log("Wysłałem swoją kandydaturę do %d\n", sender);
-		// Można by przekazać jeszcze wyżej i przeskoczyć na inne gałęzie lub do sąsiadów, ale nie robimy sobie konkurencji
+		if (status != busy)
+		{
+			acceptorMsgSend(msg, sender);
+		}
+		else
+		{
+			msg.sender = sender;
+			passAcceptorMsg_vector.push_back(msg);
+		}
 	}
 	else
 	{
 		basicAcceptorSend(msg, sender, TAG_PASS_ACCEPTOR);
 	}
+}
+
+void Opornik::acceptorMsgSend(Msg_pass_acceptor msg, int sender)
+{
+	// Uwaga! Możemy dostać to samo zgłoszenie kilka razy (sąsiedzi rozprowadzają je przez rodzica), niby status.busy częściowo rozwiązuje problem TODO
+        status = busy;
+        acceptorStatus = candidate;
+        msg.candidate_id = id;
+        msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
+        debug_log("(from %d) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać! dist = %d\n", sender, msg.distance);
+        MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_CANDIDATE, MPI_COMM_WORLD);
+        debug_log("Wysłałem swoją kandydaturę do %d\n", sender);
+        // Można by przekazać jeszcze wyżej i przeskoczyć na inne gałęzie lub do sąsiadów, ale nie robimy sobie konkurencji
+
 }
 
 void Opornik::pass_acceptor()
@@ -211,7 +246,7 @@ void Opornik::pass_acceptor()
 
 			if (parent != -1)
 			{
-				acceptorToken = findingCandidates;
+				acceptorStatus = findingCandidates;
 				msg = {clock, id, NONE, 1, 1, 0}; // distance = 1, bo przekazujemy w górę
 				// Wystarczy przekazać w górę
 				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
@@ -219,12 +254,12 @@ void Opornik::pass_acceptor()
 			else
 			{
 				debug_log("Nie mogę przekazać akceptora w górę, jestem na szczycie!\n");
-				status = idle;
+				setStatus(idle);
 			}
 		}
 		else if (rand < 20) //dol
 		{
-			acceptorToken = findingCandidates;
+			acceptorStatus = findingCandidates;
 			if (parent != -1)
             {
 				msg = {clock, id, NONE, 1, -1, 0};  // distance = 1, bo przekazujemy w górę
@@ -247,7 +282,7 @@ void Opornik::pass_acceptor()
 		{
 			if (parent != -1)
             {
-				acceptorToken = findingCandidates;
+				acceptorStatus = findingCandidates;
 				msg = {clock, id, NONE, 1, 0, 0};  // distance = 1, bo przekazujemy w górę
 
 				//Wystarczy przekazać w górę
@@ -257,7 +292,7 @@ void Opornik::pass_acceptor()
             else
             {
             	debug_log("Nie mogę przekazać na ten sam poziom, jestem na szczycie!\n");
-				status = idle;
+				setStatus(idle);
             }
 
 		}

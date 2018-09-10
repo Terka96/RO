@@ -9,9 +9,11 @@
 #define RESOURCE_GATHER 5
 #define ENDOFMEETING 6
 
-// 100+ to wiadomości zwykłego typu
+#define TAG_FIND_LOWEST0 100
+#define TAG_FIND_LOWEST1 101
+#define TAG_FIND_LOWEST2 102
+#define TAG_FIND_LOWEST3 103
 
-// 200+ to wiadomości typu broadcast
 #define TAG_PASS_ACCEPTOR 200
 #define TAG_ACCEPTOR_CANDIDATE 201
 #define TAG_ACCEPTOR_RESPONSE 202

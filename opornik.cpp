@@ -38,6 +38,8 @@ Opornik::Opornik(){
     MPI_Barrier(MPI_COMM_WORLD);
     distributeAcceptorsAndResources();
     MPI_Barrier(MPI_COMM_WORLD);
+
+	findLowestKids();
 }
 
 void Opornik::makeTree(){
@@ -135,6 +137,90 @@ void Opornik::makeKids(int count){
             children.push_back(childrenNodes[i]);
         }
     }
+}
+
+// nie wlicza się do zegarów lamporta. Liczenie zaczyna się od właściwego startu symulacji RO
+void Opornik::findLowestKids()
+{
+	// inicjalizujemy zmienne, ktore powiedza nam jak wysokie jest drzewo
+	int root = 0, level = 0, maxLevel = 0;
+	int counter[NUM_CONSPIR] = {}; // tablica przechowuje info o tym, ile jest opornikow o danej wysokosci
+	lowest = NONE; // Na poczatku nie podejrzewamy nikogo
+
+	if (id == 0)
+	{
+		for (int i = 0; i < children.size(); i++)
+        {
+			// Wysyłamy wszystkim dzieciom
+            MPI_Send(&root, 1, MPI_INT, children[i], TAG_FIND_LOWEST0, MPI_COMM_WORLD);
+        }
+
+		// Otrzymujemy wysokość drzewa
+		for (int i = 0; i < children.size(); i++)
+        {
+			MPI_Recv(&level, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); // Uwaga - zmiana tagu
+
+			maxLevel = level > maxLevel ? level : maxLevel;
+			counter[level]++;
+        }
+
+		std::cout<< "Wysokość drzewa: " << maxLevel << "\n";
+
+		// Kanały działają FIFO, więc luz (inaczej jest potrzebne synchro)
+		for (int i = 0; i < children.size(); i++)
+        {
+            // Wysyłamy wszystkim dzieciom informację o wysokości drzewa...
+            MPI_Send(&maxLevel, 1, MPI_INT, children[i], TAG_FIND_LOWEST2, MPI_COMM_WORLD);
+			//... oraz counter
+			MPI_Send(&counter, NUM_CONSPIR, MPI_INT, children[i], TAG_FIND_LOWEST2, MPI_COMM_WORLD);
+        }
+
+
+	}
+	else
+	{
+		MPI_Recv(&level, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST0, MPI_COMM_WORLD, NULL);
+		maxLevel = level; // obecny maksymalny level = level
+
+		// Zwiekszamy wartość wysokości, otrzymaną od rodzica
+		level += 1;
+		for (int i = 0; i < children.size(); i++)
+        {
+            // Wysyłamy wszystkim dzieciom
+            MPI_Send(&level, 1, MPI_INT, children[i], TAG_FIND_LOWEST0, MPI_COMM_WORLD);
+        }
+
+        // Otrzymujemy wysokość drzewa
+        for (int i = 0; i < children.size(); i++)
+        {
+            MPI_Recv(&maxLevel, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); // Uwaga - zmiana tagu
+        }
+		maxLevel = level > maxLevel ? level : maxLevel; // jesli nie mamy dzieci
+
+		// Wysyłamy maxLevel rodzicowi
+		MPI_Send(&maxLevel, 1, MPI_INT, parent, TAG_FIND_LOWEST1, MPI_COMM_WORLD);
+		// Dostajemy odpowiedź od rodzica i sprawdzamy, czy jesteśmy najniżej w hierarchii oraz zapisujemy ilu konspiratorow jest na tym samym poziomie
+		// (zalozenie kanałów FIFO)
+		MPI_Recv(&maxLevel, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST2, MPI_COMM_WORLD, NULL);
+		MPI_Recv(&counter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST2, MPI_COMM_WORLD, NULL);
+		
+		sameLevelNodes = counter[level];
+		if (maxLevel == level)
+		{
+			lowest = true;
+		}
+		else
+		{
+			// wysyłamy info dalej, jeśli mamy dzieci
+			for (int i = 0; i < children.size(); i++)
+       		{
+            	// Wysyłamy wszystkim dzieciom informację o wysokości drzewa...
+            	MPI_Send(&maxLevel, 1, MPI_INT, children[i], TAG_FIND_LOWEST2, MPI_COMM_WORLD);
+				//... no i counter
+				MPI_Send(&counter, NUM_CONSPIR, MPI_INT, children[i], TAG_FIND_LOWEST2, MPI_COMM_WORLD);
+        	}
+		}
+	}
 }
 
 void Opornik::run(){

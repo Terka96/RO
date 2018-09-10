@@ -259,24 +259,31 @@ void Opornik::pass_acceptor()
 		}
 		else if (rand < 20) //dol
 		{
-			acceptorStatus = findingCandidates;
-			if (parent != -1)
-            {
-				msg = {clock, id, NONE, 1, -1, 0};  // distance = 1, bo przekazujemy w górę
-
-				// Trzeba przekazać w górę i do dzieci
-				debug_log("Chcę przkazać akceptora w dół!\n");
-				// TODO UWAGA! Konspirator może być na samym dole, ale nie ma o tym wiedzy. Wtedy pomimo czekania, nie dostanie żadnego kandydata. timeout??
-				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
-			}
-            if (children.size() > 0)
+			if (!lowest)
 			{
-                for (int i = 0; i < children.size(); i++)
+				acceptorStatus = findingCandidates;
+				if (parent != -1)
 				{
-                    MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+					msg = {clock, id, NONE, 1, -1, 0};  // distance = 1, bo przekazujemy w górę
+
+					// Trzeba przekazać w górę i do dzieci
+					debug_log("Chcę przkazać akceptora w dół!\n");
+					// TODO UWAGA! Konspirator może być na samym dole, ale nie ma o tym wiedzy. Wtedy pomimo czekania, nie dostanie żadnego kandydata. timeout??
+					MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+				}
+				if (children.size() > 0)
+				{
+					for (int i = 0; i < children.size(); i++)
+					{
+						MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+					}
 				}
 			}
-
+			else
+			{
+				debug_log("NIE mogę przekazać NIŻEJ, jestem NAJNIŻEJ w hierarchii.\n");
+                setStatus(idle);
+			}
 		}
 		else //ten sam poziom
 		{
@@ -288,6 +295,11 @@ void Opornik::pass_acceptor()
 				//Wystarczy przekazać w górę
 				debug_log("Chcę przekazać akceptora na swoim poziomie!\n");
 				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+			}
+			else if (sameLevelNodes < 2)
+			{
+				debug_log("Nie mogę przekazać na ten sam poziom, jestem JEDYNY na tym szczeblu!\n");
+                setStatus(idle);
 			}
             else
             {

@@ -15,6 +15,7 @@ private:
     void makeKids(int count);
     void distributeAcceptorsAndResources();
     int generateUniqueTag(){tagGeneratorCounter++; return size*tagGeneratorCounter+id;};
+	void findLowestKids(); // szuka oporników na najniższym szczeblu ruchu oporu. Taki opornik przypisuje sobie wartość najniższego opornika (isLowest);
 
     void organizeMeeting();
     void resourceGather();
@@ -42,6 +43,8 @@ private:
 
 
     int id;
+	bool lowest; // czy jesteśmy najniżej w hierarchii RO
+	int sameLevelNodes; //ile jest oporników o tej samej wysokosci (Jeśli jesteśmy sami, to nie możemy przekazać na ten sam poziom)
     int size;
     int parent;
     int clock;

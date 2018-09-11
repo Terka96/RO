@@ -2,7 +2,7 @@
 #include <list>
 #ifndef opornik_hpp
 #define opornik_hpp
-#include"messages.h"
+#include"messages.hpp"
 
 class Opornik{
 public:
@@ -20,7 +20,9 @@ private:
     void organizeMeeting();
     void resourceGather();
     void endMeeting();
-   	void pass_acceptor();
+   	void pass_acceptor(bool force); // force - czy musi przekazac akceptor (jesli nie moze na jednym poziomie, to probuje na innym)
+    void pass_acceptor();
+
 
    	static void *live_starter(void * arg);  
    	static void *listen_starter(void * arg);
@@ -49,6 +51,8 @@ private:
     int parent;
     int clock;
 	int acceptorToken;
+	int candidatesAnswers; //liczba odpowiedzi od kandydatów na akceptora. Jeśli równa sameLevelNodes, to musimy zrezygnować z przekazania tokena (wysłać prośbę jeszcze raz)
+
     acceptor_enum acceptorStatus;
 	status_enum status;
     int meeting;                         //przechowuje id spotkania w którym uczestniczy

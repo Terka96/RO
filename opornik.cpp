@@ -38,6 +38,8 @@ Opornik::Opornik(){
     MPI_Barrier(MPI_COMM_WORLD);
     distributeAcceptorsAndResources();
     MPI_Barrier(MPI_COMM_WORLD);
+
+	findLowestKids();
 }
 
 void Opornik::makeTree(){
@@ -137,6 +139,102 @@ void Opornik::makeKids(int count){
     }
 }
 
+// nie wlicza się do zegarów lamporta. Liczenie zaczyna się od właściwego startu symulacji RO
+void Opornik::findLowestKids()
+{
+	// inicjalizujemy zmienne, ktore powiedza nam jak wysokie jest drzewo
+	int root = 0, level = 0, maxLevel = 0;
+	int counter[NUM_CONSPIR] = {}; // tablica przechowuje info o tym, ile jest opornikow o danej wysokosci
+	lowest = NONE; // Na poczatku nie podejrzewamy nikogo
+
+	if (id == 0)
+	{
+		for (int i = 0; i < children.size(); i++)
+        {
+			// Wysyłamy wszystkim dzieciom
+            MPI_Send(&root, 1, MPI_INT, children[i], TAG_FIND_LOWEST0, MPI_COMM_WORLD);
+        }
+
+		// Otrzymujemy wysokość drzewa
+		for (int i = 0; i < children.size(); i++)
+        {
+			MPI_Recv(&level, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); // Uwaga - zmiana tagu
+		
+			int tempCounter[NUM_CONSPIR];
+			MPI_Recv(&tempCounter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL);
+            for (int j = 0; j < NUM_CONSPIR; j++)
+            {
+                counter[j] = tempCounter[j];
+            }
+
+			maxLevel = level > maxLevel ? level : maxLevel;
+        }
+
+		std::cout<< "Wysokość drzewa: " << maxLevel << "\n";
+
+		// Kanały działają FIFO, więc luz (inaczej jest potrzebne synchro)
+		for (int i = 0; i < children.size(); i++)
+        {
+            // Wysyłamy wszystkim dzieciom informację o wysokości drzewa...
+            MPI_Send(&maxLevel, 1, MPI_INT, children[i], TAG_FIND_LOWEST2, MPI_COMM_WORLD);
+			//... oraz counter
+			MPI_Send(&counter, NUM_CONSPIR, MPI_INT, children[i], TAG_FIND_LOWEST2, MPI_COMM_WORLD);
+        }
+	}
+	else
+	{
+		MPI_Recv(&level, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST0, MPI_COMM_WORLD, NULL);
+		maxLevel = level; // obecny maksymalny level = level
+
+		// Zwiekszamy wartość wysokości, otrzymaną od rodzica
+		level += 1;
+		for (int i = 0; i < children.size(); i++)
+        {
+            // Wysyłamy wszystkim dzieciom
+            MPI_Send(&level, 1, MPI_INT, children[i], TAG_FIND_LOWEST0, MPI_COMM_WORLD);
+        }
+
+        // Otrzymujemy wysokość drzewa
+        for (int i = 0; i < children.size(); i++)
+        {
+            MPI_Recv(&maxLevel, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); // Uwaga - zmiana tagu
+
+			//wczytanie countera od kazdego dziecka i dopisanie do swojego glownego
+			int tempCounter [NUM_CONSPIR]; 
+			MPI_Recv(&tempCounter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); 
+			for (int j = 0; j < NUM_CONSPIR; j++)
+			{
+				counter[j] = tempCounter[j];
+			}
+        }
+		maxLevel = level > maxLevel ? level : maxLevel; // jesli nie mamy dzieci
+
+		// Wysyłamy maxLevel i tablicę countera rodzicowi
+		MPI_Send(&maxLevel, 1, MPI_INT, parent, TAG_FIND_LOWEST1, MPI_COMM_WORLD);
+		counter[level]++;
+		MPI_Send(&counter, NUM_CONSPIR, MPI_INT, parent, TAG_FIND_LOWEST1, MPI_COMM_WORLD);
+		// Dostajemy odpowiedź od rodzica i sprawdzamy, czy jesteśmy najniżej w hierarchii oraz zapisujemy ilu konspiratorow jest na tym samym poziomie
+		// (zalozenie kanałów FIFO)
+		MPI_Recv(&maxLevel, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST2, MPI_COMM_WORLD, NULL);
+		MPI_Recv(&counter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST2, MPI_COMM_WORLD, NULL);
+		
+		sameLevelNodes = counter[level];
+		lowest = (maxLevel == level);
+
+		if (!lowest)
+		{
+			// wysyłamy info dalej, jeśli mamy dzieci
+			for (int i = 0; i < children.size(); i++)
+       		{
+            	// Wysyłamy wszystkim dzieciom informację o wysokości drzewa...
+            	MPI_Send(&maxLevel, 1, MPI_INT, children[i], TAG_FIND_LOWEST2, MPI_COMM_WORLD);
+				//... no i counter
+				MPI_Send(&counter, NUM_CONSPIR, MPI_INT, children[i], TAG_FIND_LOWEST2, MPI_COMM_WORLD);
+        	}
+		}
+	}
+}
+
 void Opornik::run(){
 	// https://stackoverflow.com/questions/12043057/cannot-convert-from-type-voidclassname-to-type-voidvoid
 	std::thread thread_1(live_starter, this);
@@ -169,14 +267,15 @@ void Opornik::live()
             if (actionRand >= 995)
 			{
                 debug_log("Chcem, ale nie mogem! Jestem zablokowany!\n");
+				debug_log("na tym samym poziomie: %d  na samym dole?: %d\n", sameLevelNodes, lowest);
 			}
 			continue;
        	}
         else if (actionRand>=995)
-            organizeMeeting();
+;//            organizeMeeting();
         else if(actionRand>=990)
-            if(duringMyMeeting) 
-				endMeeting();
+;//            if(duringMyMeeting) 
+//				endMeeting();
         else if (actionRand>=985 && acceptorToken!=NONE)
             pass_acceptor();
    	 }
@@ -208,3 +307,22 @@ void Opornik::introduce(){
     printf("%s\n",info.c_str());
 }
 
+void Opornik::setStatus(status_enum s)
+{
+	switch(s)
+	{
+		case idle: // Musisz przejrzeć kolejkę otrzymanych próśb inicjalizujących zmianę akceptora (Msg_pass_acceptor)
+		{
+			debug_log("Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (%d)...\n", passAcceptorMsg_vector.size());
+			while (passAcceptorMsg_vector.size() != 0)
+			{
+				Msg_pass_acceptor msg = passAcceptorMsg_vector.back();
+				acceptorMsgSend(msg, msg.sender); 
+				passAcceptorMsg_vector.pop_back();
+			}
+			status = idle;
+			debug_log("IDLE\n");
+			break;
+		}
+	}
+}

@@ -145,7 +145,8 @@ void Opornik::findLowestKids()
 	// inicjalizujemy zmienne, ktore powiedza nam jak wysokie jest drzewo
 	int root = 0, level = 0, maxLevel = 0;
 	int counter[NUM_CONSPIR] = {}; // tablica przechowuje info o tym, ile jest opornikow o danej wysokosci
-	lowest = NONE; // Na poczatku nie podejrzewamy nikogo
+	lowest = false; // Na poczatku nie podejrzewamy nikogo
+	sameLevelNodes = 0;
 
 	if (id == 0)
 	{
@@ -164,7 +165,7 @@ void Opornik::findLowestKids()
 			MPI_Recv(&tempCounter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL);
             for (int j = 0; j < NUM_CONSPIR; j++)
             {
-                counter[j] = tempCounter[j];
+                counter[j] += tempCounter[j];
             }
 
 			maxLevel = level > maxLevel ? level : maxLevel;
@@ -204,7 +205,7 @@ void Opornik::findLowestKids()
 			MPI_Recv(&tempCounter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); 
 			for (int j = 0; j < NUM_CONSPIR; j++)
 			{
-				counter[j] = tempCounter[j];
+				counter[j] += tempCounter[j];
 			}
         }
 		maxLevel = level > maxLevel ? level : maxLevel; // jesli nie mamy dzieci
@@ -233,6 +234,7 @@ void Opornik::findLowestKids()
         	}
 		}
 	}
+	//  printf("%d - %d , level: %d\n", id, sameLevelNodes, level);
 }
 
 void Opornik::run(){
@@ -258,7 +260,7 @@ void Opornik::live()
 {
 	while (true)
    	{
-        usleep(100000);//0.1 sec
+        usleep(100);//0.1 sec
 
 		int actionRand=rand()%1001; //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
 
@@ -267,7 +269,7 @@ void Opornik::live()
             if (actionRand >= 995)
 			{
                 debug_log("Chcem, ale nie mogem! Jestem zablokowany!\n");
-				debug_log("na tym samym poziomie: %d  na samym dole?: %d\n", sameLevelNodes, lowest);
+				debug_log("na tym samym poziomie: %d  na samym dole?: %d\n", sameLevelNodes, lowest); // TODO usunuąć, debug_info
 			}
 			continue;
        	}

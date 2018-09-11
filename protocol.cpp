@@ -25,6 +25,11 @@ void Opornik::listen()
         MPI_Recv(&buffer, MAX_BUFFER_SIZE, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &mpi_status);
 
         //debug_log("Dostałem wiadomość typu %d od %d\t", mpi_status.MPI_TAG, mpi_status.MPI_SOURCE);
+		
+		// Licznik lamporta 
+		// TODO Piotr, może będziesz musiał jeszcze gdzieś u siebie to zrobić, nie wiem jak działa ten Twój protokół
+		
+		clock = clock > buffer[0] ? clock + 1 : buffer[0] + 1;
 
         switch (mpi_status.MPI_TAG)
         {
@@ -287,7 +292,12 @@ void Opornik::pass_acceptor()
 		}
 		else //ten sam poziom
 		{
-			if (parent != -1)
+			if (sameLevelNodes < 2)
+            {
+                debug_log("Nie mogę przekazać na ten sam poziom, jestem JEDYNY na tym szczeblu!\n");
+                setStatus(idle);
+            }
+			else if (parent != -1)
             {
 				acceptorStatus = findingCandidates;
 				msg = {clock, id, NONE, 1, 0, 0};  // distance = 1, bo przekazujemy w górę
@@ -295,11 +305,6 @@ void Opornik::pass_acceptor()
 				//Wystarczy przekazać w górę
 				debug_log("Chcę przekazać akceptora na swoim poziomie!\n");
 				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
-			}
-			else if (sameLevelNodes < 2)
-			{
-				debug_log("Nie mogę przekazać na ten sam poziom, jestem JEDYNY na tym szczeblu!\n");
-                setStatus(idle);
 			}
             else
             {

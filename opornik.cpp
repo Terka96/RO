@@ -159,9 +159,15 @@ void Opornik::findLowestKids()
 		for (int i = 0; i < children.size(); i++)
         {
 			MPI_Recv(&level, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); // Uwaga - zmiana tagu
+		
+			int tempCounter[NUM_CONSPIR];
+			MPI_Recv(&tempCounter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL);
+            for (int j = 0; j < NUM_CONSPIR; j++)
+            {
+                counter[j] = tempCounter[j];
+            }
 
 			maxLevel = level > maxLevel ? level : maxLevel;
-			counter[level]++;
         }
 
 		std::cout<< "Wysokość drzewa: " << maxLevel << "\n";
@@ -174,8 +180,6 @@ void Opornik::findLowestKids()
 			//... oraz counter
 			MPI_Send(&counter, NUM_CONSPIR, MPI_INT, children[i], TAG_FIND_LOWEST2, MPI_COMM_WORLD);
         }
-
-
 	}
 	else
 	{
@@ -194,22 +198,30 @@ void Opornik::findLowestKids()
         for (int i = 0; i < children.size(); i++)
         {
             MPI_Recv(&maxLevel, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); // Uwaga - zmiana tagu
+
+			//wczytanie countera od kazdego dziecka i dopisanie do swojego glownego
+			int tempCounter [NUM_CONSPIR]; 
+			MPI_Recv(&tempCounter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); 
+			for (int j = 0; j < NUM_CONSPIR; j++)
+			{
+				counter[j] = tempCounter[j];
+			}
         }
 		maxLevel = level > maxLevel ? level : maxLevel; // jesli nie mamy dzieci
 
-		// Wysyłamy maxLevel rodzicowi
+		// Wysyłamy maxLevel i tablicę countera rodzicowi
 		MPI_Send(&maxLevel, 1, MPI_INT, parent, TAG_FIND_LOWEST1, MPI_COMM_WORLD);
+		counter[level]++;
+		MPI_Send(&counter, NUM_CONSPIR, MPI_INT, parent, TAG_FIND_LOWEST1, MPI_COMM_WORLD);
 		// Dostajemy odpowiedź od rodzica i sprawdzamy, czy jesteśmy najniżej w hierarchii oraz zapisujemy ilu konspiratorow jest na tym samym poziomie
 		// (zalozenie kanałów FIFO)
 		MPI_Recv(&maxLevel, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST2, MPI_COMM_WORLD, NULL);
 		MPI_Recv(&counter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST2, MPI_COMM_WORLD, NULL);
 		
 		sameLevelNodes = counter[level];
-		if (maxLevel == level)
-		{
-			lowest = true;
-		}
-		else
+		lowest = (maxLevel == level);
+
+		if (!lowest)
 		{
 			// wysyłamy info dalej, jeśli mamy dzieci
 			for (int i = 0; i < children.size(); i++)
@@ -255,6 +267,7 @@ void Opornik::live()
             if (actionRand >= 995)
 			{
                 debug_log("Chcem, ale nie mogem! Jestem zablokowany!\n");
+				debug_log("na tym samym poziomie: %d  na samym dole?: %d\n", sameLevelNodes, lowest);
 			}
 			continue;
        	}

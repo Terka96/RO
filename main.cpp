@@ -21,15 +21,15 @@ int main(int argc, char **argv)
     	MPI_Abort(MPI_COMM_WORLD, 1);
 	}
 
-    me = new Opornik();
 	try
 	{
+    	me = new Opornik();
     	me->run();
+		delete me;
 	}
 	catch (std::exception &e)
 	{
 		std::cout << e.what();
 	}
-    delete me;
     MPI_Finalize();
 }

@@ -38,7 +38,8 @@ Opornik::Opornik(){
     MPI_Barrier(MPI_COMM_WORLD);
     distributeAcceptorsAndResources();
     MPI_Barrier(MPI_COMM_WORLD);
-
+	
+	introduce();
 	findLowestKids();
 }
 
@@ -144,7 +145,8 @@ void Opornik::findLowestKids()
 {
 	// inicjalizujemy zmienne, ktore powiedza nam jak wysokie jest drzewo
 	int root = 0, level = 0, maxLevel = 0;
-	int counter[NUM_CONSPIR] = {}; // tablica przechowuje info o tym, ile jest opornikow o danej wysokosci
+	int counter[NUM_CONSPIR + 1] = {}; // tablica przechowuje info o tym, ile jest opornikow o danej wysokosci
+	int tempCounter[NUM_CONSPIR + 1] = {};
 	lowest = false; // Na poczatku nie podejrzewamy nikogo
 	sameLevelNodes = 0;
 
@@ -156,13 +158,12 @@ void Opornik::findLowestKids()
             MPI_Send(&root, 1, MPI_INT, children[i], TAG_FIND_LOWEST0, MPI_COMM_WORLD);
         }
 
-		// Otrzymujemy wysokość drzewa
-		for (int i = 0; i < children.size(); i++)
+		// Otrzymujemy wysokość drzewa	
+	 	for (int i = 0; i < children.size(); i++)
         {
 			MPI_Recv(&level, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); // Uwaga - zmiana tagu
-		
-			int tempCounter[NUM_CONSPIR];
-			MPI_Recv(&tempCounter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL);
+
+			MPI_Recv(&tempCounter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST3, MPI_COMM_WORLD, NULL); // Musi być inny tag, bo mogą przyjść 2 wiadomości &level pod rząd
             for (int j = 0; j < NUM_CONSPIR; j++)
             {
                 counter[j] += tempCounter[j];
@@ -170,8 +171,6 @@ void Opornik::findLowestKids()
 
 			maxLevel = level > maxLevel ? level : maxLevel;
         }
-
-		std::cout<< "Wysokość drzewa: " << maxLevel << "\n";
 
 		// Kanały działają FIFO, więc luz (inaczej jest potrzebne synchro)
 		for (int i = 0; i < children.size(); i++)
@@ -201,8 +200,7 @@ void Opornik::findLowestKids()
             MPI_Recv(&maxLevel, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); // Uwaga - zmiana tagu
 
 			//wczytanie countera od kazdego dziecka i dopisanie do swojego glownego
-			int tempCounter [NUM_CONSPIR]; 
-			MPI_Recv(&tempCounter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST1, MPI_COMM_WORLD, NULL); 
+			MPI_Recv(&tempCounter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST3, MPI_COMM_WORLD, NULL); 
 			for (int j = 0; j < NUM_CONSPIR; j++)
 			{
 				counter[j] += tempCounter[j];
@@ -213,9 +211,10 @@ void Opornik::findLowestKids()
 		// Wysyłamy maxLevel i tablicę countera rodzicowi
 		MPI_Send(&maxLevel, 1, MPI_INT, parent, TAG_FIND_LOWEST1, MPI_COMM_WORLD);
 		counter[level]++;
-		MPI_Send(&counter, NUM_CONSPIR, MPI_INT, parent, TAG_FIND_LOWEST1, MPI_COMM_WORLD);
+		MPI_Send(&counter, NUM_CONSPIR, MPI_INT, parent, TAG_FIND_LOWEST3, MPI_COMM_WORLD);
 		// Dostajemy odpowiedź od rodzica i sprawdzamy, czy jesteśmy najniżej w hierarchii oraz zapisujemy ilu konspiratorow jest na tym samym poziomie
 		// (zalozenie kanałów FIFO)
+
 		MPI_Recv(&maxLevel, 1, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST2, MPI_COMM_WORLD, NULL);
 		MPI_Recv(&counter, NUM_CONSPIR, MPI_INT, MPI_ANY_SOURCE, TAG_FIND_LOWEST2, MPI_COMM_WORLD, NULL);
 		

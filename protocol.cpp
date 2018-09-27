@@ -594,3 +594,24 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
     else
         MPI_Send(buffer,bcast->msgSize,MPI_INT,bcast->respondTo,tag,MPI_COMM_WORLD);
 }
+
+void Opornik::simpleBroadcast(SimpleMessage msg)
+{
+	// przy odbieraniu SimpleMessage trzeba ustawić msg.sender na mpi_status.MPI_SOURCE
+	msg.clock += clock;
+	if (msg.sender != parent)
+	{
+		MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, msg.tag, MPI_COMM_WORLD);
+	}
+	if (children.size() > 0)
+    {
+        for (int i = 0; i < children.size(); i++)
+        {
+			if (children[i] != msg.sender)
+			{
+        		MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], msg.tag, MPI_COMM_WORLD);
+       		}
+		}
+    }
+
+}

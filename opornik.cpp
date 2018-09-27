@@ -102,8 +102,11 @@ void Opornik::distributeAcceptorsAndResources(){
         init_resources init;
         MPI_Recv(&init,2+NUM_RESOURCES,MPI_INT,0,INIT_RESOURES,MPI_COMM_WORLD,NULL);
         if(init.acceptorTokenId!=notAcceptor)
+		{
             acceptorToken=static_cast<acceptor_enum>(init.acceptorTokenId);
-        for(int i=0;i<init.resourceCount;i++)
+			acceptorInfo = {init.acceptorTokenId, 0, 0, {}};
+		}
+		for(int i=0;i<init.resourceCount;i++)
             resources.push_back(init.resourceIds[i]);
     }
 }

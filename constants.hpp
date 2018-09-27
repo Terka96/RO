@@ -22,11 +22,18 @@ struct msgBcastInfo{
     }
 };
 
-struct meetingInfo{
+struct MeetingInfo{
     int meeting;
     int participants;
     int priority;
     int acceptors[NUM_ACCEPTORS];
+};
+
+struct AcceptorInfo //ogólnie, to zamieniłbym nazwy acceptorInfo z acceptorToken
+{
+	int id;
+	int participants;
+	MeetingInfo meetingInfo[NUM_CONSPIR]; // statycznie? dynamicznie? TODO
 };
 
 

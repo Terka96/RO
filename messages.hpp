@@ -29,6 +29,14 @@ struct order_makekids{
     int neighbors[MAX_CHILDREN];
 };
 
+struct SimpleMessage
+{
+	int clock;
+	int tag;
+	int sender;
+	int* msg;
+};
+
 /*inicjalizacja/dystrybucja roli akceptora i zasobów*/
 struct init_resources{
     int acceptorTokenId;

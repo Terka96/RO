@@ -20,6 +20,7 @@ private:
     void organizeMeeting();
     void resourceGather();
     void endMeeting();
+    void getAcceptation(int p);
    	void pass_acceptor(bool force); // force - czy musi przekazac akceptor (jesli nie moze na jednym poziomie, to probuje na innym)
     void pass_acceptor();
 

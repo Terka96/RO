@@ -22,6 +22,14 @@ struct msgBcastInfo{
     }
 };
 
+struct meetingInfo{
+    int meeting;
+    int participants;
+    int priority;
+    int acceptors[NUM_ACCEPTORS];
+};
+
+
 enum status_enum
 {
     idle = 0, //zamiast średników stosuje się przecinki
@@ -38,5 +46,7 @@ enum acceptor_enum
 	candidate = 4,
 	accepted = 5
 };
+
+
 
 #endif

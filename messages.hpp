@@ -9,6 +9,10 @@
 #define RESOURCE_GATHER 5
 #define ENDOFMEETING 6
 
+#define ASKFORACCEPTATION 7
+#define SHAREACCEPTOR 8
+#define ACCEPT 9
+
 #define TAG_FIND_LOWEST0 100
 #define TAG_FIND_LOWEST1 101
 #define TAG_FIND_LOWEST2 102
@@ -51,6 +55,25 @@ struct endOfMeeting{
     int uniqueTag;
     int meetingId;
 };
+
+/**/
+struct askForAcceptation{
+    int meeting;
+    int participants;
+};
+
+/**/
+struct shareAcceptor{
+    int acceptorToken;
+    int acceptorClk;
+};
+
+/**/
+struct accept{
+    int meeting;
+    int decision;
+};
+
 
 // Wiadomość generowana do zmiany akceptora
 struct Msg_pass_acceptor

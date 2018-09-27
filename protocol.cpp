@@ -79,6 +79,17 @@ void Opornik::listen()
     }
 }
 
+void Opornik::getAcceptation(int p)
+{
+    askForAcceptation a;
+    a.meeting=id;
+    a.participants=p;
+
+    MPI_Send(&a,2, MPI_INT, parent, ASKFORACCEPTATION, MPI_COMM_WORLD);
+    for(int i=0;i<children.size();i++)
+        MPI_Send(&a,2, MPI_INT, children[i], ASKFORACCEPTATION, MPI_COMM_WORLD);
+}
+
 void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
 {
 	// debug_log("%d %d %d %d %d\n", msg.initializator_id, sender, tag, msg.distance, msg.target_distance);

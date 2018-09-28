@@ -85,9 +85,9 @@ void Opornik::getAcceptation(int p)
     a.meeting=id;
     a.participants=p;
 
-    MPI_Send(&a,2, MPI_INT, parent, ASKFORACCEPTATION, MPI_COMM_WORLD);
+    MPI_Ibsend(&a,2, MPI_INT, parent, ASKFORACCEPTATION, MPI_COMM_WORLD,&req);
     for(int i=0;i<children.size();i++)
-        MPI_Send(&a,2, MPI_INT, children[i], ASKFORACCEPTATION, MPI_COMM_WORLD);
+        MPI_Ibsend(&a,2, MPI_INT, children[i], ASKFORACCEPTATION, MPI_COMM_WORLD,&req);
 }
 
 void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
@@ -96,14 +96,14 @@ void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
 	if (msg.distance == msg.target_distance && sender != parent && parent != NONE)
 	{
 		msg.distance += 1;
-		MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD);
+        MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD,&req);
 	}
 	else if (msg.distance > msg.target_distance)
 	{
 		msg.distance += 1;
 		if (parent != -1 && sender != parent)
 		{
-			MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD);
+            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD,&req);
 		}
 
 		// I w dół
@@ -114,7 +114,7 @@ void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
 			{
 				if (children[i] != sender)
 				{
-					MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], tag, MPI_COMM_WORLD);
+                    MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], tag, MPI_COMM_WORLD,&req);
 				}
 			}
 		}
@@ -129,7 +129,7 @@ void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
 			msg.distance += 1;
 			if (parent != -1)
 			{
-				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD);
+                MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD,&req);
 			}
 		}
 	}
@@ -152,7 +152,7 @@ void Opornik::handleAResponseMsg(int sender, Msg_pass_acceptor msg)
 			//TODO zapisanie liczby uczestników na spotkaniach
 			
 			msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
-			MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD);
+            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD,&req);
 
 		}
 		else
@@ -188,7 +188,7 @@ void Opornik::handleACandidateMsg(int sender, Msg_pass_acceptor msg)
 
 			//przekaż dobrą nowinę kandydatowi (wiadomośc zwrotna)
 			msg.failure = 0;
-            MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD);
+            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD,&req);
 
 
 		}
@@ -196,7 +196,7 @@ void Opornik::handleACandidateMsg(int sender, Msg_pass_acceptor msg)
 		{
 			msg.failure = 1;
 			debug_log("Dostałem Kolejne zgłoszenie na KANDYDATa do zmiany akceptora. Niestety, nie możesz nim zostać: %d\n", msg.candidate_id);
-			MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD);
+            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD,&req);
 		}
 	}
 	else if (msg.initializator_id == id && msg.failure == 1)
@@ -252,7 +252,7 @@ void Opornik::acceptorMsgSend(Msg_pass_acceptor msg, int sender)
 		{
 			debug_log("(from %d) Byłbym DOBRYM KANDYDATEM na akceptora, niestety mam już WŁASNY TOKEN. Dam znać (%d)\n", sender, msg.initializator_id);
 		}
-		MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_CANDIDATE, MPI_COMM_WORLD);
+        MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_CANDIDATE, MPI_COMM_WORLD,&req);
         // Można by przekazać jeszcze wyżej i przeskoczyć na inne gałęzie lub do sąsiadów, ale nie robimy sobie konkurencji
 }
 
@@ -288,7 +288,7 @@ void Opornik::pass_acceptor(bool force)
 			acceptorStatus = findingCandidates;
 			msg = {clock, id, NONE, 1, 1, 0}; // distance = 1, bo przekazujemy w górę
 			// Wystarczy przekazać w górę
-			MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD,&req);
 		}
 		else
 		{
@@ -307,14 +307,14 @@ void Opornik::pass_acceptor(bool force)
 
 				// Trzeba przekazać w górę i do dzieci
 				debug_log("Chcę przkazać akceptora w dół!\n");
-				MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+                MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD,&req);
 			}
 			if (children.size() > 0)
 			{
 				msg.distance = -1;
 				for (int i = 0; i < children.size(); i++)
 				{
-					MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+                    MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], TAG_PASS_ACCEPTOR, MPI_COMM_WORLD,&req);
 				}
 			}
 		}
@@ -338,7 +338,7 @@ void Opornik::pass_acceptor(bool force)
 
 			//Wystarczy przekazać w górę
 			debug_log("Chcę przekazać akceptora na swoim poziomie!\n");
-			MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD);
+            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD,&req);
 		}
 		else
 		{
@@ -540,7 +540,7 @@ void Opornik::sendForwardMsg(int* buffer,int tag,int source,int msgSize){
         receiveResponseMsg(buffer,tag,&bcasts.back());
 
     for(auto i : sendTo)
-        MPI_Send(buffer,bcast.msgSize,MPI_INT,i,tag,MPI_COMM_WORLD);
+        MPI_Ibsend(buffer,bcast.msgSize,MPI_INT,i,tag,MPI_COMM_WORLD,&req);
 
 }
 
@@ -592,7 +592,7 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
                 break;
         }
     else
-        MPI_Send(buffer,bcast->msgSize,MPI_INT,bcast->respondTo,tag,MPI_COMM_WORLD);
+        MPI_Ibsend(buffer,bcast->msgSize,MPI_INT,bcast->respondTo,tag,MPI_COMM_WORLD,&req);
 }
 
 void Opornik::simpleBroadcast(SimpleMessage msg)
@@ -601,7 +601,7 @@ void Opornik::simpleBroadcast(SimpleMessage msg)
 	msg.clock += clock;
 	if (msg.sender != parent)
 	{
-		MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, msg.tag, MPI_COMM_WORLD);
+        MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, msg.tag, MPI_COMM_WORLD,&req);
 	}
 	if (children.size() > 0)
     {
@@ -609,7 +609,7 @@ void Opornik::simpleBroadcast(SimpleMessage msg)
         {
 			if (children[i] != msg.sender)
 			{
-        		MPI_Send(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], msg.tag, MPI_COMM_WORLD);
+                MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], msg.tag, MPI_COMM_WORLD,&req);
        		}
 		}
     }

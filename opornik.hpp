@@ -1,5 +1,6 @@
 #include <vector>
 #include <list>
+#include <mpi.h>
 #ifndef opornik_hpp
 #define opornik_hpp
 #include"messages.hpp"
@@ -45,6 +46,7 @@ private:
     void sendResponseMsg(int*,int,msgBcastInfo*);
 
 	void setStatus(status_enum);
+    MPI_Request req;
 
 
     int id;

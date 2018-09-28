@@ -2,7 +2,8 @@
 #define constants_hpp
 
 #define MAX_CHILDREN 4
-#define MAX_BUFFER_SIZE 64
+#define MAX_BUFFER_SIZE 12800
+#define MAX_MEETINGS_PARTICIPANTS 12
 
 #define NUM_RESOURCES 6
 #define NUM_ACCEPTORS 4
@@ -14,18 +15,18 @@
 #define FALSE 2
 
 struct msgBcastInfo{
+    int clock;
     int uniqueTag;
     int respondTo;
     int waitingForResponse;
     int msgSize;
-    int buffer[MAX_BUFFER_SIZE];
+    int buffer[64];
     bool operator ==(const msgBcastInfo& x) {
         return x.uniqueTag==uniqueTag;
     }
 };
 
 struct MeetingInfo{
-    int meeting;
     int participants;
     int priority;
     int acceptors[NUM_ACCEPTORS];

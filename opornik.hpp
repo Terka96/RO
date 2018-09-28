@@ -4,6 +4,7 @@
 #ifndef opornik_hpp
 #define opornik_hpp
 #include"messages.hpp"
+#include"constants.hpp"
 
 class Opornik{
 public:
@@ -66,6 +67,8 @@ private:
     int participantsOnMymeeting;
     int meetingTimeout;
     bool duringMyMeeting;
+    int freeSlots;
+    MeetingInfo knownMeetings[NUM_CONSPIR];
     std::vector<int> neighbors;
     std::vector<int> children;
     std::vector<int> resources;

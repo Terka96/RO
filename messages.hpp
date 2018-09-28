@@ -37,9 +37,9 @@ struct init_resources{
 };
 
 /*zaproszenie na spotkanie*/
-struct meetingInfo{
-    int uniqueTag;
+struct meetingInvitation{
     int clock;
+    int uniqueTag;
     int meetingId;
     int participants;
     int haveResource;
@@ -47,15 +47,15 @@ struct meetingInfo{
 
 /*zebranie zasobu*/
 struct resourceGatherMsg{
-    int uniqueTag;
     int clock;
+    int uniqueTag;
     int haveResource;
 };
 
 /*zakończenie spotkania*/
 struct endOfMeeting{
-    int uniqueTag;
     int clock;
+    int uniqueTag;
     int meetingId;
 };
 
@@ -70,7 +70,6 @@ struct askForAcceptation{
 struct shareAcceptor{
     int clock;
     int acceptorToken;
-    int acceptorClk;
     int meeting;
 };
 

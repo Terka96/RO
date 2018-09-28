@@ -29,7 +29,6 @@ void Opornik::listen()
         //debug_log("Dostałem wiadomość typu %d od %d\t", mpi_status.MPI_TAG, mpi_status.MPI_SOURCE);
 		
 		// Licznik lamporta 
-		// TODO Piotr, może będziesz musiał jeszcze gdzieś u siebie to zrobić, nie wiem jak działa ten Twój protokół
 		
 		clock = clock > buffer[0] ? clock + 1 : buffer[0] + 1;
 
@@ -64,7 +63,6 @@ void Opornik::listen()
                     if(acceptorToken!=NONE)
                     {
                         shareAcceptor s;
-                        s.acceptorClk=clock;
                         s.acceptorToken=acceptorToken;
                         clock++;
                         s.clock=clock;
@@ -83,17 +81,41 @@ void Opornik::listen()
                             MPI_Ibsend(s,4, MPI_INT, children[i], SHAREACCEPTOR, MPI_COMM_WORLD,&req);
                     if(acceptorToken!=NONE)
                     {
-                        if(acceptorToken==0)
+                        knownMeetings[s->meeting].acceptors[s->acceptorToken]=s->clock;
+                        bool makeDecision=true;
+                        //Pierwszy warunek- muszę mieć info od wszystkich akceptorów
+                        for(int i=0;i<NUM_ACCEPTORS;i++)
+                            if(knownMeetings[s->meeting].acceptors[i]==NONE)
+                                makeDecision=false;
+                        //drugi warunek- mój zegar musi mieć najmniejszą wartość
+                        int lowestClk=clock;//czy coś :P
+                        for(int i=0;i<NUM_ACCEPTORS;i++)
+                            if(knownMeetings[s->meeting].acceptors[i]<lowestClk)
+                                lowestClk=knownMeetings[s->meeting].acceptors[i];
+                        if(lowestClk!=knownMeetings[s->meeting].acceptors[acceptorToken])
+                            makeDecision=false;
+                        else
+                        {
+                            //trzeci warunek- mój token akceptora musi być najniższy
+                            for(int i=0;i<NUM_ACCEPTORS;i++)
+                                if(knownMeetings[s->meeting].acceptors[i]==lowestClk){
+                                    if(i!=acceptorToken)
+                                        makeDecision=false;
+                                    break;
+                                }
+                        }
+                        //TODO: Jeszcze kur a priorytety
+                        if(makeDecision)
                         {
                             accept *a = (accept *) buffer;
-                            a->decision=TRUE;
+                            if(knownMeetings[s->meeting].participants<=freeSlots)
+                                a->decision=TRUE;
+                            else
+                                a->decision=FALSE;
                             a->meeting=s->meeting;
-                            if(parent!=NONE && parent!=mpi_status.MPI_SOURCE)
-                                MPI_Ibsend(a,3, MPI_INT, parent, ACCEPT, MPI_COMM_WORLD,&req);
-                                for(int i=0;i<children.size();i++)
-                                    if(children[i]!=mpi_status.MPI_SOURCE)
-                                        MPI_Ibsend(a,3, MPI_INT, children[i], ACCEPT, MPI_COMM_WORLD,&req);}
-                        debug_log("Ustalanie :D");
+                            MPI_Ibsend(a,3, MPI_INT, id, ACCEPT, MPI_COMM_WORLD,&req);
+                            debug_log("zdecydowałem");
+                        }
                     }
                 break;
             }
@@ -106,7 +128,15 @@ void Opornik::listen()
                         if(children[i]!=mpi_status.MPI_SOURCE)
                             MPI_Ibsend(a,3, MPI_INT, children[i], ACCEPT, MPI_COMM_WORLD,&req);
                 if(acceptorToken!=NONE)
-                    debug_log("remove meeting");
+                {
+                    if(a->decision==TRUE)
+                        freeSlots-=knownMeetings[a->meeting].participants;
+                    //wyczyść info
+                    knownMeetings[a->meeting].priority=0;
+                    knownMeetings[a->meeting].participants=0;
+                    for(int i=0;i<NUM_ACCEPTORS;i++)
+                        knownMeetings[a->meeting].acceptors[i]=NONE;
+                }
                 if(a->decision==TRUE)
                     if(a->meeting==id)
                     {
@@ -122,7 +152,11 @@ void Opornik::listen()
                         if(a->meeting==id)
                         {
                             debug_log("moje spotkanie jest odrzucone");
-                            duringMyMeeting=true;
+                            duringMyMeeting=false;
+                            meeting=NONE;
+                            resources.push_back(busyResource);
+                            busyResource=NONE;
+                            participantsOnMymeeting=0;
                         }
                         else if(a->meeting==meeting)
                         {
@@ -139,7 +173,7 @@ void Opornik::listen()
             {
                 bool exist=false;
                 for(std::list<msgBcastInfo>::iterator x=bcasts.begin();x!=bcasts.end();x++)
-                    if(buffer[0]==x->uniqueTag){
+                    if(buffer[1]==x->uniqueTag){
                         exist=true;
                         receiveResponseMsg(buffer,mpi_status.MPI_TAG,&(*x));
                         break;
@@ -442,7 +476,7 @@ void Opornik::organizeMeeting(){
     {
         debug_log("Organizuję spotkanie!\n");
         meeting=id;
-        meetingInfo info;
+        meetingInvitation info;
         info.uniqueTag=generateUniqueTag();
         info.meetingId=id;
         info.participants=0;
@@ -454,7 +488,7 @@ void Opornik::organizeMeeting(){
         else
             info.haveResource=NONE;
 
-        receiveForwardMsg((int*)(&info),INVITATION_MSG,id); //TODO: pomyśleć czy tak może być ;)
+        receiveForwardMsg((int*)(&info),INVITATION_MSG,id);
     }
 }
 
@@ -466,7 +500,7 @@ void Opornik::resourceGather(){
         res.uniqueTag=generateUniqueTag();
         res.haveResource=NONE;
 
-        receiveForwardMsg((int*)(&res),RESOURCE_GATHER,id); //TODO: pomyśleć czy tak może być ;)
+        receiveForwardMsg((int*)(&res),RESOURCE_GATHER,id);
     }
 }
 
@@ -477,7 +511,7 @@ void Opornik::endMeeting(){
         endOfMeeting end;
         end.uniqueTag=generateUniqueTag();
         end.meetingId=id;
-        receiveForwardMsg((int*)(&end),ENDOFMEETING,id); //TODO: pomyśleć czy tak może być ;)
+        receiveForwardMsg((int*)(&end),ENDOFMEETING,id);
     }
 }
 
@@ -488,7 +522,7 @@ void Opornik::receiveForwardMsg(int* buffer,int tag,int source){
         case INVITATION_MSG:
         {
             msgSize=4;
-            meetingInfo* info=(meetingInfo*)buffer;
+            meetingInvitation* info=(meetingInvitation*)buffer;
             if(meeting==NONE && time(NULL)>=meetingTimeout) // THEN: zgódź się :D
             {
                 //debug_log("Zaproszono mnie do spotkania %d\n",info->meetingId);
@@ -523,8 +557,8 @@ void Opornik::receiveResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
     {
         case INVITATION_MSG:
         {
-            meetingInfo* info=(meetingInfo*)buffer;
-            meetingInfo* sumaric=(meetingInfo*)bcast->buffer;
+            meetingInvitation* info=(meetingInvitation*)buffer;
+            meetingInvitation* sumaric=(meetingInvitation*)bcast->buffer;
 
             sumaric->participants+=info->participants;
             if(info->haveResource!=NONE)
@@ -582,7 +616,7 @@ void Opornik::receiveResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
 void Opornik::sendForwardMsg(int* buffer,int tag,int source,int msgSize){
     std::list<int> sendTo;
     msgBcastInfo bcast;
-    bcast.uniqueTag=buffer[0];
+    bcast.uniqueTag=buffer[1];
     bcast.respondTo=source;
     bcast.msgSize=msgSize;
     for(int i=0;i<children.size();i++)
@@ -595,7 +629,7 @@ void Opornik::sendForwardMsg(int* buffer,int tag,int source,int msgSize){
     {
         case INVITATION_MSG:
         {
-            meetingInfo* sumaric=(meetingInfo*)bcast.buffer;
+            meetingInvitation* sumaric=(meetingInvitation*)bcast.buffer;
             //Send only to children
             sendTo.remove(parent);
 
@@ -630,7 +664,7 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
         {
             case INVITATION_MSG:
             {
-                meetingInfo* info=(meetingInfo*)buffer;
+                meetingInvitation* info=(meetingInvitation*)buffer;
                     busyResource=info->haveResource;
                     if(busyResource!=NONE)
                     {
@@ -665,6 +699,8 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
             case ENDOFMEETING:
                 resources.push_back(busyResource);
                 busyResource=NONE;
+                if(acceptorToken!=NONE)
+                    freeSlots+=participantsOnMymeeting;
                 participantsOnMymeeting=0;
                 duringMyMeeting=false;
                 debug_log("Wszyscy poszli już do domu po moim spotkaniu\n");

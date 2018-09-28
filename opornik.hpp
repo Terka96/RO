@@ -25,8 +25,6 @@ private:
    	void pass_acceptor(bool force); // force - czy musi przekazac akceptor (jesli nie moze na jednym poziomie, to probuje na innym)
     void pass_acceptor();
 
-	void simpleBroadcast(SimpleMessage msg);
-
 
    	static void *live_starter(void * arg);  
    	static void *listen_starter(void * arg);
@@ -65,6 +63,7 @@ private:
     int meeting;                         //przechowuje id spotkania w którym uczestniczy
     int tagGeneratorCounter;             //licznik do generowania unikalnego id
     int busyResource;
+    int participantsOnMymeeting;
     int meetingTimeout;
     bool duringMyMeeting;
     std::vector<int> neighbors;

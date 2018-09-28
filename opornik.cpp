@@ -29,10 +29,12 @@ Opornik::Opornik(){
     clock=0;
     status = idle;
     acceptorToken=notAcceptor;
+    busyResource=NONE;
     meeting=NONE;
     duringMyMeeting=false;
     meetingTimeout=0;
     tagGeneratorCounter=0;
+    participantsOnMymeeting=0;
 
     makeTree();
     MPI_Barrier(MPI_COMM_WORLD);
@@ -262,7 +264,7 @@ void Opornik::live()
 {
 	while (true)
    	{
-        usleep(100);//0.1 sec
+        usleep(100000);//0.1 sec
 
 		int actionRand=rand()%1001; //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
 
@@ -276,12 +278,12 @@ void Opornik::live()
 			continue;
        	}
         else if (actionRand>=995)
-;//            organizeMeeting();
+            organizeMeeting();
         else if(actionRand>=990)
-;//            if(duringMyMeeting) 
-//				endMeeting();
+            if(duringMyMeeting)
+                endMeeting();
         else if (actionRand>=985 && acceptorToken!=NONE)
-            pass_acceptor();
+;//            pass_acceptor();
    	 }
 
 }

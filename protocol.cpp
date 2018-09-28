@@ -10,6 +10,8 @@
 #include <thread>
 #include "constants.hpp"
 
+//TODO: ogarnąć zegary!
+
 void Opornik::listen()
 {
     // blocked = true
@@ -51,6 +53,86 @@ void Opornik::listen()
                 handleAResponseMsg(mpi_status.MPI_SOURCE, *msg);
                 break;
             }
+            case ASKFORACCEPTATION:
+            {
+                askForAcceptation *a = (askForAcceptation *) buffer;
+                if(parent!=NONE && parent!=mpi_status.MPI_SOURCE)
+                    MPI_Ibsend(a,3, MPI_INT, parent, ASKFORACCEPTATION, MPI_COMM_WORLD,&req);
+                    for(int i=0;i<children.size();i++)
+                        if(children[i]!=mpi_status.MPI_SOURCE)
+                            MPI_Ibsend(a,3, MPI_INT, children[i], ASKFORACCEPTATION, MPI_COMM_WORLD,&req);
+                    if(acceptorToken!=NONE)
+                    {
+                        shareAcceptor s;
+                        s.acceptorClk=clock;
+                        s.acceptorToken=acceptorToken;
+                        clock++;
+                        s.clock=clock;
+                        s.meeting=a->meeting;
+                        MPI_Ibsend(&s,4, MPI_INT, id, SHAREACCEPTOR, MPI_COMM_WORLD,&req);
+                    }
+                break;
+            }
+            case SHAREACCEPTOR:
+            {
+                shareAcceptor *s = (shareAcceptor *) buffer;
+                if(parent!=NONE && parent!=mpi_status.MPI_SOURCE)
+                    MPI_Ibsend(s,4, MPI_INT, parent, SHAREACCEPTOR, MPI_COMM_WORLD,&req);
+                    for(int i=0;i<children.size();i++)
+                        if(children[i]!=mpi_status.MPI_SOURCE)
+                            MPI_Ibsend(s,4, MPI_INT, children[i], SHAREACCEPTOR, MPI_COMM_WORLD,&req);
+                    if(acceptorToken!=NONE)
+                    {
+                        if(acceptorToken==0)
+                        {
+                            accept *a = (accept *) buffer;
+                            a->decision=TRUE;
+                            a->meeting=s->meeting;
+                            if(parent!=NONE && parent!=mpi_status.MPI_SOURCE)
+                                MPI_Ibsend(a,3, MPI_INT, parent, ACCEPT, MPI_COMM_WORLD,&req);
+                                for(int i=0;i<children.size();i++)
+                                    if(children[i]!=mpi_status.MPI_SOURCE)
+                                        MPI_Ibsend(a,3, MPI_INT, children[i], ACCEPT, MPI_COMM_WORLD,&req);}
+                        debug_log("Ustalanie :D");
+                    }
+                break;
+            }
+            case ACCEPT:
+            {
+                accept *a = (accept *) buffer;
+                if(parent!=NONE && parent!=mpi_status.MPI_SOURCE)
+                    MPI_Ibsend(a,3, MPI_INT, parent, ACCEPT, MPI_COMM_WORLD,&req);
+                    for(int i=0;i<children.size();i++)
+                        if(children[i]!=mpi_status.MPI_SOURCE)
+                            MPI_Ibsend(a,3, MPI_INT, children[i], ACCEPT, MPI_COMM_WORLD,&req);
+                if(acceptorToken!=NONE)
+                    debug_log("remove meeting");
+                if(a->decision==TRUE)
+                    if(a->meeting==id)
+                    {
+                        debug_log("moje spotkanie jest zaakceptowane");
+                        duringMyMeeting=true;
+                    }
+                    else if(a->meeting==meeting)
+                    {
+                        debug_log("idę na spotkanie");
+                    }
+                else //a->decision==FALSE
+                {
+                        if(a->meeting==id)
+                        {
+                            debug_log("moje spotkanie jest odrzucone");
+                            duringMyMeeting=true;
+                        }
+                        else if(a->meeting==meeting)
+                        {
+                            debug_log("ehh nie wyszło, jestem wolny");
+                            meeting=NONE;
+                        }
+                }
+
+                break;
+            }
             case INVITATION_MSG:
             case RESOURCE_GATHER:
             case ENDOFMEETING:
@@ -85,9 +167,7 @@ void Opornik::getAcceptation(int p)
     a.meeting=id;
     a.participants=p;
 
-    MPI_Ibsend(&a,2, MPI_INT, parent, ASKFORACCEPTATION, MPI_COMM_WORLD,&req);
-    for(int i=0;i<children.size();i++)
-        MPI_Ibsend(&a,2, MPI_INT, children[i], ASKFORACCEPTATION, MPI_COMM_WORLD,&req);
+    MPI_Ibsend(&a,3, MPI_INT, id, ASKFORACCEPTATION, MPI_COMM_WORLD,&req);
 }
 
 void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
@@ -554,14 +634,14 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
                     busyResource=info->haveResource;
                     if(busyResource!=NONE)
                     {
+                        participantsOnMymeeting=info->participants;
                         debug_log("Na moje spotkanie przyjdzie %d oporników i użyjemy zasobu %d\n",info->participants,info->haveResource);
-                        //Temporary! domyślnie duringMyMeeting oznacza że spotkanie zostało zaakceptowane
-                        //i wszyscy uczestnicy już to wiedzą (spotykają się)
-                        duringMyMeeting=true;
+                        getAcceptation(participantsOnMymeeting);
                     }
                     else
                     {
                         debug_log("Jest %d chętnych na spotkanie, ale nie mamy zasobu\n",info->participants);
+                        participantsOnMymeeting=info->participants;
                         resourceGather();
                     }
                 break;
@@ -573,9 +653,7 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
                     if(busyResource!=NONE)
                     {
                         debug_log("Otrzymałem zasób %d\n",res->haveResource);
-                        //Temporary!!! domyślnie duringMyMeeting oznacza że spotkanie zostało zaakceptowane
-                        //i wszyscy uczestnicy już to wiedzą (spotykają się)
-                        duringMyMeeting=true;
+                        getAcceptation(participantsOnMymeeting);
                     }
                     else
                     {
@@ -587,31 +665,11 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
             case ENDOFMEETING:
                 resources.push_back(busyResource);
                 busyResource=NONE;
+                participantsOnMymeeting=0;
                 duringMyMeeting=false;
                 debug_log("Wszyscy poszli już do domu po moim spotkaniu\n");
                 break;
         }
     else
         MPI_Ibsend(buffer,bcast->msgSize,MPI_INT,bcast->respondTo,tag,MPI_COMM_WORLD,&req);
-}
-
-void Opornik::simpleBroadcast(SimpleMessage msg)
-{
-	// przy odbieraniu SimpleMessage trzeba ustawić msg.sender na mpi_status.MPI_SOURCE
-	msg.clock += clock;
-	if (msg.sender != parent)
-	{
-        MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, msg.tag, MPI_COMM_WORLD,&req);
-	}
-	if (children.size() > 0)
-    {
-        for (int i = 0; i < children.size(); i++)
-        {
-			if (children[i] != msg.sender)
-			{
-                MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], msg.tag, MPI_COMM_WORLD,&req);
-       		}
-		}
-    }
-
 }

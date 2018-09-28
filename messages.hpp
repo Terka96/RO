@@ -29,14 +29,6 @@ struct order_makekids{
     int neighbors[MAX_CHILDREN];
 };
 
-struct SimpleMessage
-{
-	int clock;
-	int tag;
-	int sender;
-	int* msg;
-};
-
 /*inicjalizacja/dystrybucja roli akceptora i zasobów*/
 struct init_resources{
     int acceptorTokenId;
@@ -47,6 +39,7 @@ struct init_resources{
 /*zaproszenie na spotkanie*/
 struct meetingInfo{
     int uniqueTag;
+    int clock;
     int meetingId;
     int participants;
     int haveResource;
@@ -55,29 +48,35 @@ struct meetingInfo{
 /*zebranie zasobu*/
 struct resourceGatherMsg{
     int uniqueTag;
+    int clock;
     int haveResource;
 };
 
 /*zakończenie spotkania*/
 struct endOfMeeting{
     int uniqueTag;
+    int clock;
     int meetingId;
 };
 
 /**/
 struct askForAcceptation{
+    int clock;
     int meeting;
     int participants;
 };
 
 /**/
 struct shareAcceptor{
+    int clock;
     int acceptorToken;
     int acceptorClk;
+    int meeting;
 };
 
 /**/
 struct accept{
+    int clock;
     int meeting;
     int decision;
 };

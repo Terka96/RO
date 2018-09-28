@@ -10,6 +10,8 @@
 
 /*value used to indicate null ids*/
 #define NONE -1
+#define TRUE 1
+#define FALSE 2
 
 struct msgBcastInfo{
     int uniqueTag;

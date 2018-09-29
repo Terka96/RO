@@ -23,80 +23,78 @@
 #define TAG_ACCEPTOR_RESPONSE 202
 
 /*zamówienie u konspiratora zrobienia dzieci w ilości count, przyjęcia postawy konspiratora i zapamiętania przełożonego i sąsiadów*/
-struct order_makekids{
-    int clock;
-    int parent;
-    int count;
-    int neighbors[MAX_CHILDREN];
+struct order_makekids {
+	int clock;
+	int parent;
+	int count;
+	int neighbors[MAX_CHILDREN];
 };
 
 /*inicjalizacja/dystrybucja roli akceptora i zasobów*/
-struct init_resources{
-    int clock;
-    int acceptorTokenId;
-    int resourceCount;
-    int resourceIds[NUM_RESOURCES];
+struct init_resources {
+	int clock;
+	int acceptorTokenId;
+	int resourceCount;
+	int resourceIds[NUM_RESOURCES];
 };
 
 /*zaproszenie na spotkanie*/
-struct meetingInvitation{
-    int clock;
-    int uniqueTag;
-    int meetingId;
-    int participants;
-    int haveResource;
+struct meetingInvitation {
+	int clock;
+	int uniqueTag;
+	int meetingId;
+	int participants;
+	int haveResource;
 };
 
 /*zebranie zasobu*/
-struct resourceGatherMsg{
-    int clock;
-    int uniqueTag;
-    int haveResource;
+struct resourceGatherMsg {
+	int clock;
+	int uniqueTag;
+	int haveResource;
 };
 
 /*zakończenie spotkania*/
-struct endOfMeeting{
-    int clock;
-    int uniqueTag;
-    int meetingId;
+struct endOfMeeting {
+	int clock;
+	int uniqueTag;
+	int meetingId;
 };
 
 /**/
-struct askForAcceptation{
-    int clock;
-    int meeting;
-    int participants;
+struct askForAcceptation {
+	int clock;
+	int meeting;
+	int participants;
 };
 
 /**/
-struct shareAcceptor{
-    int clock;
-    int acceptorClk;
-    int acceptorToken;
-    int meeting;
+struct shareAcceptor {
+	int clock;
+	int acceptorClk;
+	int acceptorToken;
+	int meeting;
 };
 
 /**/
-struct accept{
-    int clock;
-    int meeting;
-    int decision;
+struct accept {
+	int clock;
+	int meeting;
+	int decision;
 };
 
-struct Simple_message
-{
-    int clock;
-    int sender;
-    int type;
-    int* msg;
+struct Simple_message {
+	int clock;
+	int sender;
+	int type;
+	int* msg;
 };
 // Wiadomość generowana do zmiany akceptora
-struct Msg_pass_acceptor
-{
+struct Msg_pass_acceptor {
 	int clock; // zegar
 	int initializator_id; // Id akceptora, który chce zostać zmieniony
 	int candidate_id; // Id opornika, który może zostać nowym akceptorem (wiadomośc zwrotna)
-	int distance;	// Aktualna różnica wysokości pomiędzy akceptorem, a kandydatem
+	int distance;   // Aktualna różnica wysokości pomiędzy akceptorem, a kandydatem
 	int target_distance; // -1: chcemy przekazać w dół, 0: ten sam poziom, 1: w górę
 	int failure;
 	int sender; // id opornika, od którego dostaliśmy wiadomość
@@ -104,8 +102,7 @@ struct Msg_pass_acceptor
 	int counter; // liczba oporników na spotkaniach
 	int complete; // Czy nowy akceptor już wszystko ustawił
 };
-struct Msg_pass_acceptor_final
-{
+struct Msg_pass_acceptor_final {
 	Msg_pass_acceptor msg;
 	AcceptorInfo acceptorInfo;
 };

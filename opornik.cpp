@@ -106,7 +106,7 @@ void Opornik::distributeAcceptorsAndResources(){
         if(init.acceptorTokenId!=notAcceptor)
 		{
             acceptorToken=static_cast<acceptor_enum>(init.acceptorTokenId);
-			acceptorInfo = {init.acceptorTokenId, 0, 0, {}};
+			acceptorInfo = {init.acceptorTokenId, 0, 0};
 		}
 		for(int i=0;i<init.resourceCount;i++)
             resources.push_back(init.resourceIds[i]);
@@ -264,7 +264,7 @@ void Opornik::live()
 {
 	while (true)
    	{
-        usleep(100000);//0.1 sec
+        usleep(10000);//0.1 sec
 
 		int actionRand=rand()%1001; //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
 
@@ -278,12 +278,12 @@ void Opornik::live()
 			continue;
        	}
         else if (actionRand>=995)
-            organizeMeeting();
+;//            organizeMeeting();
         else if(actionRand>=990)
             if(duringMyMeeting)
-                endMeeting();
+;//                endMeeting();
         else if (actionRand>=985 && acceptorToken!=NONE)
-;//            pass_acceptor();
+            pass_acceptor();
    	 }
 
 }

@@ -96,5 +96,10 @@ struct Msg_pass_acceptor
 	int counter; // liczba oporników na spotkaniach
 	int complete; // Czy nowy akceptor już wszystko ustawił
 };
+struct Msg_pass_acceptor_final
+{
+	Msg_pass_acceptor msg;
+	AcceptorInfo acceptorInfo;
+};
 
 #endif // MESSAGES_H

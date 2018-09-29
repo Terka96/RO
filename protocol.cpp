@@ -49,7 +49,7 @@ void Opornik::listen()
 			}
 			case TAG_ACCEPTOR_RESPONSE:
             {
-                Msg_pass_acceptor *msg = (Msg_pass_acceptor *) buffer;
+                Msg_pass_acceptor_final *msg = (Msg_pass_acceptor_final *) buffer;
                 handleAResponseMsg(mpi_status.MPI_SOURCE, *msg);
                 break;
             }
@@ -215,23 +215,69 @@ void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
 	}
 }
 
-void Opornik::handleAResponseMsg(int sender, Msg_pass_acceptor msg)
+void Opornik::basicAcceptorSend(Msg_pass_acceptor_final final_msg, int sender, int tag)
 {
-	if (msg.candidate_id == id)
+	// debug_log("%d %d %d %d %d\n", msg.initializator_id, sender, tag, msg.distance, msg.target_distance);
+	if (final_msg.msg.distance == final_msg.msg.target_distance && sender != parent && parent != NONE)
+	{
+		final_msg.msg.distance += 1;
+        MPI_Ibsend(&final_msg, sizeof(final_msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD,&req);
+	}
+	else if (final_msg.msg.distance > final_msg.msg.target_distance)
+	{
+		final_msg.msg.distance += 1;
+		if (parent != -1 && sender != parent)
+		{
+            MPI_Ibsend(&final_msg, sizeof(final_msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD,&req);
+		}
+
+		// I w dół
+		final_msg.msg.distance -= 2; // 2, ponieważ zwiększyliśmy na potrzeby wysłania do rodzica
+		if (children.size() > 0)
+		{
+			for (int i = 0; i < children.size(); i++)
+			{
+				if (children[i] != sender)
+				{
+                    MPI_Ibsend(&final_msg, sizeof(final_msg)/sizeof(int), MPI_INT, children[i], tag, MPI_COMM_WORLD,&req);
+				}
+			}
+		}
+	}
+	else if (final_msg.msg.distance < final_msg.msg.target_distance)
+	{
+		if (sender == parent) // Dostałem tę wiadomość od rodzica (wiadomość idzie w dół)
+		{
+		}
+		else // Wiadomość idzie w górę, aby dotrzeć na inną gałąź
+		{
+			final_msg.msg.distance += 1;
+			if (parent != -1)
+			{
+                MPI_Ibsend(&final_msg, sizeof(final_msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD,&req);
+			}
+		}
+	}
+}
+
+void Opornik::handleAResponseMsg(int sender, Msg_pass_acceptor_final msg)
+{
+	if (msg.msg.candidate_id == id)
 	{
 		// Chyba od razu można przypisać akceptora. Grunt, żeby stary akceptor odblokował się i usunął dopiero po otrzymaniu odp. zwrotnej
-		if (msg.failure == 0)
+		if (msg.msg.failure == 0)
 		{
 			// acceptorToken = accepted;
-			debug_log("Zostałem NOWYM AKCEPTOREM (%d)!\n", msg.tokenId);
+			debug_log("Zostałem NOWYM AKCEPTOREM (%d)!\n", msg.msg.tokenId);
 			
 			// Uzupełnienie wartości (nowy akceptor)
-			acceptorToken = msg.tokenId;
+			acceptorToken = msg.msg.tokenId;
 			acceptorStatus = isAcceptor;
-			msg.complete = 1;
+			msg.msg.complete = 1;
+			acceptorInfo = msg.acceptorInfo; // przypisanie tablicy informacjami o akceptowaniu spotkań
 			//TODO zapisanie liczby uczestników na spotkaniach
 			
-			msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
+			msg.msg.distance = (sender == parent) ? msg.msg.distance + 1 : msg.msg.distance - 1;
             MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD,&req);
 
 		}
@@ -239,14 +285,15 @@ void Opornik::handleAResponseMsg(int sender, Msg_pass_acceptor msg)
 		{
 			setStatus(idle);
 			acceptorStatus = notAcceptor;
+			acceptorToken = NONE;
 			debug_log("Zostałem ODRZUCONY na nowego akceptora.\n");
 		}
 	}
-	else if (msg.initializator_id == id && msg.complete == 1) // stary akceptor dostał odpowiedź od nowego
+	else if (msg.msg.initializator_id == id && acceptorStatus != candidate && msg.msg.complete == 1) // stary akceptor dostał odpowiedź od nowego
 	{
 		// TODO 1: tutaj być może trzeba poczekać na eventy związane ze spotkaniami. (oporniki mogą kierować wiadomości do starego opornika.)
 		// TODO 2: Nie wiem jak działają spotkania, ale jeśli opornik ma status "busy", to nie powinien dawać odpowiedzi, czy jest akceptorem, tylko poczekać do zmiany statusu na "idle".
-		debug_log("Uff, już NIE jestem akceptorem. Został nim %d)\n", msg.candidate_id);
+		debug_log("Uff, już NIE jestem akceptorem. Został nim %d)\n", msg.msg.candidate_id);
 		acceptorToken = NONE;
 		setStatus(idle);
 	}
@@ -257,7 +304,7 @@ void Opornik::handleAResponseMsg(int sender, Msg_pass_acceptor msg)
 }
 void Opornik::handleACandidateMsg(int sender, Msg_pass_acceptor msg)
 {
-	if (msg.initializator_id == id && msg.failure == 0) //msg.Failure oznacza, że dany kandydat jest już akceptorem
+	if (msg.initializator_id == id && acceptorStatus != candidate && msg.failure == 0) //msg.Failure oznacza, że dany kandydat jest już akceptorem
 	{
 		candidatesAnswers++;
 		msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
@@ -268,8 +315,9 @@ void Opornik::handleACandidateMsg(int sender, Msg_pass_acceptor msg)
 
 			//przekaż dobrą nowinę kandydatowi (wiadomośc zwrotna)
 			msg.failure = 0;
-            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD,&req);
-
+			
+			Msg_pass_acceptor_final final_msg{msg, acceptorInfo};
+            MPI_Ibsend(&final_msg, sizeof(final_msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD,&req);
 
 		}
 		else
@@ -279,7 +327,7 @@ void Opornik::handleACandidateMsg(int sender, Msg_pass_acceptor msg)
             MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD,&req);
 		}
 	}
-	else if (msg.initializator_id == id && msg.failure == 1)
+	else if (msg.initializator_id == id && acceptorStatus != candidate  && msg.failure == 1)
 	{
 		if (candidatesAnswers >= sameLevelNodes - 1) // możliwe, że dostaniemy jakieś stare wiadomości. Nie ma to większego znaczenia, bo spróbujemy przekazać token jeszcze raz. Może się jednak wydawać niezbyt właściwe.
 		{
@@ -326,6 +374,8 @@ void Opornik::acceptorMsgSend(Msg_pass_acceptor msg, int sender)
         msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
 		if (acceptorToken == NONE)
 		{
+			acceptorToken = msg.tokenId; //to przypisanie, aby podczas przekazywania wlasciwego tokena nie uciekly wiadomosci o organizowanie spotkan
+			// Od teraz opornik musi zbierac wszystkie zgloszenia dla akceptora o id tokenId
         	debug_log("(from %d) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (%d)\n", sender, msg.initializator_id);
 		}
 		else

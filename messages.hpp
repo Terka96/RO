@@ -81,7 +81,13 @@ struct accept{
     int decision;
 };
 
-
+struct Simple_message
+{
+    int clock;
+    int sender;
+    int type;
+    int* msg;
+};
 // Wiadomość generowana do zmiany akceptora
 struct Msg_pass_acceptor
 {

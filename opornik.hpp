@@ -34,10 +34,11 @@ private:
 
 	void handleAcceptorMsg(int sender, Msg_pass_acceptor msg);
 	void handleACandidateMsg(int sender, Msg_pass_acceptor msg);
-	void handleAResponseMsg(int sender, Msg_pass_acceptor msg);
+	void handleAResponseMsg(int sender, Msg_pass_acceptor_final msg);
 
 	void acceptorMsgSend(Msg_pass_acceptor msg, int sender); // Odpowiedź, jeśli jesteśmy dobrym kandydatem na akceptora
 	void basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag); // Odpowiedź wykorzystywana w każdym z handleA*. (przekazuje wiadomośc dalej w drzewie, bo dany opornik jest nieznaczący)
+	void basicAcceptorSend(Msg_pass_acceptor_final msg, int sender, int tag);
 
     void Ibsend(void*,int,int,int);
     void receiveForwardMsg(int*,int,int);

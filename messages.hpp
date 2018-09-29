@@ -83,7 +83,13 @@ struct accept{
     int decision;
 };
 
-
+struct Simple_message
+{
+    int clock;
+    int sender;
+    int type;
+    int* msg;
+};
 // Wiadomość generowana do zmiany akceptora
 struct Msg_pass_acceptor
 {
@@ -97,6 +103,11 @@ struct Msg_pass_acceptor
 	int tokenId; // id Tokena do przekazania
 	int counter; // liczba oporników na spotkaniach
 	int complete; // Czy nowy akceptor już wszystko ustawił
+};
+struct Msg_pass_acceptor_final
+{
+	Msg_pass_acceptor msg;
+	AcceptorInfo acceptorInfo;
 };
 
 #endif // MESSAGES_H

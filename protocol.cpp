@@ -85,8 +85,6 @@ void Opornik::listen()
                         for(int i=0;i<NUM_ACCEPTORS;i++)
                             if(knownMeetings[s->meeting].acceptors[i]==NONE)
                                 makeDecision=false;
-                        if(makeDecision)
-                            debug_log("zebrałem komplet\n");
                         //drugi warunek- zegar ma najmniejszą wartość
                         int lowestClk=clock;
                         for(int i=0;i<NUM_ACCEPTORS;i++)
@@ -100,7 +98,6 @@ void Opornik::listen()
                                     makeDecision=false;
                                 break;
                             }
-                        //TODO: Jeszcze kur a priorytety
                         if(makeDecision)
                         {
                             accept *a = (accept *) buffer;
@@ -250,7 +247,7 @@ void Opornik::receiveForwardMsg(int* buffer,int tag,int source){
     {
         case INVITATION_MSG:
         {
-            msgSize=4;
+            msgSize=5;
             meetingInvitation* info=(meetingInvitation*)buffer;
             if(meeting==NONE && time(NULL)>=meetingTimeout) // THEN: zgódź się :D
             {
@@ -265,7 +262,7 @@ void Opornik::receiveForwardMsg(int* buffer,int tag,int source){
         }
         case RESOURCE_GATHER:
         {
-            msgSize=2;
+            msgSize=3;
             resourceGatherMsg* res=(resourceGatherMsg*)buffer;
             if(res->haveResource==NONE && !resources.empty()){
                     res->haveResource=resources.back();
@@ -274,7 +271,7 @@ void Opornik::receiveForwardMsg(int* buffer,int tag,int source){
             break;
         }
         case ENDOFMEETING:
-            msgSize=2;
+            msgSize=3;
             break;
     }
     sendForwardMsg(buffer,tag,source,msgSize);
@@ -426,7 +423,8 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
                 break;
             }
             case ENDOFMEETING:
-                resources.push_back(busyResource);
+                if(busyResource!=NONE)
+                    resources.push_back(busyResource);
                 busyResource=NONE;
                 if(acceptorToken!=NONE)
                     freeSlots+=participantsOnMymeeting;

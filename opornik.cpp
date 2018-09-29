@@ -284,10 +284,10 @@ void Opornik::live()
 			continue;
        	}
         else if (actionRand>=995)
-;//            organizeMeeting();
+            organizeMeeting();
         else if(actionRand>=990)
             if(duringMyMeeting)
-;//                endMeeting();
+                endMeeting();
         else if (actionRand>=985 && acceptorToken!=NONE)
             pass_acceptor();
    	 }

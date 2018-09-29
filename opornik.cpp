@@ -273,7 +273,6 @@ void Opornik::live()
             if (actionRand >= 995)
 			{
                 debug_log("Chcem, ale nie mogem! Jestem zablokowany!\n");
-				debug_log("na tym samym poziomie: %d  na samym dole?: %d\n", sameLevelNodes, lowest); // TODO usunuąć, debug_info
 			}
 			continue;
        	}

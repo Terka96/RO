@@ -182,7 +182,7 @@ void Opornik::handleAcceptorMsg(int sender, Msg_pass_acceptor msg)
 {
 	if (msg.distance == msg.target_distance && msg.initializator_id != id)
 	{
-		if (status == idle && acceptorToken == NONE)
+		if (status == idle)
 		{
 			if (acceptorToken != NONE)
 			{
@@ -205,12 +205,12 @@ void Opornik::handleAcceptorMsg(int sender, Msg_pass_acceptor msg)
 void Opornik::acceptorMsgSend(Msg_pass_acceptor msg, int sender)
 {
 	// Uwaga! Możemy dostać to samo zgłoszenie kilka razy (sąsiedzi rozprowadzają je przez rodzica), niby status.busy częściowo rozwiązuje problem TODO
-        status = busy;
-        acceptorStatus = candidate;
         msg.candidate_id = id;
         msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
 		if (acceptorToken == NONE)
 		{
+	        status = busy;
+        	acceptorStatus = candidate;
 			acceptorToken = msg.tokenId; //to przypisanie, aby podczas przekazywania wlasciwego tokena nie uciekly wiadomosci o organizowanie spotkan
 			// Od teraz opornik musi zbierac wszystkie zgloszenia dla akceptora o id tokenId
         	debug_log("(from %d) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (%d)\n", sender, msg.initializator_id);
@@ -278,7 +278,7 @@ void Opornik::pass_acceptor(bool force)
 			}
 			if (children.size() > 0)
 			{
-				msg.distance = -1;
+				msg = {clock, id, NONE, -1, -1, 0};
 				for (int i = 0; i < children.size(); i++)
 				{
                     MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], TAG_PASS_ACCEPTOR, MPI_COMM_WORLD,&req);

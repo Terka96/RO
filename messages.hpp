@@ -24,6 +24,7 @@
 
 /*zamówienie u konspiratora zrobienia dzieci w ilości count, przyjęcia postawy konspiratora i zapamiętania przełożonego i sąsiadów*/
 struct order_makekids{
+    int clock;
     int parent;
     int count;
     int neighbors[MAX_CHILDREN];
@@ -31,6 +32,7 @@ struct order_makekids{
 
 /*inicjalizacja/dystrybucja roli akceptora i zasobów*/
 struct init_resources{
+    int clock;
     int acceptorTokenId;
     int resourceCount;
     int resourceIds[NUM_RESOURCES];
@@ -69,6 +71,7 @@ struct askForAcceptation{
 /**/
 struct shareAcceptor{
     int clock;
+    int acceptorClk;
     int acceptorToken;
     int meeting;
 };

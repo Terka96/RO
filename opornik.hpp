@@ -39,13 +39,13 @@ private:
 	void acceptorMsgSend(Msg_pass_acceptor msg, int sender); // Odpowiedź, jeśli jesteśmy dobrym kandydatem na akceptora
 	void basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag); // Odpowiedź wykorzystywana w każdym z handleA*. (przekazuje wiadomośc dalej w drzewie, bo dany opornik jest nieznaczący)
 
+    void Ibsend(void*,int,int,int);
     void receiveForwardMsg(int*,int,int);
     void receiveResponseMsg(int*,int,msgBcastInfo*);
     void sendForwardMsg(int*,int,int,int);
     void sendResponseMsg(int*,int,msgBcastInfo*);
 
 	void setStatus(status_enum);
-    MPI_Request req;
 
 
     int id;

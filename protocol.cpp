@@ -10,7 +10,6 @@
 #include <thread>
 #include "constants.hpp"
 
-//TODO: ogarnąć zegary!
 
 void Opornik::listen()
 {
@@ -56,18 +55,17 @@ void Opornik::listen()
             {
                 askForAcceptation *a = (askForAcceptation *) buffer;
                 if(parent!=NONE && parent!=mpi_status.MPI_SOURCE)
-                    MPI_Ibsend(a,3, MPI_INT, parent, ASKFORACCEPTATION, MPI_COMM_WORLD,&req);
+                    Ibsend(a,3, parent, ASKFORACCEPTATION);
                     for(int i=0;i<children.size();i++)
                         if(children[i]!=mpi_status.MPI_SOURCE)
-                            MPI_Ibsend(a,3, MPI_INT, children[i], ASKFORACCEPTATION, MPI_COMM_WORLD,&req);
+                            Ibsend(a,3, children[i], ASKFORACCEPTATION);
                     if(acceptorToken!=NONE)
                     {
                         shareAcceptor s;
                         s.acceptorToken=acceptorToken;
-                        clock++;
-                        s.clock=clock;
                         s.meeting=a->meeting;
-                        MPI_Ibsend(&s,4, MPI_INT, id, SHAREACCEPTOR, MPI_COMM_WORLD,&req);
+                        s.acceptorClk=clock;
+                        Ibsend(&s,4,  id, SHAREACCEPTOR);
                     }
                 break;
             }
@@ -75,35 +73,33 @@ void Opornik::listen()
             {
                 shareAcceptor *s = (shareAcceptor *) buffer;
                 if(parent!=NONE && parent!=mpi_status.MPI_SOURCE)
-                    MPI_Ibsend(s,4, MPI_INT, parent, SHAREACCEPTOR, MPI_COMM_WORLD,&req);
+                    Ibsend(s,4,  parent, SHAREACCEPTOR);
                     for(int i=0;i<children.size();i++)
                         if(children[i]!=mpi_status.MPI_SOURCE)
-                            MPI_Ibsend(s,4, MPI_INT, children[i], SHAREACCEPTOR, MPI_COMM_WORLD,&req);
+                            Ibsend(s,4,  children[i], SHAREACCEPTOR);
                     if(acceptorToken!=NONE)
                     {
-                        knownMeetings[s->meeting].acceptors[s->acceptorToken]=s->clock;
+                        knownMeetings[s->meeting].acceptors[s->acceptorToken]=s->acceptorClk;
                         bool makeDecision=true;
-                        //Pierwszy warunek- muszę mieć info od wszystkich akceptorów
+                        //Pierwszy warunek- info od wszystkich akceptorów
                         for(int i=0;i<NUM_ACCEPTORS;i++)
                             if(knownMeetings[s->meeting].acceptors[i]==NONE)
                                 makeDecision=false;
-                        //drugi warunek- mój zegar musi mieć najmniejszą wartość
-                        int lowestClk=clock;//czy coś :P
+                        if(makeDecision)
+                            debug_log("zebrałem komplet\n");
+                        //drugi warunek- zegar ma najmniejszą wartość
+                        int lowestClk=clock;
                         for(int i=0;i<NUM_ACCEPTORS;i++)
                             if(knownMeetings[s->meeting].acceptors[i]<lowestClk)
                                 lowestClk=knownMeetings[s->meeting].acceptors[i];
-                        if(lowestClk!=knownMeetings[s->meeting].acceptors[acceptorToken])
-                            makeDecision=false;
-                        else
-                        {
-                            //trzeci warunek- mój token akceptora musi być najniższy
-                            for(int i=0;i<NUM_ACCEPTORS;i++)
-                                if(knownMeetings[s->meeting].acceptors[i]==lowestClk){
-                                    if(i!=acceptorToken)
-                                        makeDecision=false;
-                                    break;
-                                }
-                        }
+                        //trzeci warunek- token akceptora najniższy
+                        for(int i=0;i<NUM_ACCEPTORS;i++)
+                            if(knownMeetings[s->meeting].acceptors[i]==lowestClk)
+                            {
+                                if(i!=acceptorToken)
+                                    makeDecision=false;
+                                break;
+                            }
                         //TODO: Jeszcze kur a priorytety
                         if(makeDecision)
                         {
@@ -113,8 +109,8 @@ void Opornik::listen()
                             else
                                 a->decision=FALSE;
                             a->meeting=s->meeting;
-                            MPI_Ibsend(a,3, MPI_INT, id, ACCEPT, MPI_COMM_WORLD,&req);
-                            debug_log("zdecydowałem");
+                            Ibsend(a,3,  id, ACCEPT);
+                            debug_log("zdecydowałem\n");
                         }
                     }
                 break;
@@ -123,10 +119,10 @@ void Opornik::listen()
             {
                 accept *a = (accept *) buffer;
                 if(parent!=NONE && parent!=mpi_status.MPI_SOURCE)
-                    MPI_Ibsend(a,3, MPI_INT, parent, ACCEPT, MPI_COMM_WORLD,&req);
+                    Ibsend(a,3,  parent, ACCEPT);
                     for(int i=0;i<children.size();i++)
                         if(children[i]!=mpi_status.MPI_SOURCE)
-                            MPI_Ibsend(a,3, MPI_INT, children[i], ACCEPT, MPI_COMM_WORLD,&req);
+                            Ibsend(a,3,  children[i], ACCEPT);
                 if(acceptorToken!=NONE)
                 {
                     if(a->decision==TRUE)
@@ -140,18 +136,18 @@ void Opornik::listen()
                 if(a->decision==TRUE)
                     if(a->meeting==id)
                     {
-                        debug_log("moje spotkanie jest zaakceptowane");
+                        debug_log("moje spotkanie jest zaakceptowane\n");
                         duringMyMeeting=true;
                     }
                     else if(a->meeting==meeting)
                     {
-                        debug_log("idę na spotkanie");
+                        debug_log("idę na spotkanie\n");
                     }
                 else //a->decision==FALSE
                 {
                         if(a->meeting==id)
                         {
-                            debug_log("moje spotkanie jest odrzucone");
+                            debug_log("moje spotkanie jest odrzucone\n");
                             duringMyMeeting=false;
                             meeting=NONE;
                             resources.push_back(busyResource);
@@ -160,7 +156,7 @@ void Opornik::listen()
                         }
                         else if(a->meeting==meeting)
                         {
-                            debug_log("ehh nie wyszło, jestem wolny");
+                            debug_log("ehh nie wyszło, jestem wolny\n");
                             meeting=NONE;
                         }
                 }
@@ -201,7 +197,7 @@ void Opornik::getAcceptation(int p)
     a.meeting=id;
     a.participants=p;
 
-    MPI_Ibsend(&a,3, MPI_INT, id, ASKFORACCEPTATION, MPI_COMM_WORLD,&req);
+    Ibsend(&a,3,  id, ASKFORACCEPTATION);
 }
 
 void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
@@ -210,14 +206,14 @@ void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
 	if (msg.distance == msg.target_distance && sender != parent && parent != NONE)
 	{
 		msg.distance += 1;
-        MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD,&req);
+        Ibsend(&msg, sizeof(msg)/sizeof(int),  parent, tag);
 	}
 	else if (msg.distance > msg.target_distance)
 	{
 		msg.distance += 1;
 		if (parent != -1 && sender != parent)
 		{
-            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD,&req);
+            Ibsend(&msg, sizeof(msg)/sizeof(int),  parent, tag);
 		}
 
 		// I w dół
@@ -228,7 +224,7 @@ void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
 			{
 				if (children[i] != sender)
 				{
-                    MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], tag, MPI_COMM_WORLD,&req);
+                    Ibsend(&msg, sizeof(msg)/sizeof(int),  children[i], tag);
 				}
 			}
 		}
@@ -243,7 +239,7 @@ void Opornik::basicAcceptorSend(Msg_pass_acceptor msg, int sender, int tag)
 			msg.distance += 1;
 			if (parent != -1)
 			{
-                MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, tag, MPI_COMM_WORLD,&req);
+                Ibsend(&msg, sizeof(msg)/sizeof(int),  parent, tag);
 			}
 		}
 	}
@@ -266,7 +262,7 @@ void Opornik::handleAResponseMsg(int sender, Msg_pass_acceptor msg)
 			//TODO zapisanie liczby uczestników na spotkaniach
 			
 			msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
-            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD,&req);
+            Ibsend(&msg, sizeof(msg)/sizeof(int),  sender, TAG_ACCEPTOR_RESPONSE);
 
 		}
 		else
@@ -302,7 +298,7 @@ void Opornik::handleACandidateMsg(int sender, Msg_pass_acceptor msg)
 
 			//przekaż dobrą nowinę kandydatowi (wiadomośc zwrotna)
 			msg.failure = 0;
-            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD,&req);
+            Ibsend(&msg, sizeof(msg)/sizeof(int),  sender, TAG_ACCEPTOR_RESPONSE);
 
 
 		}
@@ -310,7 +306,7 @@ void Opornik::handleACandidateMsg(int sender, Msg_pass_acceptor msg)
 		{
 			msg.failure = 1;
 			debug_log("Dostałem Kolejne zgłoszenie na KANDYDATa do zmiany akceptora. Niestety, nie możesz nim zostać: %d\n", msg.candidate_id);
-            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_RESPONSE, MPI_COMM_WORLD,&req);
+            Ibsend(&msg, sizeof(msg)/sizeof(int),  sender, TAG_ACCEPTOR_RESPONSE);
 		}
 	}
 	else if (msg.initializator_id == id && msg.failure == 1)
@@ -366,7 +362,7 @@ void Opornik::acceptorMsgSend(Msg_pass_acceptor msg, int sender)
 		{
 			debug_log("(from %d) Byłbym DOBRYM KANDYDATEM na akceptora, niestety mam już WŁASNY TOKEN. Dam znać (%d)\n", sender, msg.initializator_id);
 		}
-        MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, sender, TAG_ACCEPTOR_CANDIDATE, MPI_COMM_WORLD,&req);
+        Ibsend(&msg, sizeof(msg)/sizeof(int),  sender, TAG_ACCEPTOR_CANDIDATE);
         // Można by przekazać jeszcze wyżej i przeskoczyć na inne gałęzie lub do sąsiadów, ale nie robimy sobie konkurencji
 }
 
@@ -402,7 +398,7 @@ void Opornik::pass_acceptor(bool force)
 			acceptorStatus = findingCandidates;
 			msg = {clock, id, NONE, 1, 1, 0}; // distance = 1, bo przekazujemy w górę
 			// Wystarczy przekazać w górę
-            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD,&req);
+            Ibsend(&msg, sizeof(msg)/sizeof(int),  parent, TAG_PASS_ACCEPTOR);
 		}
 		else
 		{
@@ -421,14 +417,14 @@ void Opornik::pass_acceptor(bool force)
 
 				// Trzeba przekazać w górę i do dzieci
 				debug_log("Chcę przkazać akceptora w dół!\n");
-                MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD,&req);
+                Ibsend(&msg, sizeof(msg)/sizeof(int),  parent, TAG_PASS_ACCEPTOR);
 			}
 			if (children.size() > 0)
 			{
 				msg.distance = -1;
 				for (int i = 0; i < children.size(); i++)
 				{
-                    MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, children[i], TAG_PASS_ACCEPTOR, MPI_COMM_WORLD,&req);
+                    Ibsend(&msg, sizeof(msg)/sizeof(int),  children[i], TAG_PASS_ACCEPTOR);
 				}
 			}
 		}
@@ -452,7 +448,7 @@ void Opornik::pass_acceptor(bool force)
 
 			//Wystarczy przekazać w górę
 			debug_log("Chcę przekazać akceptora na swoim poziomie!\n");
-            MPI_Ibsend(&msg, sizeof(msg)/sizeof(int), MPI_INT, parent, TAG_PASS_ACCEPTOR, MPI_COMM_WORLD,&req);
+            Ibsend(&msg, sizeof(msg)/sizeof(int),  parent, TAG_PASS_ACCEPTOR);
 		}
 		else
 		{
@@ -654,7 +650,7 @@ void Opornik::sendForwardMsg(int* buffer,int tag,int source,int msgSize){
         receiveResponseMsg(buffer,tag,&bcasts.back());
 
     for(auto i : sendTo)
-        MPI_Ibsend(buffer,bcast.msgSize,MPI_INT,i,tag,MPI_COMM_WORLD,&req);
+        Ibsend(buffer,bcast.msgSize,i,tag);
 
 }
 
@@ -707,5 +703,16 @@ void Opornik::sendResponseMsg(int* buffer,int tag,msgBcastInfo* bcast){
                 break;
         }
     else
-        MPI_Ibsend(buffer,bcast->msgSize,MPI_INT,bcast->respondTo,tag,MPI_COMM_WORLD,&req);
+        Ibsend(buffer,bcast->msgSize,bcast->respondTo,tag);
 }
+
+void Opornik::Ibsend(void *buf,int count,int dest,int tag)
+{
+    clock++;
+    memcpy(buf,&clock,sizeof(int));
+    MPI_Request req;
+    //MPI_Status stat;
+    MPI_Ibsend(buf,count,MPI_INT,dest,tag,MPI_COMM_WORLD,&req);
+    MPI_Request_free(&req);
+    //MPI_Wait( &req, &stat );
+};

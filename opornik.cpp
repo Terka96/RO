@@ -295,12 +295,13 @@ void Opornik::live() {
 			continue;
 		}
 		else if (actionRand >= 995) {
-			organizeMeeting();
+            if(meeting==NONE)
+                organizeMeeting();
 		}
 		else if (actionRand >= 990)
-			if (duringMyMeeting) {
+            if (duringMyMeeting) {
 				endMeeting();
-			}
+            }
 			else if (actionRand >= 985 && acceptorToken != NONE) {
 				pass_acceptor();
 			}

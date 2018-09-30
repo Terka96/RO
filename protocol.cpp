@@ -46,7 +46,8 @@ void Opornik::listen() {
 						if (children[i] != mpi_status.MPI_SOURCE) {
 							Ibsend (a, 3, children[i], ASKFORACCEPTATION);
 						}
-					if (acceptorToken != NONE) {
+                    if (acceptorStatus==isAcceptor) {
+                        log(info,"Shareuje mój zegar\n");
 						shareAcceptor s;
 						s.acceptorToken = acceptorToken;
 						s.meeting = a->meeting;
@@ -92,27 +93,32 @@ void Opornik::listen() {
 						}
 					}
 					if (a->decision == TRUE)
-						if (a->meeting == id) {
+                    {
+                        if (a->meeting == id)
+                        {
 							log (info, "moje spotkanie jest zaakceptowane\n");
 							duringMyMeeting = true;
 						}
-						else if (a->meeting == meeting) {
+                        else if (a->meeting == meeting)
+                        {
 							log (info, "idę na spotkanie\n");
 						}
-						else { //a->decision==FALSE
-							if (a->meeting == id) {
-								log (info, "moje spotkanie jest odrzucone\n");
-								duringMyMeeting = false;
-								meeting = NONE;
-								resources.push_back (busyResource);
-								busyResource = NONE;
-								participantsOnMymeeting = 0;
-							}
-							else if (a->meeting == meeting) {
-								log (info, "ehh nie wyszło, jestem wolny\n");
-								meeting = NONE;
-							}
-						}
+                    }
+                    else //a->decision==FALSE
+                    {
+                        if (a->meeting == id) {
+                            log (info, "moje spotkanie jest odrzucone\n");
+                            duringMyMeeting = false;
+                            meeting = NONE;
+                            resources.push_back (busyResource);
+                            busyResource = NONE;
+                            participantsOnMymeeting = 0;
+                        }
+                        else if (a->meeting == meeting) {
+                            log (info, "ehh nie wyszło, jestem wolny\n");
+                            meeting = NONE;
+                        }
+                    }
 					break;
 				}
 			case INVITATION_MSG:
@@ -194,7 +200,7 @@ void Opornik::receiveForwardMsg (int* buffer, int tag, int source) {
 	case INVITATION_MSG: {
 			msgSize = 5;
 			meetingInvitation* info = (meetingInvitation*) buffer;
-			if (meeting == NONE && time (NULL) >= meetingTimeout) { // THEN: zgódź się :D
+            if (meeting == NONE && time (NULL) >= meetingTimeout) { // THEN: zgódź się :D
 				//debug_log("Zaproszono mnie do spotkania %d\n",info->meetingId);
 				meeting = info->meetingId;
 			}

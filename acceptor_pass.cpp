@@ -84,6 +84,7 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 			acceptorToken = msg.msg.tokenId;
 			acceptorStatus = isAcceptor;
 			msg.msg.complete = 1;
+            checkDecisions();
 			acceptorInfo = msg.acceptorInfo; // przypisanie tablicy informacjami o akceptowaniu spotkań
 			//TODO zapisanie liczby uczestników na spotkaniach
 			msg.msg.distance = (sender == parent) ? msg.msg.distance + 1 : msg.msg.distance - 1;

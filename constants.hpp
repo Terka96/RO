@@ -14,6 +14,8 @@
 #define TRUE 1
 #define FALSE 2
 
+#define MEETING_CLOCK_TIMEOUT 1000
+
 #define MIN_CONSOLE_LOG 2
 #define MIN_FILE_LOG 1
 

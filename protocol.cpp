@@ -47,13 +47,11 @@ void Opornik::listen() {
 							Ibsend (a, 3, children[i], ASKFORACCEPTATION);
 						}
 					if (acceptorStatus == isAcceptor) {
-						log (trace, "Shareuje mój zegar\n");
-						shareAcceptor s;
-						s.acceptorToken = acceptorToken;
-						s.meeting = a->meeting;
-						s.acceptorClk = clock;
-						Ibsend (&s, 4,  id, SHAREACCEPTOR);
+						shareClock(a);
 					}
+                    else if (acceptorToken != NONE){
+                        askForAcceptation_vector.push_back (a);
+                    }
 					break;
 				}
 			case SHAREACCEPTOR: {
@@ -142,6 +140,15 @@ void Opornik::listen() {
 	catch (std::exception& e) {
 		log (info, "%s", e.what() );
 	}
+}
+
+void Opornik::shareClock(askForAcceptation* a) {
+	log (trace, "Shareuje mój zegar\n");
+	shareAcceptor s;
+	s.acceptorToken = acceptorToken;
+	s.meeting = a->meeting;
+	s.acceptorClk = clock;
+	Ibsend (&s, 4,  id, SHAREACCEPTOR);
 }
 
 void Opornik::getAcceptation (int p) {
@@ -373,22 +380,22 @@ void Opornik::sendResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 void Opornik::checkDecisions() {
 	if (acceptorToken != NONE && acceptorStatus == isAcceptor) {
 		std::list<int> ready;
-        char debug[700]={};
-        char buffer[10];
+		char debug[700] = {};
+		char buffer[10];
 		for (int j = 0; j < NUM_CONSPIR; j++) {
-            snprintf(buffer, sizeof(buffer), "S %d: ", j);
-            strcat(debug, buffer);
+			snprintf (buffer, sizeof (buffer), "S %d: ", j);
+			strcat (debug, buffer);
 			bool rd = true;
 			//Pierwszy warunek- info od wszystkich akceptorów
-			for (int i = 0; i < NUM_ACCEPTORS; i++){
+			for (int i = 0; i < NUM_ACCEPTORS; i++) {
 				if (knownMeetings[j].acceptors[i] == NONE) {
 					rd = false;
 				}
-                else{
-                    snprintf(buffer, sizeof(buffer), "%d ", i);
-                    strcat(debug, buffer);
-                }
-            }
+				else {
+					snprintf (buffer, sizeof (buffer), "%d ", i);
+					strcat (debug, buffer);
+				}
+			}
 			//drugi warunek- zegar ma najmniejszą wartość
 			int lowestClk = clock;
 			for (int i = 0; i < NUM_ACCEPTORS; i++)
@@ -406,10 +413,9 @@ void Opornik::checkDecisions() {
 			if (rd) {
 				ready.push_back (j);
 			}
-
-            strcat(debug,"| ");
+			strcat (debug, "| ");
 		}
-        log(trace, "%s \n", debug);
+		log (trace, "%s \n", debug);
 		while (!ready.empty() ) {
 			//find maxPriority
 			int meetingId = 0;

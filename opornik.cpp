@@ -303,7 +303,7 @@ void Opornik::live() {
 				endMeeting();
             }
 			else if (actionRand >= 985 && acceptorToken != NONE) {
-				//pass_acceptor();
+				pass_acceptor();
 			}
 	}
 }
@@ -348,6 +348,7 @@ void Opornik::setStatus (status_enum s) {
 				passAcceptorMsg_vector.pop_back();
 			}
 			status = idle;
+            askForAcceptation_vector.clear();
 			log (debug, "IDLE\n");
 			break;
 		}

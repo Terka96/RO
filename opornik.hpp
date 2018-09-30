@@ -46,6 +46,7 @@ class Opornik {
 	void receiveResponseMsg (int*, int, msgBcastInfo*);
 	void sendForwardMsg (int*, int, int, int);
 	void sendResponseMsg (int*, int, msgBcastInfo*);
+    void shareClock (askForAcceptation* a);
 	
 	void setStatus (status_enum);
 	
@@ -74,6 +75,7 @@ class Opornik {
 	std::vector<int> neighbors;
 	std::vector<int> children;
 	std::vector<int> resources;
+    std::vector<askForAcceptation*> askForAcceptation_vector;
 	std::list<msgBcastInfo> bcasts;
 	
 	std::vector<Msg_pass_acceptor> passAcceptorMsg_vector; // kolejka otrzymanych próśb o zmianę akceptora, podczas gdy byliśmy "busy"

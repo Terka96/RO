@@ -82,11 +82,22 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 			log (info, "Zostałem NOWYM AKCEPTOREM (%d)!\n", msg.msg.tokenId);
 			// Uzupełnienie wartości (nowy akceptor)
 			acceptorToken = msg.msg.tokenId;
+			acceptorInfo = msg.acceptorInfo; // przypisanie tablicy informacjami o akceptowaniu spotkań
+			std::copy(msg.acceptorInfo.meetingInfo,msg.acceptorInfo.meetingInfo+NUM_CONSPIR,knownMeetings);
+			// knownMeetings = msg.acceptorInfo.meetingInfo;
 			acceptorStatus = isAcceptor;
 			msg.msg.complete = 1;
+
+			// sprawdzanie zaległych zgłoszeń
+			if (askForAcceptation_vector.size() > 0) {
+				for (int i = 0; i < askForAcceptation_vector.size(); i++) {
+					shareClock(askForAcceptation_vector[i]);
+					log(trace, "Obsługuję zaległe zgłoszenie (%d\\%d) \n", i, askForAcceptation_vector.size());
+				}
+				askForAcceptation_vector.clear();
+			}
+
             checkDecisions();
-			acceptorInfo = msg.acceptorInfo; // przypisanie tablicy informacjami o akceptowaniu spotkań
-			//TODO zapisanie liczby uczestników na spotkaniach
 			msg.msg.distance = (sender == parent) ? msg.msg.distance + 1 : msg.msg.distance - 1;
 			Ibsend (&msg, sizeof (msg) / sizeof (int), sender, TAG_ACCEPTOR_RESPONSE);
 		}
@@ -94,6 +105,7 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 			setStatus (idle);
 			acceptorStatus = notAcceptor;
 			acceptorToken = NONE;
+			askForAcceptation_vector.clear();
 			log (trace, "Zostałem ODRZUCONY na nowego akceptora.\n");
 		}
 	}
@@ -117,6 +129,8 @@ void Opornik::handleACandidateMsg (int sender, Msg_pass_acceptor msg) {
 			log (trace, "Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!\n Nowym akceptorem zostanie: %d!\n", msg.candidate_id);
 			//przekaż dobrą nowinę kandydatowi (wiadomośc zwrotna)
 			msg.failure = 0;
+			std::copy(knownMeetings,knownMeetings+NUM_CONSPIR,acceptorInfo.meetingInfo);
+			//acceptorInfo.meetingInfo = knownMeetings[];
 			Msg_pass_acceptor_final final_msg{msg, acceptorInfo};
 			Ibsend (&final_msg, sizeof (final_msg) / sizeof (int), sender, TAG_ACCEPTOR_RESPONSE);
 		}
@@ -198,6 +212,7 @@ void Opornik::pass_acceptor (bool force) {
 		if (parent != -1) {
 			acceptorStatus = findingCandidates;
 			msg = {clock, id, NONE, 1, 1, 0}; // distance = 1, bo przekazujemy w górę
+			msg.tokenId = acceptorToken;
 			// Wystarczy przekazać w górę
 			Ibsend (&msg, sizeof (msg) / sizeof (int), parent, TAG_PASS_ACCEPTOR);
 		}
@@ -211,12 +226,14 @@ void Opornik::pass_acceptor (bool force) {
 			acceptorStatus = findingCandidates;
 			if (parent != -1) {
 				msg = {clock, id, NONE, 1, -1, 0};  // distance = 1, bo przekazujemy w górę
+				msg.tokenId = acceptorToken;
 				// Trzeba przekazać w górę i do dzieci
 				log (trace, "Chcę przkazać akceptora w dół!\n");
 				Ibsend (&msg, sizeof (msg) / sizeof (int), parent, TAG_PASS_ACCEPTOR);
 			}
 			if (children.size() > 0) {
 				msg = {clock, id, NONE, -1, -1, 0};
+				msg.tokenId = acceptorToken;
 				for (int i = 0; i < children.size(); i++) {
 					Ibsend (&msg, sizeof (msg) / sizeof (int), children[i], TAG_PASS_ACCEPTOR);
 				}

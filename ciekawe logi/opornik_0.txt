@@ -1,0 +1,71 @@
+[INFO] Node 0-0:1010457406 [0]: Sending order(0) to node 1
+[INFO] Node 0-0:1010457406 [1]: Sending order(0) to node 2
+[INFO] Node 0-0:1010457406 [2]: Sending order(0) to node 3
+[TRACE] Node 0-0:1 [15]: Shareuje mój zegar
+[TRACE] Node 0-0:1 [20]: S 0: 0 | S 1: | S 2: | S 3: |  
+[TRACE] Node 0-0:1 [23]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[INFO] Node 0-0:1 [24]: zdecydowałem
+[INFO] Node 0-0:1 [28]: moje spotkanie jest zaakceptowane
+[INFO] Node 0-0:1 [28]: Organizuję spotkanie!
+[INFO] Node 0-0:1 [34]: Na moje spotkanie przyjdzie 3 oporników i użyjemy zasobu 1
+[TRACE] Node 0-0:1 [39]: Shareuje mój zegar
+[TRACE] Node 0-0:1 [44]: S 0: 0 | S 1: | S 2: | S 3: |  
+[TRACE] Node 0-0:1 [47]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[INFO] Node 0-0:1 [50]: moje spotkanie jest zaakceptowane
+[INFO] Node 0-0:1 [50]: Rozejść się!
+[INFO] Node 0-0:1 [56]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 0-0:1 [56]: Organizuję spotkanie!
+[INFO] Node 0-0:1 [62]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 1
+[TRACE] Node 0-0:1 [67]: Shareuje mój zegar
+[TRACE] Node 0-0:1 [72]: S 0: 0 | S 1: | S 2: | S 3: |  
+[TRACE] Node 0-0:1 [75]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[INFO] Node 0-0:1 [78]: moje spotkanie jest zaakceptowane
+[INFO] Node 0-0:1 [78]: Rozejść się!
+[INFO] Node 0-0:1 [84]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 0-0:1 [98]: Shareuje mój zegar
+[TRACE] Node 0-0:1 [103]: S 0: | S 1: 0 | S 2: | S 3: |  
+[TRACE] Node 0-0:1 [106]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[TRACE] Node 0-0:1 [127]: Nie chcę już być akceptorem!
+[TRACE] Node 0-0:1 [127]: Chcę przekazać akceptora w górę!
+[TRACE] Node 0-0:1 [127]: Nie mogę przekazać akceptora w górę, jestem na szczycie!
+[TRACE] Node 0-0:1 [127]: Nie chcę już być akceptorem!
+[TRACE] Node 0-0:1 [127]: Nie mogę przekazać na ten sam poziom, jestem JEDYNY na tym szczeblu!
+[TRACE] Node 0-0:1 [146]: Nie chcę już być akceptorem!
+[TRACE] Node 0-0:1 [146]: Nie mogę przekazać na ten sam poziom, jestem JEDYNY na tym szczeblu!
+[INFO] Node 0-0:1 [146]: Organizuję spotkanie!
+[INFO] Node 0-0:1 [152]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 0-0:1 [152]: Dajcie mi zasób!
+[INFO] Node 0-0:1 [158]: Rozejść się!
+[INFO] Node 0-0:1 [161]: Wszystkie zasoby są pozajmowane
+[INFO] Node 0-0:1 [165]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 0-0:1 [165]: Organizuję spotkanie!
+[INFO] Node 0-0:1 [172]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 0-0:1 [172]: Dajcie mi zasób!
+[INFO] Node 0-0:1 [180]: Rozejść się!
+[INFO] Node 0-0:1 [183]: Wszystkie zasoby są pozajmowane
+[INFO] Node 0-0:1 [187]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 0-0:1 [203]: Organizuję spotkanie!
+[INFO] Node 0-0:1 [210]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 0-0:1 [210]: Dajcie mi zasób!
+[INFO] Node 0-0:1 [216]: Rozejść się!
+[INFO] Node 0-0:1 [219]: Wszystkie zasoby są pozajmowane
+[INFO] Node 0-0:1 [222]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 0-0:1 [238]: Nie chcę już być akceptorem!
+[TRACE] Node 0-0:1 [238]: Nie mogę przekazać na ten sam poziom, jestem JEDYNY na tym szczeblu!
+[INFO] Node 0-0:1 [264]: Organizuję spotkanie!
+[INFO] Node 0-0:1 [271]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 1
+[TRACE] Node 0-0:1 [276]: Shareuje mój zegar
+[TRACE] Node 0-0:1 [281]: S 0: 0 | S 1: | S 2: | S 3: |  
+[TRACE] Node 0-0:1 [284]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[INFO] Node 0-0:1 [287]: moje spotkanie jest zaakceptowane
+[TRACE] Node 0-0:1 [486]: (from 1) Byłbym DOBRYM KANDYDATEM na akceptora, niestety mam już WŁASNY TOKEN. Dam znać (1)
+[INFO] Node 0-0:1 [557]: Rozejść się!
+[INFO] Node 0-0:1 [564]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 0-0:1 [585]: Nie chcę już być akceptorem!
+[TRACE] Node 0-0:1 [585]: Chcę przekazać akceptora w górę!
+[TRACE] Node 0-0:1 [585]: Nie mogę przekazać akceptora w górę, jestem na szczycie!
+[TRACE] Node 0-0:1 [585]: Nie chcę już być akceptorem!
+[TRACE] Node 0-0:1 [585]: Nie mogę przekazać na ten sam poziom, jestem JEDYNY na tym szczeblu!
+[TRACE] Node 0-0:1 [601]: Shareuje mój zegar
+[TRACE] Node 0-0:1 [606]: S 0: | S 1: 0 | S 2: | S 3: |  
+[TRACE] Node 0-0:1 [609]: S 0: | S 1: 0 | S 2: | S 3: |  

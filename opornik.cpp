@@ -47,7 +47,7 @@ int inline Opornik::log (log_enum type, const char* format, ...) {
 		}
 	}
 	if (type >= MIN_CONSOLE_LOG) {
-		printf ("[%s] Node %d [%d]:", logType, id, clock);
+		printf ("[%s] Node %d-%d:%d [%d]:", logType, id, acceptorToken, acceptorStatus, clock);
 		va_list args;
 		va_start (args, format);
 		res = vprintf (format, args);
@@ -60,7 +60,7 @@ int inline Opornik::log (log_enum type, const char* format, ...) {
 		vsprintf (buffer, format, args);
 		va_end (args);
 
-		fprintf (pFile, "[%s] Node %d [%d]: %s", logType, id, clock, buffer);
+		fprintf (pFile, "[%s] Node %d-%d:%d [%d]: %s", logType, id, acceptorToken, acceptorStatus, clock, buffer);
 	}
 	fclose (pFile);
 	#endif

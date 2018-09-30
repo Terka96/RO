@@ -338,14 +338,14 @@ void Opornik::introduce() {
 void Opornik::setStatus (status_enum s) {
 	switch (s) {
 	case idle: { // Musisz przejrzeć kolejkę otrzymanych próśb inicjalizujących zmianę akceptora (Msg_pass_acceptor)
-			log (info, "Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (%d)...\n", passAcceptorMsg_vector.size() );
+			log (trace, "Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (%d)...\n", passAcceptorMsg_vector.size() );
 			while (passAcceptorMsg_vector.size() != 0) {
 				Msg_pass_acceptor msg = passAcceptorMsg_vector.back();
 				acceptorMsgSend (msg, msg.sender);
 				passAcceptorMsg_vector.pop_back();
 			}
 			status = idle;
-			log (info, "IDLE\n");
+			log (debug, "IDLE\n");
 			break;
 		}
 	}

@@ -244,7 +244,9 @@ void Opornik::pass_acceptor (bool force) {
 		}
 	}
 	if (failure && force) {
-		pass_acceptor (true);
+		status = idle; // po zaimplementowaniu właściwego rozwiązania, to jest do usunięcia
+		// pass_acceptor (true); // Tak nie może być, bo dostajemy kilka tysięcy żądań w sekundę
+		// TODO tutaj w najgorszym wypadku trzeba dać delay. Najlepiej, jakby był jakiś vector mówiący, że chcieliśmy się zmienić
 	}
 	else if (!failure || !force) {
 		status = idle;

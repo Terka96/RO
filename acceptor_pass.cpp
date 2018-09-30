@@ -98,18 +98,7 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 				}
 			}
 			// sprawdzanie zaległych zgłoszeń
-			log (trace, "Obsługuję zaległe zgłoszenia (%d) \n", askForAcceptation_vector.size() );
-			if (askForAcceptation_vector.size() > 0) {
-				bool sent[NUM_CONSPIR] = {false}; // Mogliśmy otrzymać acceptation_ask które już mieliśmy, trzeba usunąć duplikaty
-				for (int i = 0; i < askForAcceptation_vector.size(); i++) {
-					if(!sent[askForAcceptation_vector[i]->meeting]){
-						shareClock (askForAcceptation_vector[i]);
-						log (trace, "Zaległe zgłoszenie (%d\\%d) \n", i, askForAcceptation_vector.size() );
-						sent[askForAcceptation_vector[i]->meeting] = true;
-					}
-				}
-				askForAcceptation_vector.clear();
-			}
+			Opornik::chceckAskVector();
 			checkDecisions();
 			msg.msg.distance = (sender == parent) ? msg.msg.distance + 1 : msg.msg.distance - 1;
 			Ibsend (&msg, sizeof (msg) / sizeof (int), sender, TAG_ACCEPTOR_RESPONSE);
@@ -133,6 +122,22 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 		basicAcceptorSend (msg, sender, TAG_ACCEPTOR_RESPONSE);
 	}
 }
+
+void Opornik::chceckAskVector(){
+	log (trace, "Obsługuję zaległe zgłoszenia (%d) \n", askForAcceptation_vector.size() );
+	if (askForAcceptation_vector.size() > 0) {
+				bool sent[NUM_CONSPIR] = {false}; // Mogliśmy otrzymać acceptation_ask które już mieliśmy, trzeba usunąć duplikaty
+				for (int i = 0; i < askForAcceptation_vector.size(); i++) {
+					if(!sent[askForAcceptation_vector[i]->meeting]){
+						shareClock (askForAcceptation_vector[i]);
+						log (trace, "Zaległe zgłoszenie (%d\\%d) \n", i, askForAcceptation_vector.size() );
+						sent[askForAcceptation_vector[i]->meeting] = true;
+					}
+				}
+				askForAcceptation_vector.clear();
+			}
+}
+
 void Opornik::handleACandidateMsg (int sender, Msg_pass_acceptor msg) {
 	if (msg.initializator_id == id && acceptorStatus != candidate && msg.failure == 0) { //msg.Failure oznacza, że dany kandydat jest już akceptorem
 		candidatesAnswers++;
@@ -272,6 +277,7 @@ void Opornik::pass_acceptor (bool force) {
 		else if (parent != -1) {
 			acceptorStatus = findingCandidates;
 			msg = {clock, id, NONE, 1, 0, 0};  // distance = 1, bo przekazujemy w górę
+			msg.tokenId = acceptorToken;
 			//Wystarczy przekazać w górę
 			log (trace, "Chcę przekazać akceptora na swoim poziomie!\n");
 			Ibsend (&msg, sizeof (msg) / sizeof (int), parent, TAG_PASS_ACCEPTOR);
@@ -281,12 +287,13 @@ void Opornik::pass_acceptor (bool force) {
 			failure = true;
 		}
 	}
-	if (failure && force) {
+	if (failure) { //&& force) {
+		acceptorStatus = isAcceptor;
 		status = idle; // po zaimplementowaniu właściwego rozwiązania, to jest do usunięcia
 		// pass_acceptor (true); // Tak nie może być, bo dostajemy kilka tysięcy żądań w sekundę
 		// TODO tutaj w najgorszym wypadku trzeba dać delay. Najlepiej, jakby był jakiś vector mówiący, że chcieliśmy się zmienić
 	}
-	else if (!failure || !force) {
+	else if (!failure) {
 		status = idle;
 	}
 }

@@ -26,6 +26,8 @@ class Opornik {
 	void pass_acceptor (bool force); // force - czy musi przekazac akceptor (jesli nie moze na jednym poziomie, to probuje na innym)
 	void pass_acceptor();
     void checkDecisions();
+
+    void chceckAskVector();
 	
 	
 	static void* live_starter (void* arg);

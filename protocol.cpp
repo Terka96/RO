@@ -50,6 +50,7 @@ void Opornik::listen() {
 						shareClock(a);
 					}
                     else if (acceptorToken != NONE){
+                        log(trace, "Zapisuję askForAcceptation \n");
                         askForAcceptation_vector.push_back (a);
                     }
 					break;

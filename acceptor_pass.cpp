@@ -83,21 +83,34 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 			// Uzupełnienie wartości (nowy akceptor)
 			acceptorToken = msg.msg.tokenId;
 			acceptorInfo = msg.acceptorInfo; // przypisanie tablicy informacjami o akceptowaniu spotkań
-			std::copy(msg.acceptorInfo.meetingInfo,msg.acceptorInfo.meetingInfo+NUM_CONSPIR,knownMeetings);
+			std::copy (msg.acceptorInfo.meetingInfo, msg.acceptorInfo.meetingInfo + NUM_CONSPIR, knownMeetings);
 			// knownMeetings = msg.acceptorInfo.meetingInfo;
 			acceptorStatus = isAcceptor;
 			msg.msg.complete = 1;
 
+			for (int i = 0; i < NUM_CONSPIR; i++) {
+				if (msg.acceptation_ask[i].clock != 0){
+					log (debug, "Otrzymałem zaległe zgłoszenie w wiadomości od starego akceptora (%d) \n", i);
+					askForAcceptation_vector.push_back(&msg.acceptation_ask[i]);
+				}
+				else{
+					break;
+				}
+			}
 			// sprawdzanie zaległych zgłoszeń
+			log (trace, "Obsługuję zaległe zgłoszenia (%d) \n", askForAcceptation_vector.size() );
 			if (askForAcceptation_vector.size() > 0) {
+				bool sent[NUM_CONSPIR] = {false}; // Mogliśmy otrzymać acceptation_ask które już mieliśmy, trzeba usunąć duplikaty
 				for (int i = 0; i < askForAcceptation_vector.size(); i++) {
-					shareClock(askForAcceptation_vector[i]);
-					log(trace, "Obsługuję zaległe zgłoszenie (%d\\%d) \n", i, askForAcceptation_vector.size());
+					if(!sent[askForAcceptation_vector[i]->meeting]){
+						shareClock (askForAcceptation_vector[i]);
+						log (trace, "Zaległe zgłoszenie (%d\\%d) \n", i, askForAcceptation_vector.size() );
+						sent[askForAcceptation_vector[i]->meeting] = true;
+					}
 				}
 				askForAcceptation_vector.clear();
 			}
-
-            checkDecisions();
+			checkDecisions();
 			msg.msg.distance = (sender == parent) ? msg.msg.distance + 1 : msg.msg.distance - 1;
 			Ibsend (&msg, sizeof (msg) / sizeof (int), sender, TAG_ACCEPTOR_RESPONSE);
 		}
@@ -129,9 +142,16 @@ void Opornik::handleACandidateMsg (int sender, Msg_pass_acceptor msg) {
 			log (trace, "Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!\n Nowym akceptorem zostanie: %d!\n", msg.candidate_id);
 			//przekaż dobrą nowinę kandydatowi (wiadomośc zwrotna)
 			msg.failure = 0;
-			std::copy(knownMeetings,knownMeetings+NUM_CONSPIR,acceptorInfo.meetingInfo);
+			std::copy (knownMeetings, knownMeetings + NUM_CONSPIR, acceptorInfo.meetingInfo);
 			//acceptorInfo.meetingInfo = knownMeetings[];
-			Msg_pass_acceptor_final final_msg{msg, acceptorInfo};
+			Msg_pass_acceptor_final final_msg{msg, acceptorInfo, {}};
+			// przekazanie żądań otrzymanych podczas wymiany akceptora
+			if (askForAcceptation_vector.size() > 0) {
+				for (int i = 0; i < askForAcceptation_vector.size(); i++) {
+					final_msg.acceptation_ask[i] = *askForAcceptation_vector[i];
+					log (debug, "Umieszczam zaległe zgłoszenie w wiadomości (%d\\%d) \n", i, askForAcceptation_vector.size() );
+				}
+			}
 			Ibsend (&final_msg, sizeof (final_msg) / sizeof (int), sender, TAG_ACCEPTOR_RESPONSE);
 		}
 		else {

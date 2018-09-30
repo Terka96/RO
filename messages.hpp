@@ -105,6 +105,7 @@ struct Msg_pass_acceptor {
 struct Msg_pass_acceptor_final {
 	Msg_pass_acceptor msg;
 	AcceptorInfo acceptorInfo;
+    askForAcceptation acceptation_ask[NUM_CONSPIR];
 };
 
 #endif // MESSAGES_H

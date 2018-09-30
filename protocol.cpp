@@ -64,40 +64,10 @@ void Opornik::listen() {
 						if (children[i] != mpi_status.MPI_SOURCE) {
 							Ibsend (s, 4,  children[i], SHAREACCEPTOR);
 						}
-					if (acceptorToken != NONE) {
-						knownMeetings[s->meeting].acceptors[s->acceptorToken] = s->acceptorClk;
-						bool makeDecision = true;
-						//Pierwszy warunek- info od wszystkich akceptorów
-						for (int i = 0; i < NUM_ACCEPTORS; i++)
-							if (knownMeetings[s->meeting].acceptors[i] == NONE) {
-								makeDecision = false;
-							}
-						//drugi warunek- zegar ma najmniejszą wartość
-						int lowestClk = clock;
-						for (int i = 0; i < NUM_ACCEPTORS; i++)
-							if (knownMeetings[s->meeting].acceptors[i] < lowestClk) {
-								lowestClk = knownMeetings[s->meeting].acceptors[i];
-							}
-						//trzeci warunek- token akceptora najniższy
-						for (int i = 0; i < NUM_ACCEPTORS; i++)
-							if (knownMeetings[s->meeting].acceptors[i] == lowestClk) {
-								if (i != acceptorToken) {
-									makeDecision = false;
-								}
-								break;
-							}
-						if (makeDecision) {
-							accept* a = (accept*) buffer;
-							if (knownMeetings[s->meeting].participants <= freeSlots) {
-								a->decision = TRUE;
-							}
-							else {
-								a->decision = FALSE;
-							}
-							a->meeting = s->meeting;
-							Ibsend (a, 3,  id, ACCEPT);
-							log (info, "zdecydowałem\n");
-						}
+                    if (acceptorToken != NONE) {
+                        knownMeetings[s->meeting].acceptors[s->acceptorToken]=s->acceptorClk;
+                        if(acceptorStatus==isAcceptor)
+                            checkDecisions();
 					}
 					break;
 				}
@@ -395,6 +365,63 @@ void Opornik::sendResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 	else {
 		Ibsend (buffer, bcast->msgSize, bcast->respondTo, tag);
 	}
+}
+
+void Opornik::checkDecisions(){
+    if(acceptorToken!=NONE && acceptorStatus==isAcceptor)
+    {
+        std::list<int> ready;
+        for(int j=0;j<NUM_CONSPIR;j++)
+        {
+            bool rd=true;
+            //Pierwszy warunek- info od wszystkich akceptorów
+            for(int i=0;i<NUM_ACCEPTORS;i++)
+                if(knownMeetings[j].acceptors[i]==NONE)
+                    rd=false;
+            //drugi warunek- zegar ma najmniejszą wartość
+            int lowestClk=clock;
+            for(int i=0;i<NUM_ACCEPTORS;i++)
+                if(knownMeetings[j].acceptors[i]<lowestClk)
+                    lowestClk=knownMeetings[j].acceptors[i];
+            //trzeci warunek- token akceptora najniższy
+            for(int i=0;i<NUM_ACCEPTORS;i++)
+                if(knownMeetings[j].acceptors[i]==lowestClk)
+                {
+                    if(i!=acceptorToken)
+                        rd=false;
+                    break;
+                }
+            if(rd)
+                ready.push_back(j);
+        }
+        while(!ready.empty())
+        {
+            //find maxPriority
+            int meetingId=0;
+            int maxPriority=0;
+            for(auto i : ready)
+                if(knownMeetings[i].priority>maxPriority)
+                    maxPriority=knownMeetings[i].priority;
+            //select meetingId
+            for(auto i : ready)
+                if(knownMeetings[i].priority==maxPriority){
+                    meetingId=i;
+                    ready.remove(i);
+                    break;
+                }
+            //advance priorities
+            for(auto i : ready)
+                knownMeetings[i].priority++;
+            accept a;
+            if(knownMeetings[meetingId].participants<=freeSlots)
+                a.decision=TRUE;
+            else
+                a.decision=FALSE;
+            a.meeting=meetingId;
+            Ibsend(&a,3,  id, ACCEPT);
+            log(info,"zdecydowałem\n");
+        }
+    }
 }
 
 void Opornik::Ibsend (void* buf, int count, int dest, int tag) {

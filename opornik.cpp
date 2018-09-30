@@ -78,6 +78,7 @@ Opornik::Opornik() {
 	meetingTimeout = 0;
 	tagGeneratorCounter = 0;
 	participantsOnMymeeting = 0;
+    freeSlots=MAX_MEETINGS_PARTICIPANTS;
 	for (int i = 0; i < NUM_CONSPIR; i++) {
 		knownMeetings[i].participants = 0;
 		knownMeetings[i].priority = 0;

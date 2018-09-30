@@ -16,7 +16,7 @@ class Opornik {
 	void makeTree();
 	void makeKids (int count);
 	void distributeAcceptorsAndResources();
-	int generateUniqueTag() {tagGeneratorCounter++; return size * tagGeneratorCounter + id;};
+    int generateUniqueTag() {tagGeneratorCounter++; return size * tagGeneratorCounter + id;}
 	void findLowestKids(); // szuka oporników na najniższym szczeblu ruchu oporu. Taki opornik przypisuje sobie wartość najniższego opornika (isLowest);
 	
 	void organizeMeeting();
@@ -25,6 +25,7 @@ class Opornik {
 	void getAcceptation (int p);
 	void pass_acceptor (bool force); // force - czy musi przekazac akceptor (jesli nie moze na jednym poziomie, to probuje na innym)
 	void pass_acceptor();
+    void checkDecisions();
 	
 	
 	static void* live_starter (void* arg);

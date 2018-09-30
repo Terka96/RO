@@ -14,6 +14,9 @@
 #define TRUE 1
 #define FALSE 2
 
+#define MIN_CONSOLE_LOG 2
+#define MIN_FILE_LOG 1
+
 struct msgBcastInfo {
 	int clock;
 	int uniqueTag;
@@ -54,6 +57,12 @@ enum acceptor_enum {
 	accepted = 5
 };
 
+enum log_enum {
+    debug = 0,
+    trace = 1,
+    info = 2,
+    error = 3
+};
 
 
 #endif

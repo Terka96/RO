@@ -77,7 +77,7 @@ class Opornik {
 	
 	std::vector<Msg_pass_acceptor> passAcceptorMsg_vector; // kolejka otrzymanych próśb o zmianę akceptora, podczas gdy byliśmy "busy"
 	
-	int inline debug_log (const char* format, ...);
+	int inline log (log_enum type, const char* format, ...);
 };
 
 #endif

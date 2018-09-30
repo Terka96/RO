@@ -96,7 +96,7 @@ void Opornik::listen() {
 							}
 							a->meeting = s->meeting;
 							Ibsend (a, 3,  id, ACCEPT);
-							debug_log ("zdecydowałem\n");
+							log (info, "zdecydowałem\n");
 						}
 					}
 					break;
@@ -123,15 +123,15 @@ void Opornik::listen() {
 					}
 					if (a->decision == TRUE)
 						if (a->meeting == id) {
-							debug_log ("moje spotkanie jest zaakceptowane\n");
+							log (info, "moje spotkanie jest zaakceptowane\n");
 							duringMyMeeting = true;
 						}
 						else if (a->meeting == meeting) {
-							debug_log ("idę na spotkanie\n");
+							log (info, "idę na spotkanie\n");
 						}
 						else { //a->decision==FALSE
 							if (a->meeting == id) {
-								debug_log ("moje spotkanie jest odrzucone\n");
+								log (info, "moje spotkanie jest odrzucone\n");
 								duringMyMeeting = false;
 								meeting = NONE;
 								resources.push_back (busyResource);
@@ -139,7 +139,7 @@ void Opornik::listen() {
 								participantsOnMymeeting = 0;
 							}
 							else if (a->meeting == meeting) {
-								debug_log ("ehh nie wyszło, jestem wolny\n");
+								log (info, "ehh nie wyszło, jestem wolny\n");
 								meeting = NONE;
 							}
 						}
@@ -161,13 +161,13 @@ void Opornik::listen() {
 					break;
 				}
 			default: {
-					debug_log ("Otrzymano nieznany typ wiadomości\n");
+					log (info, "Otrzymano nieznany typ wiadomości\n");
 				}
 			}
 		}
 	}
 	catch (std::exception& e) {
-		debug_log ("%s", e.what() );
+		log (info, "%s", e.what() );
 	}
 }
 
@@ -180,7 +180,7 @@ void Opornik::getAcceptation (int p) {
 
 void Opornik::organizeMeeting() {
 	if (meeting == NONE) {
-		debug_log ("Organizuję spotkanie!\n");
+		log (info, "Organizuję spotkanie!\n");
 		meeting = id;
 		meetingInvitation info;
 		info.uniqueTag = generateUniqueTag();
@@ -200,7 +200,7 @@ void Opornik::organizeMeeting() {
 
 void Opornik::resourceGather() {
 	if (busyResource == NONE) {
-		debug_log ("Dajcie mi zasób!\n");
+		log (info, "Dajcie mi zasób!\n");
 		resourceGatherMsg res;
 		res.uniqueTag = generateUniqueTag();
 		res.haveResource = NONE;
@@ -210,7 +210,7 @@ void Opornik::resourceGather() {
 
 void Opornik::endMeeting() {
 	if (id == meeting) {
-		debug_log ("Rozejść się!\n");
+		log (info, "Rozejść się!\n");
 		endOfMeeting end;
 		end.uniqueTag = generateUniqueTag();
 		end.meetingId = id;
@@ -356,11 +356,11 @@ void Opornik::sendResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 				busyResource = info->haveResource;
 				if (busyResource != NONE) {
 					participantsOnMymeeting = info->participants;
-					debug_log ("Na moje spotkanie przyjdzie %d oporników i użyjemy zasobu %d\n", info->participants, info->haveResource);
+					log (log_enum::info, "Na moje spotkanie przyjdzie %d oporników i użyjemy zasobu %d\n", info->participants, info->haveResource);
 					getAcceptation (participantsOnMymeeting);
 				}
 				else {
-					debug_log ("Jest %d chętnych na spotkanie, ale nie mamy zasobu\n", info->participants);
+					log (log_enum::info, "Jest %d chętnych na spotkanie, ale nie mamy zasobu\n", info->participants);
 					participantsOnMymeeting = info->participants;
 					resourceGather();
 				}
@@ -370,12 +370,12 @@ void Opornik::sendResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 				resourceGatherMsg* res = (resourceGatherMsg*) buffer;
 				busyResource = res->haveResource;
 				if (busyResource != NONE) {
-					debug_log ("Otrzymałem zasób %d\n", res->haveResource);
+					log (info, "Otrzymałem zasób %d\n", res->haveResource);
 					getAcceptation (participantsOnMymeeting);
 				}
 				else {
 					endMeeting();
-					debug_log ("Wszystkie zasoby są pozajmowane\n");
+					log (info, "Wszystkie zasoby są pozajmowane\n");
 				}
 				break;
 			}
@@ -389,7 +389,7 @@ void Opornik::sendResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 			}
 			participantsOnMymeeting = 0;
 			duringMyMeeting = false;
-			debug_log ("Wszyscy poszli już do domu po moim spotkaniu\n");
+			log (info, "Wszyscy poszli już do domu po moim spotkaniu\n");
 			break;
 		}
 	else {

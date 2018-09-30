@@ -13,6 +13,7 @@ int main (int argc, char** argv) {
 	MPI_Init_thread (&argc, &argv, MPI::THREAD_MULTIPLE, &provided);
 	// https://stackoverflow.com/questions/14836560/thread-safety-of-mpi-send-using-threads-created-with-stdasync/14837206#14837206
 	// https://stackoverflow.com/questions/16661888/calling-mpi-functions-from-multiple-threads
+	system("mkdir logs");
 	if (provided < MPI_THREAD_MULTIPLE) {
 		printf ("ERROR: The MPI library does not have full thread support\n");
 		MPI_Abort (MPI_COMM_WORLD, 1);

@@ -11,15 +11,58 @@
 #include "constants.hpp"
 
 #define DEBUGLOG 1
+#define MAXFILENAME 100
 
-int inline Opornik::debug_log (const char* format, ...) {
+int inline Opornik::log (log_enum type, const char* format, ...) {
 	int res;
 	#ifdef DEBUGLOG
-	printf ("Node %d [%d]:", id, clock);
-	va_list args;
-	va_start (args, format);
-	res = vprintf (format, args);
-	va_end (args);
+	const char* logType;
+	FILE* pFile;
+	char id_c[16]; // need a buffer for that
+	sprintf (id_c, "%d", id);
+	const char* p = id_c;
+	char fn[MAXFILENAME + 1];
+	snprintf (fn, MAXFILENAME, "logs/opornik_%d.txt", id);
+	pFile = fopen (fn, "a+");
+	switch (type) {
+	case debug: {
+			logType = "DEBUG";
+			break;
+		}
+	case trace: {
+			logType = "TRACE";
+			break;
+		}
+	case info: {
+			logType = "INFO";
+			break;
+		}
+	case error: {
+			logType = "ERROR";
+			break;
+		}
+	default: {
+			logType = "DEFAULT";
+			break;
+		}
+	}
+	if (type >= MIN_CONSOLE_LOG) {
+		printf ("[%s] Node %d [%d]:", logType, id, clock);
+		va_list args;
+		va_start (args, format);
+		res = vprintf (format, args);
+		va_end (args);
+	}
+	if (type >= MIN_FILE_LOG) {
+		char buffer[256];
+		va_list args;
+		va_start (args, format);
+		vsprintf (buffer, format, args);
+		va_end (args);
+
+		fprintf (pFile, "[%s] Node %d [%d]: %s", logType, id, clock, buffer);
+	}
+	fclose (pFile);
 	#endif
 	return res;
 };
@@ -146,7 +189,7 @@ void Opornik::makeKids (int count) {
 		}
 		for (int i = 0; i < rand_childs; i++) {
 			order.count = grandchildrenInNodes[i];
-			debug_log ("Sending order(%d) to node %d\n", grandchildrenInNodes[i], childrenNodes[i]);
+			log (info, "Sending order(%d) to node %d\n", grandchildrenInNodes[i], childrenNodes[i]);
 			Ibsend (&order, 3 + MAX_CHILDREN, childrenNodes[i], ORDER_MAKEKIDS);
 			children.push_back (childrenNodes[i]);
 		}
@@ -246,7 +289,7 @@ void Opornik::live() {
 		int actionRand = rand() % 1001; //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
 		if (status == blocked) {
 			if (actionRand >= 995) {
-				debug_log ("Chcem, ale nie mogem! Jestem zablokowany!\n");
+				log (info, "Chcem, ale nie mogem! Jestem zablokowany!\n");
 			}
 			continue;
 		}
@@ -295,14 +338,14 @@ void Opornik::introduce() {
 void Opornik::setStatus (status_enum s) {
 	switch (s) {
 	case idle: { // Musisz przejrzeć kolejkę otrzymanych próśb inicjalizujących zmianę akceptora (Msg_pass_acceptor)
-			debug_log ("Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (%d)...\n", passAcceptorMsg_vector.size() );
+			log (info, "Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (%d)...\n", passAcceptorMsg_vector.size() );
 			while (passAcceptorMsg_vector.size() != 0) {
 				Msg_pass_acceptor msg = passAcceptorMsg_vector.back();
 				acceptorMsgSend (msg, msg.sender);
 				passAcceptorMsg_vector.pop_back();
 			}
 			status = idle;
-			debug_log ("IDLE\n");
+			log (info, "IDLE\n");
 			break;
 		}
 	}

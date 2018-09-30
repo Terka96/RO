@@ -79,7 +79,7 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 		// Chyba od razu można przypisać akceptora. Grunt, żeby stary akceptor odblokował się i usunął dopiero po otrzymaniu odp. zwrotnej
 		if (msg.msg.failure == 0) {
 			// acceptorToken = accepted;
-			debug_log ("Zostałem NOWYM AKCEPTOREM (%d)!\n", msg.msg.tokenId);
+			log (info, "Zostałem NOWYM AKCEPTOREM (%d)!\n", msg.msg.tokenId);
 			// Uzupełnienie wartości (nowy akceptor)
 			acceptorToken = msg.msg.tokenId;
 			acceptorStatus = isAcceptor;
@@ -93,13 +93,13 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 			setStatus (idle);
 			acceptorStatus = notAcceptor;
 			acceptorToken = NONE;
-			debug_log ("Zostałem ODRZUCONY na nowego akceptora.\n");
+			log (trace, "Zostałem ODRZUCONY na nowego akceptora.\n");
 		}
 	}
 	else if (msg.msg.initializator_id == id && acceptorStatus != candidate && msg.msg.complete == 1) { // stary akceptor dostał odpowiedź od nowego
 		// TODO 1: tutaj być może trzeba poczekać na eventy związane ze spotkaniami. (oporniki mogą kierować wiadomości do starego opornika.)
 		// TODO 2: Nie wiem jak działają spotkania, ale jeśli opornik ma status "busy", to nie powinien dawać odpowiedzi, czy jest akceptorem, tylko poczekać do zmiany statusu na "idle".
-		debug_log ("Uff, już NIE jestem akceptorem. Został nim %d)\n", msg.msg.candidate_id);
+		log (info, "Uff, już NIE jestem akceptorem. Został nim %d)\n", msg.msg.candidate_id);
 		acceptorToken = NONE;
 		setStatus (idle);
 	}
@@ -113,7 +113,7 @@ void Opornik::handleACandidateMsg (int sender, Msg_pass_acceptor msg) {
 		msg.distance = (sender == parent) ? msg.distance + 1 : msg.distance - 1;
 		if (acceptorStatus == findingCandidates) {
 			acceptorStatus = passingToken;
-			debug_log ("Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!\n Nowym akceptorem zostanie: %d!\n", msg.candidate_id);
+			log (trace, "Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!\n Nowym akceptorem zostanie: %d!\n", msg.candidate_id);
 			//przekaż dobrą nowinę kandydatowi (wiadomośc zwrotna)
 			msg.failure = 0;
 			Msg_pass_acceptor_final final_msg{msg, acceptorInfo};
@@ -121,13 +121,13 @@ void Opornik::handleACandidateMsg (int sender, Msg_pass_acceptor msg) {
 		}
 		else {
 			msg.failure = 1;
-			debug_log ("Dostałem Kolejne zgłoszenie na KANDYDATa do zmiany akceptora. Niestety, nie możesz nim zostać: %d\n", msg.candidate_id);
+			log (trace, "Dostałem Kolejne zgłoszenie na KANDYDATa do zmiany akceptora. Niestety, nie możesz nim zostać: %d\n", msg.candidate_id);
 			Ibsend (&msg, sizeof (msg) / sizeof (int), sender, TAG_ACCEPTOR_RESPONSE);
 		}
 	}
 	else if (msg.initializator_id == id && acceptorStatus != candidate  && msg.failure == 1) {
 		if (candidatesAnswers >= sameLevelNodes - 1) { // możliwe, że dostaniemy jakieś stare wiadomości. Nie ma to większego znaczenia, bo spróbujemy przekazać token jeszcze raz. Może się jednak wydawać niezbyt właściwe.
-			debug_log ("Wszyscy kandydaci na akceptorów również byli akceptorami. Muszę spróbować jeszcze raz\n");
+			log (info, "Wszyscy kandydaci na akceptorów również byli akceptorami. Muszę spróbować jeszcze raz\n");
 			pass_acceptor (true); //musisz spróbować przekazać jeszcze raz od nowa, bo kandydaci byli zajęci (np. byli także akceptorami)
 		}
 	}
@@ -163,10 +163,10 @@ void Opornik::acceptorMsgSend (Msg_pass_acceptor msg, int sender) {
 		acceptorStatus = candidate;
 		acceptorToken = msg.tokenId; //to przypisanie, aby podczas przekazywania wlasciwego tokena nie uciekly wiadomosci o organizowanie spotkan
 		// Od teraz opornik musi zbierac wszystkie zgloszenia dla akceptora o id tokenId
-		debug_log ("(from %d) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (%d)\n", sender, msg.initializator_id);
+		log (trace, "(from %d) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (%d)\n", sender, msg.initializator_id);
 	}
 	else {
-		debug_log ("(from %d) Byłbym DOBRYM KANDYDATEM na akceptora, niestety mam już WŁASNY TOKEN. Dam znać (%d)\n", sender, msg.initializator_id);
+		log (trace, "(from %d) Byłbym DOBRYM KANDYDATEM na akceptora, niestety mam już WŁASNY TOKEN. Dam znać (%d)\n", sender, msg.initializator_id);
 	}
 	Ibsend (&msg, sizeof (msg) / sizeof (int), sender, TAG_ACCEPTOR_CANDIDATE);
 	// Można by przekazać jeszcze wyżej i przeskoczyć na inne gałęzie lub do sąsiadów, ale nie robimy sobie konkurencji
@@ -177,7 +177,7 @@ void Opornik::pass_acceptor() {
 }
 
 void Opornik::pass_acceptor (bool force) {
-	debug_log ("Nie chcę już być akceptorem!\n");
+	log (trace, "Nie chcę już być akceptorem!\n");
 	status = blocked;
 	// losowanie kierunku przekazania akceptora
 	int rand = random() % 100;
@@ -193,7 +193,7 @@ void Opornik::pass_acceptor (bool force) {
 	// -1 - niższy
 	// (-inf; +inf)\{-1,0,1} zostają pominięte
 	if (rand < 10) { //gora
-		debug_log ("Chcę przekazać akceptora w górę!\n");
+		log (trace, "Chcę przekazać akceptora w górę!\n");
 		if (parent != -1) {
 			acceptorStatus = findingCandidates;
 			msg = {clock, id, NONE, 1, 1, 0}; // distance = 1, bo przekazujemy w górę
@@ -201,7 +201,7 @@ void Opornik::pass_acceptor (bool force) {
 			Ibsend (&msg, sizeof (msg) / sizeof (int), parent, TAG_PASS_ACCEPTOR);
 		}
 		else {
-			debug_log ("Nie mogę przekazać akceptora w górę, jestem na szczycie!\n");
+			log (trace, "Nie mogę przekazać akceptora w górę, jestem na szczycie!\n");
 			failure = true;
 		}
 	}
@@ -211,7 +211,7 @@ void Opornik::pass_acceptor (bool force) {
 			if (parent != -1) {
 				msg = {clock, id, NONE, 1, -1, 0};  // distance = 1, bo przekazujemy w górę
 				// Trzeba przekazać w górę i do dzieci
-				debug_log ("Chcę przkazać akceptora w dół!\n");
+				log (trace, "Chcę przkazać akceptora w dół!\n");
 				Ibsend (&msg, sizeof (msg) / sizeof (int), parent, TAG_PASS_ACCEPTOR);
 			}
 			if (children.size() > 0) {
@@ -222,24 +222,24 @@ void Opornik::pass_acceptor (bool force) {
 			}
 		}
 		else {
-			debug_log ("NIE mogę przekazać NIŻEJ, jestem NAJNIŻEJ w hierarchii.\n");
+			log (trace, "NIE mogę przekazać NIŻEJ, jestem NAJNIŻEJ w hierarchii.\n");
 			failure = true;
 		}
 	}
 	else { //ten sam poziom
 		if (sameLevelNodes < 2) {
-			debug_log ("Nie mogę przekazać na ten sam poziom, jestem JEDYNY na tym szczeblu!\n");
+			log (trace, "Nie mogę przekazać na ten sam poziom, jestem JEDYNY na tym szczeblu!\n");
 			failure = true;
 		}
 		else if (parent != -1) {
 			acceptorStatus = findingCandidates;
 			msg = {clock, id, NONE, 1, 0, 0};  // distance = 1, bo przekazujemy w górę
 			//Wystarczy przekazać w górę
-			debug_log ("Chcę przekazać akceptora na swoim poziomie!\n");
+			log (trace, "Chcę przekazać akceptora na swoim poziomie!\n");
 			Ibsend (&msg, sizeof (msg) / sizeof (int), parent, TAG_PASS_ACCEPTOR);
 		}
 		else {
-			debug_log ("Nie mogę przekazać na ten sam poziom, jestem na szczycie!\n");
+			log (trace, "Nie mogę przekazać na ten sam poziom, jestem na szczycie!\n");
 			failure = true;
 		}
 	}

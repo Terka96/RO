@@ -5,9 +5,9 @@
 #define MAX_BUFFER_SIZE 12800
 #define MAX_MEETINGS_PARTICIPANTS 12
 
-#define NUM_RESOURCES 6
-#define NUM_ACCEPTORS 4
-#define NUM_CONSPIR 16
+#define NUM_RESOURCES 2
+#define NUM_ACCEPTORS 2
+#define NUM_CONSPIR 4
 
 /*value used to indicate null ids*/
 #define NONE -1

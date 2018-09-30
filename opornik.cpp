@@ -124,8 +124,8 @@ void Opornik::distributeAcceptorsAndResources() {
 		}
 		for (int i = 0; i < NUM_ACCEPTORS; i++) {
 			int randValue = rand() % size;
-			if (table[randValue].acceptorTokenId != NONE) {
-				continue;
+			while (table[randValue].acceptorTokenId != NONE) {
+				randValue = rand() % size;
 			}
 			table[randValue].acceptorTokenId = i;
 		}
@@ -303,7 +303,7 @@ void Opornik::live() {
 				endMeeting();
             }
 			else if (actionRand >= 985 && acceptorToken != NONE) {
-				pass_acceptor();
+				//pass_acceptor();
 			}
 	}
 }
@@ -332,6 +332,7 @@ void Opornik::introduce() {
 		info += " " + std::to_string (neighbors[i]);
 	}
 	if (acceptorToken != NONE) {
+        acceptorStatus = isAcceptor;
 		info += "  I'm acceptor(" + std::to_string (acceptorToken) + ")";
 	}
 	printf ("%s\n", info.c_str() );

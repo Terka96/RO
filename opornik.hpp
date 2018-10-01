@@ -27,7 +27,7 @@ class Opornik {
 	void pass_acceptor();
     void checkDecisions();
 
-    void chceckAskVector();
+    void checkAskVector();
 	
 	
 	static void* live_starter (void* arg);

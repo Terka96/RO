@@ -98,7 +98,7 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 				}
 			}
 			// sprawdzanie zaległych zgłoszeń
-			Opornik::chceckAskVector();
+			Opornik::checkAskVector();
 			checkDecisions();
 			msg.msg.distance = (sender == parent) ? msg.msg.distance + 1 : msg.msg.distance - 1;
 			Ibsend (&msg, sizeof (msg) / sizeof (int), sender, TAG_ACCEPTOR_RESPONSE);
@@ -124,7 +124,7 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 	}
 }
 
-void Opornik::chceckAskVector(){
+void Opornik::checkAskVector(){
 	log (trace, "Obsługuję zaległe zgłoszenia (%d) \n", askForAcceptation_vector.size() );
 	if (askForAcceptation_vector.size() > 0) {
 				bool sent[NUM_CONSPIR] = {false}; // Mogliśmy otrzymać acceptation_ask które już mieliśmy, trzeba usunąć duplikaty
@@ -169,6 +169,8 @@ void Opornik::handleACandidateMsg (int sender, Msg_pass_acceptor msg) {
 	else if (msg.initializator_id == id && acceptorStatus != candidate  && msg.failure == 1) {
 		if (candidatesAnswers >= sameLevelNodes - 1) { // możliwe, że dostaniemy jakieś stare wiadomości. Nie ma to większego znaczenia, bo spróbujemy przekazać token jeszcze raz. Może się jednak wydawać niezbyt właściwe.
 			log (info, "Wszyscy kandydaci na akceptorów również byli akceptorami. Muszę spróbować jeszcze raz\n");
+			acceptorStatus = isAcceptor;
+			checkAskVector();
 			pass_acceptor (true); //musisz spróbować przekazać jeszcze raz od nowa, bo kandydaci byli zajęci (np. byli także akceptorami)
 		}
 	}
@@ -290,6 +292,7 @@ void Opornik::pass_acceptor (bool force) {
 	}
 	if (failure) { //&& force) {
 		acceptorStatus = isAcceptor;
+		checkAskVector();
 		status = idle; // po zaimplementowaniu właściwego rozwiązania, to jest do usunięcia
 		// pass_acceptor (true); // Tak nie może być, bo dostajemy kilka tysięcy żądań w sekundę
 		// TODO tutaj w najgorszym wypadku trzeba dać delay. Najlepiej, jakby był jakiś vector mówiący, że chcieliśmy się zmienić

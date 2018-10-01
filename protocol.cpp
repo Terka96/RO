@@ -72,7 +72,7 @@ void Opornik::listen() {
 							checkDecisions();
 						}
 					}
-					log(trace, "Przekazuję akceptora clk, meeting: %d \n", s->meeting);
+                    log(trace, "Przekazuję akceptora clk, meeting: %d \n", s->meeting);
 					break;
 				}
 			case ACCEPT: {
@@ -209,7 +209,7 @@ void Opornik::receiveForwardMsg (int* buffer, int tag, int source) {
 	int msgSize;
 	switch (tag) {
 	case INVITATION_MSG: {
-			msgSize = 5;
+            msgSize = sizeof (meetingInvitation)/sizeof(int);
 			meetingInvitation* info = (meetingInvitation*) buffer;
 			if (meeting == NONE && time (NULL) >= meetingTimeout) { // THEN: zgódź się :D
 				//debug_log("Zaproszono mnie do spotkania %d\n",info->meetingId);
@@ -223,7 +223,7 @@ void Opornik::receiveForwardMsg (int* buffer, int tag, int source) {
 			break;
 		}
 	case RESOURCE_GATHER: {
-			msgSize = 3;
+            msgSize = sizeof (resourceGatherMsg)/sizeof(int);
 			resourceGatherMsg* res = (resourceGatherMsg*) buffer;
 			if (res->haveResource == NONE && !resources.empty() ) {
 				res->haveResource = resources.back();
@@ -232,7 +232,7 @@ void Opornik::receiveForwardMsg (int* buffer, int tag, int source) {
 			break;
 		}
 	case ENDOFMEETING:
-		msgSize = 3;
+        msgSize = sizeof (endOfMeeting)/sizeof(int);
 		break;
 	}
 	sendForwardMsg (buffer, tag, source, msgSize);

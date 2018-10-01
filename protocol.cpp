@@ -60,11 +60,11 @@ void Opornik::listen() {
 			case SHAREACCEPTOR: {
 					shareAcceptor* s = (shareAcceptor*) buffer;
 					if (parent != NONE && parent != mpi_status.MPI_SOURCE) {
-						Ibsend (s, 4,  parent, SHAREACCEPTOR);
+						Ibsend (s, sizeof(shareAcceptor)/sizeof(int),  parent, SHAREACCEPTOR);
 					}
 					for (int i = 0; i < children.size(); i++)
 						if (children[i] != mpi_status.MPI_SOURCE) {
-							Ibsend (s, 4,  children[i], SHAREACCEPTOR);
+							Ibsend (s, sizeof(shareAcceptor)/sizeof(int),  children[i], SHAREACCEPTOR);
 						}
 					if (acceptorToken != NONE) {
 						knownMeetings[s->meeting].acceptors[s->acceptorToken] = s->acceptorClk;
@@ -78,11 +78,11 @@ void Opornik::listen() {
 			case ACCEPT: {
 					accept* a = (accept*) buffer;
 					if (parent != NONE && parent != mpi_status.MPI_SOURCE) {
-						Ibsend (a, 3,  parent, ACCEPT);
+						Ibsend (a, sizeof(accept)/sizeof(int),  parent, ACCEPT);
 					}
 					for (int i = 0; i < children.size(); i++)
 						if (children[i] != mpi_status.MPI_SOURCE) {
-							Ibsend (a, 3,  children[i], ACCEPT);
+							Ibsend (a, sizeof(accept)/sizeof(int),  children[i], ACCEPT);
 						}
 					if (acceptorToken != NONE) {
 						if (a->decision == TRUE) {
@@ -125,7 +125,7 @@ void Opornik::listen() {
 			case ENDOFMEETING: {
 					bool exist = false;
 					for (std::list<msgBcastInfo>::iterator x = bcasts.begin(); x != bcasts.end(); x++)
-						if (buffer[1] == x->uniqueTag) {
+						if (buffer[2] == x->uniqueTag) {
 							exist = true;
 							receiveResponseMsg (buffer, mpi_status.MPI_TAG, & (*x) );
 							break;
@@ -148,11 +148,12 @@ void Opornik::listen() {
 
 void Opornik::shareClock(askForAcceptation* a) {
 	log (trace, "Shareuje mój zegar\n");
+	knownMeetings[a->meeting].participants = a->participants;
 	shareAcceptor s;
 	s.acceptorToken = acceptorToken;
 	s.meeting = a->meeting;
 	s.acceptorClk = clock;
-	Ibsend (&s, 4,  id, SHAREACCEPTOR);
+	Ibsend (&s, sizeof(shareAcceptor)/sizeof(int),  id, SHAREACCEPTOR);
 }
 
 void Opornik::getAcceptation (int p) {
@@ -297,7 +298,7 @@ void Opornik::receiveResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 void Opornik::sendForwardMsg (int* buffer, int tag, int source, int msgSize) {
 	std::list<int> sendTo;
 	msgBcastInfo bcast;
-	bcast.uniqueTag = buffer[1];
+	bcast.uniqueTag = buffer[2];
 	bcast.respondTo = source;
 	bcast.msgSize = msgSize;
 	for (int i = 0; i < children.size(); i++)
@@ -445,6 +446,7 @@ void Opornik::checkDecisions() {
 				knownMeetings[i].priority++;
 			}
 			accept a;
+			log (log_enum::debug, "knownMeetings[meetingId].participants : %d\n", knownMeetings[meetingId].participants);
 			if (knownMeetings[meetingId].participants <= freeSlots) {
 				a.decision = TRUE;
 			}
@@ -452,7 +454,7 @@ void Opornik::checkDecisions() {
 				a.decision = FALSE;
 			}
 			a.meeting = meetingId;
-			Ibsend (&a, 3,  id, ACCEPT);
+			Ibsend (&a, sizeof(accept)/sizeof(int),  id, ACCEPT);
 			log (trace, "zdecydowałem\n");
 		}
 	}

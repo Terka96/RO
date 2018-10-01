@@ -41,6 +41,7 @@ struct init_resources {
 /*zaproszenie na spotkanie*/
 struct meetingInvitation {
 	int clock;
+	int dummy; // Ta wartość jest tylko po to, żeby uchronić kolejną przed losowymi zmianami iksde
 	int uniqueTag;
 	int meetingId;
 	int participants;
@@ -57,6 +58,7 @@ struct resourceGatherMsg {
 /*zakończenie spotkania*/
 struct endOfMeeting {
 	int clock;
+	int dummy; // Ta wartość jest tylko po to, żeby uchronić kolejną przed losowymi zmianami iksde
 	int uniqueTag;
 	int meetingId;
 };
@@ -72,6 +74,7 @@ struct askForAcceptation {
 /**/
 struct shareAcceptor {
 	int clock;
+	int dummy; // Ta wartość jest tylko po to, żeby uchronić kolejną przed losowymi zmianami iksde
 	int acceptorClk;
 	int acceptorToken;
 	int meeting;
@@ -80,6 +83,7 @@ struct shareAcceptor {
 /**/
 struct accept {
 	int clock;
+	int dummy; // Ta wartość jest tylko po to, żeby uchronić kolejną przed losowymi zmianami iksde
 	int meeting;
 	int decision;
 };

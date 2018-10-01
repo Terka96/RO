@@ -3,11 +3,11 @@
 
 #define MAX_CHILDREN 4
 #define MAX_BUFFER_SIZE 12800
-#define MAX_MEETINGS_PARTICIPANTS 5
+#define MAX_MEETINGS_PARTICIPANTS 2
 
 #define NUM_RESOURCES 5
 #define NUM_ACCEPTORS 2
-#define NUM_CONSPIR 20
+#define NUM_CONSPIR 4
 
 /*value used to indicate null ids*/
 #define NONE -1

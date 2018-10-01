@@ -304,7 +304,7 @@ void Opornik::live() {
 				endMeeting();
             }
 			else if (actionRand >= 985 && acceptorToken != NONE) {
-				pass_acceptor();
+				//pass_acceptor();
 			}
 	}
 }

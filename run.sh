@@ -1,1 +1,1 @@
-mpirun -np 20 ro.out
+mpirun -np 4 ro.out

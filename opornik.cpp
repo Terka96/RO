@@ -47,7 +47,7 @@ int inline Opornik::log (log_enum type, const char* format, ...) {
 		}
 	}
 	if (type >= MIN_CONSOLE_LOG) {
-		printf ("[%s] Node %d-%d:%d [%d]:", logType, id, acceptorToken, acceptorStatus, clock);
+		printf ("[%s] Node %d:%d(%d):%d:%d [%d]:", logType, id, acceptorToken, acceptorStatus, meeting, duringMyMeeting, clock);
 		va_list args;
 		va_start (args, format);
 		res = vprintf (format, args);
@@ -60,7 +60,7 @@ int inline Opornik::log (log_enum type, const char* format, ...) {
 		vsprintf (buffer, format, args);
 		va_end (args);
 
-		fprintf (pFile, "[%s] Node %d-%d:%d [%d]: %s", logType, id, acceptorToken, acceptorStatus, clock, buffer);
+		fprintf (pFile, "[%s] Node %d:%d(%d):%d:%d [%d]: %s", logType, id, acceptorToken, acceptorStatus, meeting, duringMyMeeting, clock, buffer);
 	}
 	fclose (pFile);
 	#endif
@@ -92,6 +92,7 @@ Opornik::Opornik() {
 	distributeAcceptorsAndResources();
 	MPI_Barrier (MPI_COMM_WORLD);
 	findLowestKids();
+	MPI_Barrier (MPI_COMM_WORLD);
 	introduce();
 }
 

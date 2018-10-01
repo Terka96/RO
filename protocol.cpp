@@ -40,18 +40,15 @@ void Opornik::listen() {
 				}
 			case ASKFORACCEPTATION: {
 					askForAcceptation* a = (askForAcceptation*) buffer;
-					log(debug, "ASKFORACCEPTATION BEGIN meeting:%d\n", buffer[1]);
+					log(debug, "ASKFORACCEPTATION clock:%d meeting:%d participants:%d\n", a->clock, a->meeting, a->participants);
 					if (parent != NONE && parent != mpi_status.MPI_SOURCE) {
-						log(debug, "ASKFORACCEPTATION meeting:%d\n", a->meeting);
 						Ibsend (a, sizeof(askForAcceptation)/sizeof(int), parent, ASKFORACCEPTATION);
 					}
 					for (int i = 0; i < children.size(); i++)
 						if (children[i] != mpi_status.MPI_SOURCE) {
-							log(debug, "ASKFORACCEPTATION meeting:%d\n", a->meeting);
 							Ibsend (a, sizeof(askForAcceptation)/sizeof(int), children[i], ASKFORACCEPTATION);
 						}
 					if (acceptorStatus == isAcceptor) {
-						log(debug, "ASKFORACCEPTATION meeting:%d\n", a->meeting);
 						shareClock(a);
 					}
                     else if (acceptorToken != NONE){
@@ -109,7 +106,7 @@ void Opornik::listen() {
 					}
 					else { //a->decision==FALSE
 						if (a->meeting == id) {
-							log (info, "Moje spotkanie jest odrzucone\n");
+							log (info, "Spotkanie (%d) jest odrzucone\n", id);
 							duringMyMeeting = false;
 							meeting = NONE;
 							resources.push_back (busyResource);

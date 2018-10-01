@@ -100,7 +100,7 @@ void Opornik::listen() {
 					}
 					if (a->decision == TRUE) {
 						if (a->meeting == id) {
-							log (info, "Moje spotkanie jest zaakceptowane\n");
+							log (info, "Spotkanie (%d) jest zaakceptowane\n", id);
 							duringMyMeeting = true;
 						}
 						else if (a->meeting == meeting) {
@@ -372,7 +372,7 @@ void Opornik::sendResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 		case ENDOFMEETING:
 			if (busyResource != NONE) {
 				resources.push_back (busyResource);
-				log (info, "Koniec spotkania!\n");
+				log (info, "Koniec spotkania (%d)!\n", id);
 			}
 			busyResource = NONE;
 			if (acceptorToken != NONE) {

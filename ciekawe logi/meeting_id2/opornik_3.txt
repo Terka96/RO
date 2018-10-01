@@ -1,0 +1,129 @@
+[TRACE] Node 3--1:1010457406 [13]: meeting from receiveForwardMsg[212]:0
+[TRACE] Node 3--1:1010457406 [28]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [30]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 3--1:1010457406 [34]: idę na spotkanie
+[TRACE] Node 3--1:1010457406 [60]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [62]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [81]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [83]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 3--1:1010457406 [87]: Organizuję spotkanie!
+[TRACE] Node 3--1:1010457406 [87]: spotkanie! 3
+[INFO] Node 3--1:1010457406 [87]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [87]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [99]: Rozejść się!
+[INFO] Node 3--1:1010457406 [100]: Wszystkie zasoby są pozajmowane
+[INFO] Node 3--1:1010457406 [111]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [111]: Organizuję spotkanie!
+[TRACE] Node 3--1:1010457406 [111]: spotkanie! 3
+[INFO] Node 3--1:1010457406 [111]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [111]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [123]: Rozejść się!
+[INFO] Node 3--1:1010457406 [124]: Wszystkie zasoby są pozajmowane
+[INFO] Node 3--1:1010457406 [135]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 3--1:1010457406 [165]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [167]: Przekazuję akceptora clk, meeting: 1 
+[INFO] Node 3--1:1010457406 [170]: Organizuję spotkanie!
+[TRACE] Node 3--1:1010457406 [170]: spotkanie! 3
+[INFO] Node 3--1:1010457406 [170]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [170]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [182]: Rozejść się!
+[INFO] Node 3--1:1010457406 [183]: Wszystkie zasoby są pozajmowane
+[INFO] Node 3--1:1010457406 [194]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 3--1:1010457406 [224]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [226]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [284]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [286]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 3--1:1010457406 [290]: Organizuję spotkanie!
+[TRACE] Node 3--1:1010457406 [290]: spotkanie! 3
+[INFO] Node 3--1:1010457406 [290]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [290]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [302]: Rozejść się!
+[INFO] Node 3--1:1010457406 [303]: Wszystkie zasoby są pozajmowane
+[INFO] Node 3--1:1010457406 [314]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [316]: Organizuję spotkanie!
+[TRACE] Node 3--1:1010457406 [316]: spotkanie! 3
+[INFO] Node 3--1:1010457406 [316]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [316]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [333]: Otrzymałem zasób 0
+[TRACE] Node 3--1:1010457406 [333]: DgetAcceptation meeting: 3
+[TRACE] Node 3--1:1010457406 [347]: Przekazuję akceptora clk, meeting: 3 
+[TRACE] Node 3--1:1010457406 [349]: Przekazuję akceptora clk, meeting: 3 
+[INFO] Node 3--1:1010457406 [353]: moje spotkanie jest zaakceptowane
+[TRACE] Node 3--1:1010457406 [421]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [423]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 3--1:1010457406 [442]: Rozejść się!
+[INFO] Node 3--1:1010457406 [460]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [460]: Organizuję spotkanie!
+[TRACE] Node 3--1:1010457406 [460]: spotkanie! 3
+[INFO] Node 3--1:1010457406 [460]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 0
+[TRACE] Node 3--1:1010457406 [460]: DgetAcceptation meeting: 3
+[TRACE] Node 3--1:1010457406 [474]: Przekazuję akceptora clk, meeting: 63 
+[TRACE] Node 3--1:1010457406 [476]: Przekazuję akceptora clk, meeting: 63 
+[TRACE] Node 3--1:1010457406 [506]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [508]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [563]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [565]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [618]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [620]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [654]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [656]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [782]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [784]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [868]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [870]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [904]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [906]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1190]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [1192]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [1279]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1281]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1334]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [1336]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [1393]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1395]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1449]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1451]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1598]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1600]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1653]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1655]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1689]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1691]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1722]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1724]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1758]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1760]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1807]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1809]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1911]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1913]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [1968]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [1970]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [2087]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [2089]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [2123]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [2125]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [2283]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [2285]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [2452]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [2454]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [2504]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [2506]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [2627]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [2629]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [2922]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [2924]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [2952]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [2954]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [2985]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [2987]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [3062]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [3064]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [3162]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [3164]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 3--1:1010457406 [3198]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [3200]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3--1:1010457406 [3234]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [3236]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3--1:1010457406 [3313]: Przekazuję akceptora clk, meeting: 409 
+[TRACE] Node 3--1:1010457406 [3315]: Przekazuję akceptora clk, meeting: 409 

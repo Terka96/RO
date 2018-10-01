@@ -18,6 +18,7 @@ void Opornik::listen() {
 		MPI_Status mpi_status;
 		while (true) {
 			MPI_Recv (&buffer, MAX_BUFFER_SIZE, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &mpi_status);
+			//log(debug, "MPI_Recv BUFFER0:%d BUFFER1:%d\n", buffer[0], buffer[1]);
 			//debug_log("Dostałem wiadomość typu %d od %d\t", mpi_status.MPI_TAG, mpi_status.MPI_SOURCE);
 			// Licznik lamporta
 			clock = clock > buffer[0] ? clock + 1 : buffer[0] + 1;
@@ -39,14 +40,18 @@ void Opornik::listen() {
 				}
 			case ASKFORACCEPTATION: {
 					askForAcceptation* a = (askForAcceptation*) buffer;
+					log(debug, "ASKFORACCEPTATION BEGIN meeting:%d\n", buffer[1]);
 					if (parent != NONE && parent != mpi_status.MPI_SOURCE) {
-						Ibsend (a, 3, parent, ASKFORACCEPTATION);
+						log(debug, "ASKFORACCEPTATION meeting:%d\n", a->meeting);
+						Ibsend (a, sizeof(askForAcceptation)/sizeof(int), parent, ASKFORACCEPTATION);
 					}
 					for (int i = 0; i < children.size(); i++)
 						if (children[i] != mpi_status.MPI_SOURCE) {
-							Ibsend (a, 3, children[i], ASKFORACCEPTATION);
+							log(debug, "ASKFORACCEPTATION meeting:%d\n", a->meeting);
+							Ibsend (a, sizeof(askForAcceptation)/sizeof(int), children[i], ASKFORACCEPTATION);
 						}
 					if (acceptorStatus == isAcceptor) {
+						log(debug, "ASKFORACCEPTATION meeting:%d\n", a->meeting);
 						shareClock(a);
 					}
                     else if (acceptorToken != NONE){
@@ -70,6 +75,7 @@ void Opornik::listen() {
 							checkDecisions();
 						}
 					}
+					log(trace, "Przekazuję akceptora clk, meeting: %d \n", s->meeting);
 					break;
 				}
 			case ACCEPT: {
@@ -156,7 +162,8 @@ void Opornik::getAcceptation (int p) {
 	askForAcceptation a;
 	a.meeting = id;
 	a.participants = p;
-	Ibsend (&a, 3,  id, ASKFORACCEPTATION);
+	log (debug, "DgetAcceptation meeting: %d\n", a.meeting);
+	Ibsend (&a, sizeof(askForAcceptation)/sizeof(int),  id, ASKFORACCEPTATION);
 }
 
 void Opornik::organizeMeeting() {
@@ -175,6 +182,7 @@ void Opornik::organizeMeeting() {
 		else {
 			info.haveResource = NONE;
 		}
+		log (debug, "spotkanie! %d\n", info.meetingId );
 		receiveForwardMsg ( (int*) (&info), INVITATION_MSG, id);
 	}
 }
@@ -208,6 +216,7 @@ void Opornik::receiveForwardMsg (int* buffer, int tag, int source) {
 			if (meeting == NONE && time (NULL) >= meetingTimeout) { // THEN: zgódź się :D
 				//debug_log("Zaproszono mnie do spotkania %d\n",info->meetingId);
 				meeting = info->meetingId;
+				log (debug, "meeting from receiveForwardMsg[212]:%d\n", info->meetingId);
 			}
 			if (info->haveResource == NONE && !resources.empty() ) {
 				info->haveResource = resources.back();
@@ -429,6 +438,7 @@ void Opornik::checkDecisions() {
 			for (auto i : ready)
 				if (knownMeetings[i].priority == maxPriority) {
 					meetingId = i;
+					log (log_enum::debug, "meetingId from checkDecisions[433]:%d\n", meetingId);
 					ready.remove (i);
 					break;
 				}

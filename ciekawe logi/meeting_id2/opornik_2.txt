@@ -1,0 +1,545 @@
+[INFO] Node 2-0:1010457406 [0]: Sending order(0) to node 3
+[TRACE] Node 2--1:1010457406 [11]: meeting from receiveForwardMsg[212]:0
+[TRACE] Node 2--1:1010457406 [27]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [29]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [33]: idę na spotkanie
+[TRACE] Node 2--1:1010457406 [59]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [61]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [65]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [65]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [69]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 2
+[TRACE] Node 2--1:1010457406 [69]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [80]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [82]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [86]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [134]: Rozejść się!
+[INFO] Node 2--1:1010457406 [143]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [164]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 2--1:1010457406 [166]: Przekazuję akceptora clk, meeting: 1 
+[INFO] Node 2--1:1010457406 [199]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [199]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [203]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [203]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [212]: Otrzymałem zasób 0
+[TRACE] Node 2--1:1010457406 [212]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [223]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [225]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [229]: moje spotkanie jest zaakceptowane
+[TRACE] Node 2--1:1010457406 [283]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [285]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [313]: Rozejść się!
+[INFO] Node 2--1:1010457406 [322]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [346]: Przekazuję akceptora clk, meeting: 3 
+[TRACE] Node 2--1:1010457406 [348]: Przekazuję akceptora clk, meeting: 3 
+[INFO] Node 2--1:1010457406 [371]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [371]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [375]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [375]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [384]: Rozejść się!
+[INFO] Node 2--1:1010457406 [386]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [394]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [420]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [422]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [426]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [426]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [430]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [430]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [439]: Rozejść się!
+[INFO] Node 2--1:1010457406 [441]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [449]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [473]: Przekazuję akceptora clk, meeting: 63 
+[TRACE] Node 2--1:1010457406 [475]: Przekazuję akceptora clk, meeting: 63 
+[INFO] Node 2--1:1010457406 [481]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [481]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [485]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [485]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [494]: Otrzymałem zasób 2
+[TRACE] Node 2--1:1010457406 [494]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [505]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [507]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [511]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [535]: Rozejść się!
+[INFO] Node 2--1:1010457406 [544]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [562]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [564]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [617]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [619]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [629]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [629]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [633]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [633]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [642]: Otrzymałem zasób 2
+[TRACE] Node 2--1:1010457406 [642]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [653]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [655]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [659]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [751]: Rozejść się!
+[INFO] Node 2--1:1010457406 [760]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [781]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 2--1:1010457406 [783]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 2--1:1010457406 [867]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [869]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [879]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [879]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [883]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [883]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [892]: Otrzymałem zasób 2
+[TRACE] Node 2--1:1010457406 [892]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [903]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [905]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [909]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [1159]: Rozejść się!
+[INFO] Node 2--1:1010457406 [1168]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [1189]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 2--1:1010457406 [1191]: Przekazuję akceptora clk, meeting: 1 
+[INFO] Node 2--1:1010457406 [1254]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [1254]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [1258]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [1258]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [1267]: Otrzymałem zasób 2
+[TRACE] Node 2--1:1010457406 [1267]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [1278]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [1280]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [1284]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [1303]: Rozejść się!
+[INFO] Node 2--1:1010457406 [1312]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [1333]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 2--1:1010457406 [1335]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 2--1:1010457406 [1392]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [1394]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [1448]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [1450]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [1454]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [1454]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [1458]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [1458]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [1467]: Rozejść się!
+[INFO] Node 2--1:1010457406 [1469]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [1477]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [1597]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [1599]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [1652]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [1654]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [1664]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [1664]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [1668]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [1668]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [1677]: Otrzymałem zasób 2
+[TRACE] Node 2--1:1010457406 [1677]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [1688]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [1690]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [1694]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [1694]: Rozejść się!
+[INFO] Node 2--1:1010457406 [1703]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [1721]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [1723]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [1733]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [1733]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [1737]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [1737]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [1746]: Otrzymałem zasób 2
+[TRACE] Node 2--1:1010457406 [1746]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [1757]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [1759]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [1763]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [1782]: Rozejść się!
+[INFO] Node 2--1:1010457406 [1791]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [1791]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [1791]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [1795]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 2
+[TRACE] Node 2--1:1010457406 [1795]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [1806]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [1808]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [1812]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [1886]: Rozejść się!
+[INFO] Node 2--1:1010457406 [1895]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [1895]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [1895]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [1899]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 2
+[TRACE] Node 2--1:1010457406 [1899]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [1910]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [1912]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [1916]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [1940]: Rozejść się!
+[INFO] Node 2--1:1010457406 [1949]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [1967]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [1969]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [1973]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [1973]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [1977]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [1977]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [1986]: Rozejść się!
+[INFO] Node 2--1:1010457406 [1988]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [1996]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [1996]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [1996]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2000]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2000]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2009]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2011]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2019]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2037]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2037]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2041]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2041]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2050]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2052]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2060]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [2086]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [2088]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [2098]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2098]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2102]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2102]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2111]: Otrzymałem zasób 2
+[TRACE] Node 2--1:1010457406 [2111]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [2122]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [2124]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [2128]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [2255]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2264]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [2282]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [2284]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [2288]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2288]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2292]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2292]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2301]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2303]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2311]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2329]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2329]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2333]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2333]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2342]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2344]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2352]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2352]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2352]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2356]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2356]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2365]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2367]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2375]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2427]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2427]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2431]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2431]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2440]: Otrzymałem zasób 2
+[TRACE] Node 2--1:1010457406 [2440]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [2451]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [2453]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [2457]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [2476]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2485]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [2503]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [2505]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [2509]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2509]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2513]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2513]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2522]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2524]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2532]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2574]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2574]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2578]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2578]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2587]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2589]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2597]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [2626]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 2--1:1010457406 [2628]: Przekazuję akceptora clk, meeting: 1 
+[INFO] Node 2--1:1010457406 [2631]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2631]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2635]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2635]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2644]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2646]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2654]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2654]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2654]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2658]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2658]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2667]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2669]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2677]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2728]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2728]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2732]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2732]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2741]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2743]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2751]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2775]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2775]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2779]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2779]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2788]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2790]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2798]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2798]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2798]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2802]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2802]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2811]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2813]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2821]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2821]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2821]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2825]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2825]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2834]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2836]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2844]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2868]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2868]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2872]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2872]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2881]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2883]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [2891]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2897]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2897]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2901]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2901]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [2910]: Otrzymałem zasób 2
+[TRACE] Node 2--1:1010457406 [2910]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [2921]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [2923]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [2927]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [2927]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2936]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [2936]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2936]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2940]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 2
+[TRACE] Node 2--1:1010457406 [2940]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [2951]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [2953]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [2957]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [2957]: Rozejść się!
+[INFO] Node 2--1:1010457406 [2966]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [2984]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [2986]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [2990]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [2990]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [2994]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [2994]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3003]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3005]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3013]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [3061]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [3063]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [3067]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3067]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3071]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3071]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3080]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3082]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3090]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3090]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3090]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3094]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3094]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3103]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3105]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3113]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [3161]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 2--1:1010457406 [3163]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 2--1:1010457406 [3173]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3173]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3177]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3177]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3186]: Otrzymałem zasób 2
+[TRACE] Node 2--1:1010457406 [3186]: DgetAcceptation meeting: 2
+[TRACE] Node 2--1:1010457406 [3197]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 2--1:1010457406 [3199]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 2--1:1010457406 [3203]: moje spotkanie jest zaakceptowane
+[INFO] Node 2--1:1010457406 [3203]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3212]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2--1:1010457406 [3233]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 2--1:1010457406 [3235]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 2--1:1010457406 [3312]: Przekazuję akceptora clk, meeting: 409 
+[TRACE] Node 2--1:1010457406 [3314]: Przekazuję akceptora clk, meeting: 409 
+[INFO] Node 2--1:1010457406 [3314]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3314]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3318]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3318]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3327]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3329]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3337]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3337]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3337]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3341]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3341]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3350]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3352]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3360]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3411]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3411]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3415]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3415]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3424]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3426]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3434]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3458]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3458]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3462]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3462]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3471]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3473]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3481]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3505]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3505]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3509]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3509]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3518]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3520]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3528]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3528]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3528]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3532]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3532]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3541]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3543]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3551]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3575]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3575]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3579]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3579]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3588]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3590]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3598]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3757]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3757]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3761]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3761]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3770]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3772]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3780]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3780]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3780]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3784]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3784]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3793]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3795]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3803]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3803]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3803]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3807]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3807]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3816]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3818]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3826]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3850]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3850]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3854]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3854]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3863]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3865]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3873]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3873]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3873]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3877]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3877]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3886]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3888]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3896]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3896]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3896]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [3900]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [3900]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [3909]: Rozejść się!
+[INFO] Node 2--1:1010457406 [3911]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [3919]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [3998]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [3998]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4002]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4002]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4011]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4013]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4021]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4072]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4072]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4076]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4076]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4085]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4087]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4095]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4095]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4095]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4099]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4099]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4108]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4110]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4118]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4142]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4142]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4146]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4146]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4155]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4157]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4165]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4165]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4165]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4169]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4169]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4178]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4180]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4188]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4212]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4212]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4216]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4216]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4225]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4227]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4235]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4235]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4235]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4239]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4239]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4248]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4250]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4258]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4258]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4258]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4262]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4262]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4271]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4273]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4281]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4413]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4413]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4417]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4417]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4426]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4428]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4436]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4436]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4436]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4440]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4440]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4449]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4451]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4459]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4459]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4459]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4463]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4463]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4472]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4474]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4482]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4482]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4482]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4486]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4486]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4495]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4497]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4505]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2--1:1010457406 [4505]: Organizuję spotkanie!
+[TRACE] Node 2--1:1010457406 [4505]: spotkanie! 2
+[INFO] Node 2--1:1010457406 [4509]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2--1:1010457406 [4509]: Dajcie mi zasób!
+[INFO] Node 2--1:1010457406 [4518]: Rozejść się!
+[INFO] Node 2--1:1010457406 [4520]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2--1:1010457406 [4528]: Wszyscy poszli już do domu po moim spotkaniu

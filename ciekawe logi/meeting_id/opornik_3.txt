@@ -1,0 +1,68 @@
+[INFO] Node 3--1:1010457406 [26]: idę na spotkanie
+[INFO] Node 3--1:1010457406 [120]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [120]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [120]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [133]: Otrzymałem zasób 1
+[INFO] Node 3--1:1010457406 [151]: moje spotkanie jest zaakceptowane
+[INFO] Node 3--1:1010457406 [405]: Rozejść się!
+[INFO] Node 3--1:1010457406 [418]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [466]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [466]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [466]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [479]: Otrzymałem zasób 2
+[INFO] Node 3--1:1010457406 [497]: moje spotkanie jest zaakceptowane
+[INFO] Node 3--1:1010457406 [671]: Rozejść się!
+[INFO] Node 3--1:1010457406 [689]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [750]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [750]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [750]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [762]: Rozejść się!
+[INFO] Node 3--1:1010457406 [763]: Wszystkie zasoby są pozajmowane
+[INFO] Node 3--1:1010457406 [774]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [774]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [774]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [774]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [786]: Rozejść się!
+[INFO] Node 3--1:1010457406 [787]: Wszystkie zasoby są pozajmowane
+[INFO] Node 3--1:1010457406 [798]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [819]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [819]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [819]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [832]: Rozejść się!
+[INFO] Node 3--1:1010457406 [833]: Wszystkie zasoby są pozajmowane
+[INFO] Node 3--1:1010457406 [844]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [919]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [919]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [919]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [932]: Otrzymałem zasób 1
+[INFO] Node 3--1:1010457406 [950]: moje spotkanie jest zaakceptowane
+[INFO] Node 3--1:1010457406 [989]: Rozejść się!
+[INFO] Node 3--1:1010457406 [1007]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [1118]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [1118]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [1118]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [1130]: Rozejść się!
+[INFO] Node 3--1:1010457406 [1131]: Wszystkie zasoby są pozajmowane
+[INFO] Node 3--1:1010457406 [1142]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [1207]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [1207]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [1207]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [1224]: Otrzymałem zasób 1
+[INFO] Node 3--1:1010457406 [1242]: moje spotkanie jest zaakceptowane
+[INFO] Node 3--1:1010457406 [1299]: Rozejść się!
+[INFO] Node 3--1:1010457406 [1311]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [1341]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [1341]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [1341]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [1353]: Rozejść się!
+[INFO] Node 3--1:1010457406 [1354]: Wszystkie zasoby są pozajmowane
+[INFO] Node 3--1:1010457406 [1365]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [1392]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [1392]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 3--1:1010457406 [1392]: Dajcie mi zasób!
+[INFO] Node 3--1:1010457406 [1410]: Otrzymałem zasób 2
+[INFO] Node 3--1:1010457406 [1428]: moje spotkanie jest zaakceptowane
+[INFO] Node 3--1:1010457406 [1428]: Rozejść się!
+[INFO] Node 3--1:1010457406 [1440]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 3--1:1010457406 [1462]: Organizuję spotkanie!
+[INFO] Node 3--1:1010457406 [1462]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 2

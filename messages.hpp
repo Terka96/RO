@@ -64,6 +64,7 @@ struct endOfMeeting {
 /**/
 struct askForAcceptation {
 	int clock;
+	int dummy;
 	int meeting;
 	int participants;
 };

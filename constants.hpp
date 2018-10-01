@@ -17,7 +17,7 @@
 #define MEETING_CLOCK_TIMEOUT 1000
 
 #define MIN_CONSOLE_LOG 2
-#define MIN_FILE_LOG 1
+#define MIN_FILE_LOG 0
 
 struct msgBcastInfo {
 	int clock;

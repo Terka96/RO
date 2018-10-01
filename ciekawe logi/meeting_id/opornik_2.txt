@@ -1,0 +1,315 @@
+[INFO] Node 2-0:1010457406 [0]: Sending order(0) to node 3
+[INFO] Node 2-1:1 [6]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [10]: Na moje spotkanie przyjdzie 2 oporników i użyjemy zasobu 2
+[TRACE] Node 2-1:1 [14]: meeting:2
+[TRACE] Node 2-1:1 [14]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [14]: acceptorToken:1 meeting:2 acceptorClk:14
+[TRACE] Node 2-1:1 [18]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 2-1:1 [21]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[INFO] Node 2-1:1 [22]: zdecydowałem
+[INFO] Node 2-1:1 [25]: moje spotkanie jest zaakceptowane
+[TRACE] Node 2-1:1 [46]: meeting:1
+[TRACE] Node 2-1:1 [46]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [46]: acceptorToken:1 meeting:1 acceptorClk:46
+[TRACE] Node 2-1:1 [50]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [52]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 2-1:1 [81]: Rozejść się!
+[INFO] Node 2-1:1 [90]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2-1:1 [104]: meeting:0
+[TRACE] Node 2-1:1 [104]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [104]: acceptorToken:1 meeting:0 acceptorClk:104
+[TRACE] Node 2-1:1 [108]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [110]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [138]: meeting:3
+[TRACE] Node 2-1:1 [138]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [138]: acceptorToken:1 meeting:3 acceptorClk:138
+[TRACE] Node 2-1:1 [142]: S 0: | S 1: | S 2: | S 3: 1 |  
+[TRACE] Node 2-1:1 [146]: S 0: | S 1: | S 2: | S 3: 0 1 |  
+[INFO] Node 2-1:1 [147]: zdecydowałem
+[INFO] Node 2-1:1 [159]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [163]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [163]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [172]: Otrzymałem zasób 2
+[TRACE] Node 2-1:1 [176]: meeting:2
+[TRACE] Node 2-1:1 [176]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [176]: acceptorToken:1 meeting:2 acceptorClk:176
+[TRACE] Node 2-1:1 [180]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 2-1:1 [183]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[INFO] Node 2-1:1 [184]: zdecydowałem
+[INFO] Node 2-1:1 [187]: moje spotkanie jest zaakceptowane
+[INFO] Node 2-1:1 [237]: Rozejść się!
+[INFO] Node 2-1:1 [247]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [247]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [251]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 2
+[TRACE] Node 2-1:1 [255]: meeting:2
+[TRACE] Node 2-1:1 [255]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [255]: acceptorToken:1 meeting:2 acceptorClk:255
+[TRACE] Node 2-1:1 [259]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 2-1:1 [262]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[INFO] Node 2-1:1 [263]: zdecydowałem
+[INFO] Node 2-1:1 [266]: moje spotkanie jest zaakceptowane
+[INFO] Node 2-1:1 [313]: Rozejść się!
+[INFO] Node 2-1:1 [322]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2-1:1 [336]: meeting:0
+[TRACE] Node 2-1:1 [336]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [336]: acceptorToken:1 meeting:0 acceptorClk:336
+[TRACE] Node 2-1:1 [340]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [342]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [372]: meeting:1
+[TRACE] Node 2-1:1 [372]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [372]: acceptorToken:1 meeting:1 acceptorClk:372
+[TRACE] Node 2-1:1 [376]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [378]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 2-1:1 [417]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [421]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 1
+[TRACE] Node 2-1:1 [425]: meeting:2
+[TRACE] Node 2-1:1 [425]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [425]: acceptorToken:1 meeting:2 acceptorClk:425
+[TRACE] Node 2-1:1 [429]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 2-1:1 [432]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[INFO] Node 2-1:1 [433]: zdecydowałem
+[INFO] Node 2-1:1 [436]: moje spotkanie jest zaakceptowane
+[TRACE] Node 2-1:1 [484]: meeting:3
+[TRACE] Node 2-1:1 [484]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [484]: acceptorToken:1 meeting:3 acceptorClk:484
+[TRACE] Node 2-1:1 [488]: S 0: | S 1: | S 2: | S 3: 1 |  
+[TRACE] Node 2-1:1 [492]: S 0: | S 1: | S 2: | S 3: 0 1 |  
+[INFO] Node 2-1:1 [493]: zdecydowałem
+[INFO] Node 2-1:1 [569]: Rozejść się!
+[INFO] Node 2-1:1 [579]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [579]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [583]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 1
+[TRACE] Node 2-1:1 [587]: meeting:2
+[TRACE] Node 2-1:1 [587]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [587]: acceptorToken:1 meeting:2 acceptorClk:587
+[TRACE] Node 2-1:1 [591]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 2-1:1 [594]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[INFO] Node 2-1:1 [595]: zdecydowałem
+[INFO] Node 2-1:1 [598]: moje spotkanie jest zaakceptowane
+[INFO] Node 2-1:1 [621]: Rozejść się!
+[INFO] Node 2-1:1 [631]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2-1:1 [644]: meeting:0
+[TRACE] Node 2-1:1 [644]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [644]: acceptorToken:1 meeting:0 acceptorClk:644
+[TRACE] Node 2-1:1 [648]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [650]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[INFO] Node 2-1:1 [655]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [659]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [659]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [668]: Rozejść się!
+[INFO] Node 2-1:1 [670]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [678]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2-1:1 [704]: meeting:1
+[TRACE] Node 2-1:1 [704]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [704]: acceptorToken:1 meeting:1 acceptorClk:704
+[TRACE] Node 2-1:1 [708]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [710]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 2-1:1 [721]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [725]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [725]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [734]: Otrzymałem zasób 1
+[TRACE] Node 2-1:1 [738]: meeting:2
+[TRACE] Node 2-1:1 [738]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [738]: acceptorToken:1 meeting:2 acceptorClk:738
+[TRACE] Node 2-1:1 [742]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 2-1:1 [745]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[INFO] Node 2-1:1 [746]: zdecydowałem
+[INFO] Node 2-1:1 [749]: moje spotkanie jest zaakceptowane
+[TRACE] Node 2-1:1 [866]: meeting:0
+[TRACE] Node 2-1:1 [866]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [866]: acceptorToken:1 meeting:0 acceptorClk:866
+[TRACE] Node 2-1:1 [870]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [872]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[INFO] Node 2-1:1 [877]: Rozejść się!
+[INFO] Node 2-1:1 [886]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2-1:1 [903]: meeting:1
+[TRACE] Node 2-1:1 [903]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [903]: acceptorToken:1 meeting:1 acceptorClk:903
+[TRACE] Node 2-1:1 [907]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [909]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [937]: meeting:3
+[TRACE] Node 2-1:1 [937]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [937]: acceptorToken:1 meeting:3 acceptorClk:937
+[TRACE] Node 2-1:1 [941]: S 0: | S 1: | S 2: | S 3: 1 |  
+[TRACE] Node 2-1:1 [945]: S 0: | S 1: | S 2: | S 3: 0 1 |  
+[INFO] Node 2-1:1 [946]: zdecydowałem
+[INFO] Node 2-1:1 [972]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [976]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [976]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [986]: Rozejść się!
+[INFO] Node 2-1:1 [988]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [996]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1012]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1016]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 1
+[TRACE] Node 2-1:1 [1020]: meeting:2
+[TRACE] Node 2-1:1 [1020]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [1020]: acceptorToken:1 meeting:2 acceptorClk:1020
+[TRACE] Node 2-1:1 [1024]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 2-1:1 [1027]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[INFO] Node 2-1:1 [1028]: zdecydowałem
+[INFO] Node 2-1:1 [1031]: moje spotkanie jest zaakceptowane
+[TRACE] Node 2-1:1 [1047]: meeting:0
+[TRACE] Node 2-1:1 [1047]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [1047]: acceptorToken:1 meeting:0 acceptorClk:1047
+[TRACE] Node 2-1:1 [1051]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [1053]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [1106]: meeting:1
+[TRACE] Node 2-1:1 [1106]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [1106]: acceptorToken:1 meeting:1 acceptorClk:1106
+[TRACE] Node 2-1:1 [1110]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [1112]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 2-1:1 [1204]: Rozejść się!
+[INFO] Node 2-1:1 [1213]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2-1:1 [1229]: meeting:3
+[TRACE] Node 2-1:1 [1229]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [1229]: acceptorToken:1 meeting:3 acceptorClk:1229
+[TRACE] Node 2-1:1 [1233]: S 0: | S 1: | S 2: | S 3: 1 |  
+[TRACE] Node 2-1:1 [1237]: S 0: | S 1: | S 2: | S 3: 0 1 |  
+[INFO] Node 2-1:1 [1238]: zdecydowałem
+[INFO] Node 2-1:1 [1241]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1245]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1245]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1254]: Otrzymałem zasób 2
+[TRACE] Node 2-1:1 [1258]: meeting:2
+[TRACE] Node 2-1:1 [1258]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [1258]: acceptorToken:1 meeting:2 acceptorClk:1258
+[TRACE] Node 2-1:1 [1262]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 2-1:1 [1265]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[INFO] Node 2-1:1 [1266]: zdecydowałem
+[INFO] Node 2-1:1 [1269]: moje spotkanie jest zaakceptowane
+[INFO] Node 2-1:1 [1269]: Rozejść się!
+[INFO] Node 2-1:1 [1279]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1279]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1283]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 2
+[TRACE] Node 2-1:1 [1287]: meeting:2
+[TRACE] Node 2-1:1 [1287]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [1287]: acceptorToken:1 meeting:2 acceptorClk:1287
+[TRACE] Node 2-1:1 [1291]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 2-1:1 [1294]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[INFO] Node 2-1:1 [1295]: zdecydowałem
+[INFO] Node 2-1:1 [1298]: moje spotkanie jest zaakceptowane
+[TRACE] Node 2-1:1 [1326]: meeting:1
+[TRACE] Node 2-1:1 [1326]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [1326]: acceptorToken:1 meeting:1 acceptorClk:1326
+[TRACE] Node 2-1:1 [1330]: S 0: | S 1: 0 | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [1333]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 2-1:1 [1389]: Rozejść się!
+[INFO] Node 2-1:1 [1399]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 2-1:1 [1415]: meeting:3
+[TRACE] Node 2-1:1 [1415]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [1415]: acceptorToken:1 meeting:3 acceptorClk:1415
+[TRACE] Node 2-1:1 [1419]: S 0: | S 1: | S 2: | S 3: 1 |  
+[TRACE] Node 2-1:1 [1423]: S 0: | S 1: | S 2: | S 3: 0 1 |  
+[INFO] Node 2-1:1 [1424]: zdecydowałem
+[TRACE] Node 2-1:1 [1455]: meeting:169
+[TRACE] Node 2-1:1 [1455]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [1455]: acceptorToken:1 meeting:169 acceptorClk:1455
+[TRACE] Node 2-1:1 [1459]: S 0: | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [1461]: S 0: | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [1467]: meeting:1453
+[TRACE] Node 2-1:1 [1467]: Shareuje mój zegar
+[TRACE] Node 2-1:1 [1467]: acceptorToken:1 meeting:1453 acceptorClk:1467
+[TRACE] Node 2-1:1 [1471]: S 0: | S 1: | S 2: | S 3: |  
+[TRACE] Node 2-1:1 [1475]: S 0: | S 1: | S 2: | S 3: |  
+[INFO] Node 2-1:1 [1501]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1505]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1505]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1515]: Rozejść się!
+[INFO] Node 2-1:1 [1517]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1525]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1525]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1529]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1529]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1538]: Rozejść się!
+[INFO] Node 2-1:1 [1540]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1548]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1572]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1576]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1576]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1585]: Rozejść się!
+[INFO] Node 2-1:1 [1587]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1595]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1595]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1599]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1599]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1608]: Rozejść się!
+[INFO] Node 2-1:1 [1610]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1618]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1642]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1646]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1646]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1655]: Rozejść się!
+[INFO] Node 2-1:1 [1657]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1665]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1691]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1695]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1695]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1704]: Rozejść się!
+[INFO] Node 2-1:1 [1706]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1713]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1713]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1717]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1717]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1726]: Rozejść się!
+[INFO] Node 2-1:1 [1728]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1736]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1736]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1740]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1740]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1749]: Rozejść się!
+[INFO] Node 2-1:1 [1751]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1759]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1814]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1818]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1818]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1827]: Rozejść się!
+[INFO] Node 2-1:1 [1829]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1837]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1837]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1841]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1841]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1850]: Rozejść się!
+[INFO] Node 2-1:1 [1852]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1860]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1884]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1888]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1888]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1897]: Rozejść się!
+[INFO] Node 2-1:1 [1899]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1906]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1906]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1910]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1910]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1919]: Rozejść się!
+[INFO] Node 2-1:1 [1921]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1929]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1929]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1933]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1933]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1942]: Rozejść się!
+[INFO] Node 2-1:1 [1944]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [1952]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [1977]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [1981]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [1981]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [1991]: Rozejść się!
+[INFO] Node 2-1:1 [1993]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [2001]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [2025]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [2029]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [2029]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [2038]: Rozejść się!
+[INFO] Node 2-1:1 [2040]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [2047]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [2073]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [2077]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [2077]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [2086]: Rozejść się!
+[INFO] Node 2-1:1 [2088]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [2096]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 2-1:1 [2096]: Organizuję spotkanie!
+[INFO] Node 2-1:1 [2100]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 2-1:1 [2100]: Dajcie mi zasób!
+[INFO] Node 2-1:1 [2109]: Rozejść się!
+[INFO] Node 2-1:1 [2111]: Wszystkie zasoby są pozajmowane
+[INFO] Node 2-1:1 [2119]: Wszyscy poszli już do domu po moim spotkaniu

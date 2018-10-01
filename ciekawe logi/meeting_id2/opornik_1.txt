@@ -1,0 +1,526 @@
+[TRACE] Node 1-1:1 [10]: meeting from receiveForwardMsg[212]:0
+[TRACE] Node 1-1:1 [21]: meeting:0
+[TRACE] Node 1-1:1 [21]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [24]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [24]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [25]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [25]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 1-1:1 [31]: idę na spotkanie
+[TRACE] Node 1-1:1 [53]: meeting:0
+[TRACE] Node 1-1:1 [53]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [56]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [56]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [57]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [57]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [75]: meeting:2
+[TRACE] Node 1-1:1 [75]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [78]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [78]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [79]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [79]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 1-1:1 [140]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [140]: spotkanie! 1
+[INFO] Node 1-1:1 [140]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [140]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [153]: Otrzymałem zasób 2
+[TRACE] Node 1-1:1 [153]: DgetAcceptation meeting: 1
+[TRACE] Node 1-1:1 [156]: meeting:1
+[TRACE] Node 1-1:1 [156]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [159]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [159]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 1-1:1 [162]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 1-1:1 [162]: meetingId from checkDecisions[433]:1
+[INFO] Node 1-1:1 [163]: zdecydowałem
+[TRACE] Node 1-1:1 [163]: Przekazuję akceptora clk, meeting: 1 
+[INFO] Node 1-1:1 [165]: moje spotkanie jest zaakceptowane
+[TRACE] Node 1-1:1 [218]: meeting:2
+[TRACE] Node 1-1:1 [218]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [221]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [221]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [222]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [222]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 1-1:1 [248]: Rozejść się!
+[INFO] Node 1-1:1 [265]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [277]: meeting:0
+[TRACE] Node 1-1:1 [277]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [280]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [280]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [281]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [281]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [341]: meeting:3
+[TRACE] Node 1-1:1 [341]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [344]: S 0: | S 1: | S 2: | S 3: 1 |  
+[TRACE] Node 1-1:1 [344]: Przekazuję akceptora clk, meeting: 3 
+[TRACE] Node 1-1:1 [345]: S 0: | S 1: | S 2: | S 3: 0 1 |  
+[TRACE] Node 1-1:1 [345]: Przekazuję akceptora clk, meeting: 3 
+[INFO] Node 1-1:1 [350]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [350]: spotkanie! 1
+[INFO] Node 1-1:1 [350]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [350]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [362]: Rozejść się!
+[INFO] Node 1-1:1 [363]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [374]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [414]: meeting:0
+[TRACE] Node 1-1:1 [414]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [417]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [417]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [418]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [418]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [468]: meeting:63
+[TRACE] Node 1-1:1 [468]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [471]: S 0: | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [471]: Przekazuję akceptora clk, meeting: 63 
+[TRACE] Node 1-1:1 [472]: S 0: | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [472]: Przekazuję akceptora clk, meeting: 63 
+[TRACE] Node 1-1:1 [500]: meeting:2
+[TRACE] Node 1-1:1 [500]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [503]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [503]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [504]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [504]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [556]: meeting:0
+[TRACE] Node 1-1:1 [556]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [559]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [559]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [560]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [560]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 1-1:1 [566]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [566]: spotkanie! 1
+[INFO] Node 1-1:1 [566]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [566]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [578]: Rozejść się!
+[INFO] Node 1-1:1 [579]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [590]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [611]: meeting:0
+[TRACE] Node 1-1:1 [611]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [614]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [614]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [615]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [615]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [648]: meeting:2
+[TRACE] Node 1-1:1 [648]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [651]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [651]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [652]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [652]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 1-1:1 [657]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [657]: spotkanie! 1
+[INFO] Node 1-1:1 [657]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [657]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [669]: Rozejść się!
+[INFO] Node 1-1:1 [670]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [681]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [681]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [681]: spotkanie! 1
+[INFO] Node 1-1:1 [681]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [681]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [693]: Rozejść się!
+[INFO] Node 1-1:1 [694]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [705]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [725]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [725]: spotkanie! 1
+[INFO] Node 1-1:1 [725]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [725]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [742]: Rozejść się!
+[INFO] Node 1-1:1 [743]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [754]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [757]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [757]: spotkanie! 1
+[INFO] Node 1-1:1 [757]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [757]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [770]: Otrzymałem zasób 2
+[TRACE] Node 1-1:1 [770]: DgetAcceptation meeting: 1
+[TRACE] Node 1-1:1 [773]: meeting:1
+[TRACE] Node 1-1:1 [773]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [776]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [776]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 1-1:1 [779]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 1-1:1 [779]: meetingId from checkDecisions[433]:1
+[INFO] Node 1-1:1 [780]: zdecydowałem
+[TRACE] Node 1-1:1 [780]: Przekazuję akceptora clk, meeting: 1 
+[INFO] Node 1-1:1 [782]: moje spotkanie jest zaakceptowane
+[INFO] Node 1-1:1 [832]: Rozejść się!
+[INFO] Node 1-1:1 [849]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [861]: meeting:0
+[TRACE] Node 1-1:1 [861]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [864]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [864]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [865]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [865]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [898]: meeting:2
+[TRACE] Node 1-1:1 [898]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [901]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [901]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [902]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [902]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 1-1:1 [907]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [907]: spotkanie! 1
+[INFO] Node 1-1:1 [907]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [907]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [919]: Rozejść się!
+[INFO] Node 1-1:1 [920]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [931]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [951]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [951]: spotkanie! 1
+[INFO] Node 1-1:1 [951]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [951]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [968]: Rozejść się!
+[INFO] Node 1-1:1 [969]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [980]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [1000]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1000]: spotkanie! 1
+[INFO] Node 1-1:1 [1000]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1000]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1017]: Rozejść się!
+[INFO] Node 1-1:1 [1018]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1029]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [1029]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1029]: spotkanie! 1
+[INFO] Node 1-1:1 [1029]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1029]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1041]: Rozejść się!
+[INFO] Node 1-1:1 [1042]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1053]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [1165]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1165]: spotkanie! 1
+[INFO] Node 1-1:1 [1165]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1165]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1178]: Otrzymałem zasób 2
+[TRACE] Node 1-1:1 [1178]: DgetAcceptation meeting: 1
+[TRACE] Node 1-1:1 [1181]: meeting:1
+[TRACE] Node 1-1:1 [1181]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1184]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1184]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 1-1:1 [1187]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 1-1:1 [1187]: meetingId from checkDecisions[433]:1
+[INFO] Node 1-1:1 [1188]: zdecydowałem
+[TRACE] Node 1-1:1 [1188]: Przekazuję akceptora clk, meeting: 1 
+[INFO] Node 1-1:1 [1190]: moje spotkanie jest zaakceptowane
+[INFO] Node 1-1:1 [1240]: Rozejść się!
+[INFO] Node 1-1:1 [1257]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [1273]: meeting:2
+[TRACE] Node 1-1:1 [1273]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1276]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [1276]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [1277]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [1277]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 1-1:1 [1282]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1282]: spotkanie! 1
+[INFO] Node 1-1:1 [1282]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1282]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1294]: Rozejść się!
+[INFO] Node 1-1:1 [1295]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1306]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [1309]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1309]: spotkanie! 1
+[INFO] Node 1-1:1 [1309]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1309]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1322]: Otrzymałem zasób 2
+[TRACE] Node 1-1:1 [1322]: DgetAcceptation meeting: 1
+[TRACE] Node 1-1:1 [1325]: meeting:1
+[TRACE] Node 1-1:1 [1325]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1328]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1328]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 1-1:1 [1331]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 1-1:1 [1331]: meetingId from checkDecisions[433]:1
+[INFO] Node 1-1:1 [1332]: zdecydowałem
+[TRACE] Node 1-1:1 [1332]: Przekazuję akceptora clk, meeting: 1 
+[INFO] Node 1-1:1 [1334]: moje spotkanie jest zaakceptowane
+[INFO] Node 1-1:1 [1357]: Rozejść się!
+[INFO] Node 1-1:1 [1374]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [1386]: meeting:0
+[TRACE] Node 1-1:1 [1386]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1389]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1389]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [1390]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1390]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 1-1:1 [1396]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1396]: spotkanie! 1
+[INFO] Node 1-1:1 [1396]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1396]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1408]: Rozejść się!
+[INFO] Node 1-1:1 [1409]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1420]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [1442]: meeting:0
+[TRACE] Node 1-1:1 [1442]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1445]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1445]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [1446]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1446]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 1-1:1 [1473]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1473]: spotkanie! 1
+[INFO] Node 1-1:1 [1473]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1473]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1486]: Rozejść się!
+[INFO] Node 1-1:1 [1487]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1498]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [1498]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1498]: spotkanie! 1
+[INFO] Node 1-1:1 [1498]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1498]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1510]: Rozejść się!
+[INFO] Node 1-1:1 [1511]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1522]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [1522]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1522]: spotkanie! 1
+[INFO] Node 1-1:1 [1522]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1522]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1534]: Rozejść się!
+[INFO] Node 1-1:1 [1535]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1546]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [1546]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1546]: spotkanie! 1
+[INFO] Node 1-1:1 [1546]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1546]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1558]: Rozejść się!
+[INFO] Node 1-1:1 [1559]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1570]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [1591]: meeting:0
+[TRACE] Node 1-1:1 [1591]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1594]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1594]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [1595]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1595]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 1-1:1 [1601]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1601]: spotkanie! 1
+[INFO] Node 1-1:1 [1601]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1601]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1613]: Rozejść się!
+[INFO] Node 1-1:1 [1614]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1625]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [1646]: meeting:0
+[TRACE] Node 1-1:1 [1646]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1649]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1649]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [1650]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1650]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [1683]: meeting:2
+[TRACE] Node 1-1:1 [1683]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1686]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [1686]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [1687]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [1687]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [1715]: meeting:0
+[TRACE] Node 1-1:1 [1715]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1718]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1718]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [1719]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1719]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [1752]: meeting:2
+[TRACE] Node 1-1:1 [1752]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1755]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [1755]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [1756]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [1756]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 1-1:1 [1761]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1761]: spotkanie! 1
+[INFO] Node 1-1:1 [1761]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1761]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1773]: Rozejść się!
+[INFO] Node 1-1:1 [1774]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1785]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [1801]: meeting:2
+[TRACE] Node 1-1:1 [1801]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1804]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [1804]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [1805]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [1805]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 1-1:1 [1810]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [1810]: spotkanie! 1
+[INFO] Node 1-1:1 [1810]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [1810]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [1822]: Rozejść się!
+[INFO] Node 1-1:1 [1823]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [1834]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [1905]: meeting:2
+[TRACE] Node 1-1:1 [1905]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1908]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [1908]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [1909]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [1909]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [1961]: meeting:0
+[TRACE] Node 1-1:1 [1961]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [1964]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1964]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [1965]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [1965]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 1-1:1 [2015]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [2015]: spotkanie! 1
+[INFO] Node 1-1:1 [2015]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [2015]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [2028]: Rozejść się!
+[INFO] Node 1-1:1 [2029]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [2040]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [2080]: meeting:0
+[TRACE] Node 1-1:1 [2080]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [2083]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [2083]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [2084]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [2084]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [2117]: meeting:2
+[TRACE] Node 1-1:1 [2117]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [2120]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [2120]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [2121]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [2121]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 1-1:1 [2201]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [2201]: spotkanie! 1
+[INFO] Node 1-1:1 [2201]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [2201]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [2218]: Rozejść się!
+[INFO] Node 1-1:1 [2219]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [2230]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [2276]: meeting:0
+[TRACE] Node 1-1:1 [2276]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [2279]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [2279]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [2280]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [2280]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 1-1:1 [2307]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [2307]: spotkanie! 1
+[INFO] Node 1-1:1 [2307]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [2307]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [2320]: Rozejść się!
+[INFO] Node 1-1:1 [2321]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [2332]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [2371]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [2371]: spotkanie! 1
+[INFO] Node 1-1:1 [2371]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [2371]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [2384]: Rozejść się!
+[INFO] Node 1-1:1 [2385]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [2396]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [2396]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [2396]: spotkanie! 1
+[INFO] Node 1-1:1 [2396]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [2396]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [2408]: Rozejść się!
+[INFO] Node 1-1:1 [2409]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [2420]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [2446]: meeting:2
+[TRACE] Node 1-1:1 [2446]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [2449]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [2449]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [2450]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [2450]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 1-1:1 [2455]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [2455]: spotkanie! 1
+[INFO] Node 1-1:1 [2455]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [2455]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [2467]: Rozejść się!
+[INFO] Node 1-1:1 [2468]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [2479]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [2497]: meeting:0
+[TRACE] Node 1-1:1 [2497]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [2500]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [2500]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [2501]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [2501]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 1-1:1 [2528]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [2528]: spotkanie! 1
+[INFO] Node 1-1:1 [2528]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [2528]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [2541]: Rozejść się!
+[INFO] Node 1-1:1 [2542]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [2553]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [2553]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [2553]: spotkanie! 1
+[INFO] Node 1-1:1 [2553]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [2553]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [2565]: Rozejść się!
+[INFO] Node 1-1:1 [2566]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [2577]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [2598]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [2598]: spotkanie! 1
+[INFO] Node 1-1:1 [2598]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [2598]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [2615]: Otrzymałem zasób 2
+[TRACE] Node 1-1:1 [2615]: DgetAcceptation meeting: 1
+[TRACE] Node 1-1:1 [2618]: meeting:1
+[TRACE] Node 1-1:1 [2618]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [2621]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [2621]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 1-1:1 [2624]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 1-1:1 [2624]: meetingId from checkDecisions[433]:1
+[INFO] Node 1-1:1 [2625]: zdecydowałem
+[TRACE] Node 1-1:1 [2625]: Przekazuję akceptora clk, meeting: 1 
+[INFO] Node 1-1:1 [2627]: moje spotkanie jest zaakceptowane
+[INFO] Node 1-1:1 [2887]: Rozejść się!
+[INFO] Node 1-1:1 [2900]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [2916]: meeting:2
+[TRACE] Node 1-1:1 [2916]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [2919]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [2919]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [2920]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [2920]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [2946]: meeting:2
+[TRACE] Node 1-1:1 [2946]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [2949]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [2949]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [2950]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [2950]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [2978]: meeting:0
+[TRACE] Node 1-1:1 [2978]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [2981]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [2981]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [2982]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [2982]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 1-1:1 [3009]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [3009]: spotkanie! 1
+[INFO] Node 1-1:1 [3009]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [3009]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [3022]: Rozejść się!
+[INFO] Node 1-1:1 [3023]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [3034]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [3055]: meeting:0
+[TRACE] Node 1-1:1 [3055]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [3058]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [3058]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [3059]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [3059]: Przekazuję akceptora clk, meeting: 0 
+[INFO] Node 1-1:1 [3109]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [3109]: spotkanie! 1
+[INFO] Node 1-1:1 [3109]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [3109]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [3122]: Rozejść się!
+[INFO] Node 1-1:1 [3123]: Wszystkie zasoby są pozajmowane
+[INFO] Node 1-1:1 [3134]: Wszyscy poszli już do domu po moim spotkaniu
+[TRACE] Node 1-1:1 [3155]: meeting:0
+[TRACE] Node 1-1:1 [3155]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [3158]: S 0: 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [3158]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [3159]: S 0: 0 1 | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [3159]: Przekazuję akceptora clk, meeting: 0 
+[TRACE] Node 1-1:1 [3192]: meeting:2
+[TRACE] Node 1-1:1 [3192]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [3195]: S 0: | S 1: | S 2: 1 | S 3: |  
+[TRACE] Node 1-1:1 [3195]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 1-1:1 [3196]: S 0: | S 1: | S 2: 0 1 | S 3: |  
+[TRACE] Node 1-1:1 [3196]: Przekazuję akceptora clk, meeting: 2 
+[INFO] Node 1-1:1 [3209]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [3209]: spotkanie! 1
+[INFO] Node 1-1:1 [3209]: Jest 1 chętnych na spotkanie, ale nie mamy zasobu
+[INFO] Node 1-1:1 [3209]: Dajcie mi zasób!
+[INFO] Node 1-1:1 [3222]: Otrzymałem zasób 2
+[TRACE] Node 1-1:1 [3222]: DgetAcceptation meeting: 1
+[TRACE] Node 1-1:1 [3225]: meeting:1
+[TRACE] Node 1-1:1 [3225]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [3228]: S 0: | S 1: 1 | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [3228]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 1-1:1 [3231]: S 0: | S 1: 0 1 | S 2: | S 3: |  
+[INFO] Node 1-1:1 [3231]: meetingId from checkDecisions[433]:1
+[INFO] Node 1-1:1 [3232]: zdecydowałem
+[TRACE] Node 1-1:1 [3232]: Przekazuję akceptora clk, meeting: 1 
+[INFO] Node 1-1:1 [3234]: moje spotkanie jest zaakceptowane
+[INFO] Node 1-1:1 [3284]: Rozejść się!
+[INFO] Node 1-1:1 [3301]: Wszyscy poszli już do domu po moim spotkaniu
+[INFO] Node 1-1:1 [3301]: Organizuję spotkanie!
+[TRACE] Node 1-1:1 [3301]: spotkanie! 1
+[INFO] Node 1-1:1 [3301]: Na moje spotkanie przyjdzie 1 oporników i użyjemy zasobu 2
+[TRACE] Node 1-1:1 [3301]: DgetAcceptation meeting: 1
+[TRACE] Node 1-1:1 [3304]: meeting:409
+[TRACE] Node 1-1:1 [3304]: Shareuje mój zegar
+[TRACE] Node 1-1:1 [3307]: S 0: | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [3307]: Przekazuję akceptora clk, meeting: 409 
+[TRACE] Node 1-1:1 [3310]: S 0: | S 1: | S 2: | S 3: |  
+[TRACE] Node 1-1:1 [3310]: Przekazuję akceptora clk, meeting: 409 

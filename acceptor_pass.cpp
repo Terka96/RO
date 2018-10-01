@@ -79,7 +79,6 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 		// Chyba od razu można przypisać akceptora. Grunt, żeby stary akceptor odblokował się i usunął dopiero po otrzymaniu odp. zwrotnej
 		if (msg.msg.failure == 0) {
 			// acceptorToken = accepted;
-			log (info, "Zostałem NOWYM AKCEPTOREM (%d)!\n", msg.msg.tokenId);
 			// Uzupełnienie wartości (nowy akceptor)
 			acceptorToken = msg.msg.tokenId;
 			acceptorInfo = msg.acceptorInfo; // przypisanie tablicy informacjami o akceptowaniu spotkań
@@ -87,6 +86,7 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 			// knownMeetings = msg.acceptorInfo.meetingInfo;
 			acceptorStatus = isAcceptor;
 			msg.msg.complete = 1;
+			log (info, "Zostałem NOWYM AKCEPTOREM (%d)!\n", msg.msg.tokenId);
 
 			for (int i = 0; i < NUM_CONSPIR; i++) {
 				if (msg.acceptation_ask[i].clock != 0){
@@ -114,9 +114,10 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 	else if (msg.msg.initializator_id == id && acceptorStatus != candidate && msg.msg.complete == 1) { // stary akceptor dostał odpowiedź od nowego
 		// TODO 1: tutaj być może trzeba poczekać na eventy związane ze spotkaniami. (oporniki mogą kierować wiadomości do starego opornika.)
 		// TODO 2: Nie wiem jak działają spotkania, ale jeśli opornik ma status "busy", to nie powinien dawać odpowiedzi, czy jest akceptorem, tylko poczekać do zmiany statusu na "idle".
-		log (info, "Uff, już NIE jestem akceptorem. Został nim %d)\n", msg.msg.candidate_id);
 		acceptorToken = NONE;
+		acceptorStatus = notAcceptor;
 		setStatus (idle);
+		log (info, "Uff, już NIE jestem akceptorem. Został nim %d)\n", msg.msg.candidate_id);
 	}
 	else {
 		basicAcceptorSend (msg, sender, TAG_ACCEPTOR_RESPONSE);

@@ -64,7 +64,7 @@ struct endOfMeeting {
 /**/
 struct askForAcceptation {
 	int clock;
-	int dummy;
+	int dummy; // Ta wartość jest tylko po to, żeby uchronić kolejną przed losowymi zmianami iksde
 	int meeting;
 	int participants;
 };

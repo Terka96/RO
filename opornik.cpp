@@ -72,6 +72,7 @@ Opornik::Opornik() {
 	clock = 0;
 	status = idle;
 	acceptorToken = notAcceptor;
+	acceptorStatus = notAcceptor;
 	busyResource = NONE;
 	meeting = NONE;
 	duringMyMeeting = false;
@@ -290,7 +291,7 @@ void Opornik::live() {
 		int actionRand = rand() % 1001; //promilowy podział prawdopodobieństwa dla pojedynczego procesu co sekundę
 		if (status == blocked) {
 			if (actionRand >= 995) {
-				log (info, "Chcem, ale nie mogem! Jestem zablokowany!\n");
+				log (trace, "Chcem, ale nie mogem! Jestem zablokowany!\n");
 			}
 			continue;
 		}
@@ -303,7 +304,7 @@ void Opornik::live() {
 				endMeeting();
             }
 			else if (actionRand >= 985 && acceptorToken != NONE) {
-				//pass_acceptor();
+				pass_acceptor();
 			}
 	}
 }

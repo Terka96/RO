@@ -100,16 +100,16 @@ void Opornik::listen() {
 					}
 					if (a->decision == TRUE) {
 						if (a->meeting == id) {
-							log (info, "moje spotkanie jest zaakceptowane\n");
+							log (info, "Moje spotkanie jest zaakceptowane\n");
 							duringMyMeeting = true;
 						}
 						else if (a->meeting == meeting) {
-							log (info, "idę na spotkanie\n");
+							log (info, "Idę na spotkanie\n");
 						}
 					}
 					else { //a->decision==FALSE
 						if (a->meeting == id) {
-							log (info, "moje spotkanie jest odrzucone\n");
+							log (info, "Moje spotkanie jest odrzucone\n");
 							duringMyMeeting = false;
 							meeting = NONE;
 							resources.push_back (busyResource);
@@ -139,7 +139,7 @@ void Opornik::listen() {
 					break;
 				}
 			default: {
-					log (info, "Otrzymano nieznany typ wiadomości\n");
+					log (error, "Otrzymano nieznany typ wiadomości\n");
 				}
 			}
 		}
@@ -168,7 +168,7 @@ void Opornik::getAcceptation (int p) {
 
 void Opornik::organizeMeeting() {
 	if (meeting == NONE) {
-		log (info, "Organizuję spotkanie!\n");
+		log (trace, "Organizuję spotkanie!\n");
 		meeting = id;
 		meetingInvitation info;
 		info.uniqueTag = generateUniqueTag();
@@ -189,7 +189,7 @@ void Opornik::organizeMeeting() {
 
 void Opornik::resourceGather() {
 	if (busyResource == NONE) {
-		log (info, "Dajcie mi zasób!\n");
+		log (trace, "Dajcie mi zasób!\n");
 		resourceGatherMsg res;
 		res.uniqueTag = generateUniqueTag();
 		res.haveResource = NONE;
@@ -199,7 +199,7 @@ void Opornik::resourceGather() {
 
 void Opornik::endMeeting() {
 	if (id == meeting) {
-		log (info, "Rozejść się!\n");
+		log (trace, "Rozejść się!\n");
 		endOfMeeting end;
 		end.uniqueTag = generateUniqueTag();
 		end.meetingId = id;
@@ -346,11 +346,11 @@ void Opornik::sendResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 				busyResource = info->haveResource;
 				if (busyResource != NONE) {
 					participantsOnMymeeting = info->participants;
-					log (log_enum::info, "Na moje spotkanie przyjdzie %d oporników i użyjemy zasobu %d\n", info->participants, info->haveResource);
+					log (log_enum::trace, "Na moje spotkanie przyjdzie %d oporników i użyjemy zasobu %d\n", info->participants, info->haveResource);
 					getAcceptation (participantsOnMymeeting);
 				}
 				else {
-					log (log_enum::info, "Jest %d chętnych na spotkanie, ale nie mamy zasobu\n", info->participants);
+					log (log_enum::trace, "Jest %d chętnych na spotkanie, ale nie mamy zasobu\n", info->participants);
 					participantsOnMymeeting = info->participants;
 					resourceGather();
 				}
@@ -360,18 +360,19 @@ void Opornik::sendResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 				resourceGatherMsg* res = (resourceGatherMsg*) buffer;
 				busyResource = res->haveResource;
 				if (busyResource != NONE) {
-					log (info, "Otrzymałem zasób %d\n", res->haveResource);
+					log (trace, "Otrzymałem zasób %d\n", res->haveResource);
 					getAcceptation (participantsOnMymeeting);
 				}
 				else {
 					endMeeting();
-					log (info, "Wszystkie zasoby są pozajmowane\n");
+					log (trace, "Wszystkie zasoby są pozajmowane\n");
 				}
 				break;
 			}
 		case ENDOFMEETING:
 			if (busyResource != NONE) {
 				resources.push_back (busyResource);
+				log (info, "Koniec spotkania!\n");
 			}
 			busyResource = NONE;
 			if (acceptorToken != NONE) {
@@ -379,7 +380,7 @@ void Opornik::sendResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 			}
 			participantsOnMymeeting = 0;
 			duringMyMeeting = false;
-			log (info, "Wszyscy poszli już do domu po moim spotkaniu\n");
+			//log (trace, "Wszyscy poszli już do domu po moim spotkaniu\n");
 			break;
 		}
 	else {
@@ -425,7 +426,7 @@ void Opornik::checkDecisions() {
 			}
 			strcat (debug, "| ");
 		}
-		log (trace, "%s \n", debug);
+		log (log_enum::debug, "%s \n", debug);
 		while (!ready.empty() ) {
 			//find maxPriority
 			int meetingId = 0;
@@ -455,12 +456,13 @@ void Opornik::checkDecisions() {
 			}
 			a.meeting = meetingId;
 			Ibsend (&a, 3,  id, ACCEPT);
-			log (info, "zdecydowałem\n");
+			log (trace, "zdecydowałem\n");
 		}
 	}
 }
 
 void Opornik::Ibsend (void* buf, int count, int dest, int tag) {
+	//TODO FIX: pierwsza wartość po clock w strukturze (np. askForAcceptation) jest czasami błędnie zapisywana.
 	clock++;
 	memcpy (buf, &clock, sizeof (int) );
 	MPI_Request req;

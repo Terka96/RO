@@ -1,0 +1,100 @@
+[INFO] Node 3-0:1 [0]: :Hello, my parent is: 1 SameLevelNodes: 2 and my neighbors are 2  I'm acceptor(0)  I'm the lowest node.
+[TRACE] Node 3-0:1 [0]: Nie chcę już być akceptorem!
+[TRACE] Node 3-0:2 [0]: Chcę przekazać akceptora na swoim poziomie!
+[DEBUG] Node 3-0:2 [24]: ASKFORACCEPTATION clock:23 meeting:2 participants:2
+[TRACE] Node 3-0:2 [24]: Zapisuję askForAcceptation 
+[TRACE] Node 3-0:2 [27]: Przekazuję akceptora clk, meeting: 2 
+[TRACE] Node 3-0:2 [27]: Nie chcę już być akceptorem!
+[TRACE] Node 3-0:2 [27]: Chcę przekazać akceptora na swoim poziomie!
+[TRACE] Node 3-0:2 [37]: Organizuję spotkanie!
+[DEBUG] Node 3-0:2 [37]: spotkanie! 3
+[TRACE] Node 3-0:2 [37]: Jest 2 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 3-0:2 [37]: Dajcie mi zasób!
+[TRACE] Node 3-0:2 [46]: Otrzymałem zasób 2
+[DEBUG] Node 3-0:2 [46]: DgetAcceptation meeting: 3
+[DEBUG] Node 3-0:2 [48]: ASKFORACCEPTATION clock:47 meeting:3 participants:2
+[TRACE] Node 3-0:2 [49]: Zapisuję askForAcceptation 
+[TRACE] Node 3-0:2 [60]: Przekazuję akceptora clk, meeting: 3 
+[TRACE] Node 3-0:2 [100]: Nie chcę już być akceptorem!
+[TRACE] Node 3-0:2 [100]: Chcę przekazać akceptora na swoim poziomie!
+[TRACE] Node 3-0:2 [114]: (from 1) Byłbym DOBRYM KANDYDATEM na akceptora, niestety mam już WŁASNY TOKEN. Dam znać (2)
+[TRACE] Node 3-0:2 [141]: (from 1) Byłbym DOBRYM KANDYDATEM na akceptora, niestety mam już WŁASNY TOKEN. Dam znać (2)
+[TRACE] Node 3-0:2 [188]: Nie chcę już być akceptorem!
+[TRACE] Node 3-0:2 [188]: Chcę przekazać akceptora na swoim poziomie!
+[TRACE] Node 3-0:2 [200]: Nie chcę już być akceptorem!
+[TRACE] Node 3-0:2 [200]: Chcę przekazać akceptora na swoim poziomie!
+[TRACE] Node 3-0:2 [234]: Nie chcę już być akceptorem!
+[TRACE] Node 3-0:2 [234]: Chcę przekazać akceptora w górę!
+[TRACE] Node 3-0:3 [239]: Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!
+ Nowym akceptorem zostanie: 1!
+[DEBUG] Node 3-0:3 [239]: Umieszczam zaległe zgłoszenie w wiadomości (0\2) 
+[DEBUG] Node 3-0:3 [239]: Umieszczam zaległe zgłoszenie w wiadomości (1\2) 
+[TRACE] Node 3--1:0 [244]: Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (0)...
+[DEBUG] Node 3--1:0 [244]: IDLE
+[INFO] Node 3--1:0 [244]: Uff, już NIE jestem akceptorem. Został nim 1)
+[TRACE] Node 3--1:0 [248]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 3-1:4 [289]: (from 1) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (2)
+[INFO] Node 3-1:1 [299]: Zostałem NOWYM AKCEPTOREM (1)!
+[TRACE] Node 3-1:1 [299]: Obsługuję zaległe zgłoszenia (0) 
+[DEBUG] Node 3-1:1 [299]: S 0: | S 1: 0 | S 2: 1 | S 3: 1 |  
+[TRACE] Node 3-1:1 [355]: Nie chcę już być akceptorem!
+[TRACE] Node 3-1:2 [355]: Chcę przekazać akceptora na swoim poziomie!
+[TRACE] Node 3-1:3 [367]: Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!
+ Nowym akceptorem zostanie: 2!
+[TRACE] Node 3--1:0 [377]: Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (0)...
+[DEBUG] Node 3--1:0 [377]: IDLE
+[INFO] Node 3--1:0 [377]: Uff, już NIE jestem akceptorem. Został nim 2)
+[TRACE] Node 3-1:4 [380]: (from 1) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (2)
+[INFO] Node 3-1:1 [390]: Zostałem NOWYM AKCEPTOREM (1)!
+[TRACE] Node 3-1:1 [390]: Obsługuję zaległe zgłoszenia (0) 
+[DEBUG] Node 3-1:1 [390]: S 0: | S 1: 0 | S 2: 1 | S 3: 1 |  
+[TRACE] Node 3-1:1 [437]: Nie chcę już być akceptorem!
+[TRACE] Node 3-1:2 [437]: Chcę przekazać akceptora na swoim poziomie!
+[TRACE] Node 3-1:3 [449]: Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!
+ Nowym akceptorem zostanie: 2!
+[TRACE] Node 3--1:0 [459]: Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (0)...
+[DEBUG] Node 3--1:0 [459]: IDLE
+[INFO] Node 3--1:0 [459]: Uff, już NIE jestem akceptorem. Został nim 2)
+[TRACE] Node 3-1:4 [527]: (from 1) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (2)
+[INFO] Node 3-1:1 [537]: Zostałem NOWYM AKCEPTOREM (1)!
+[TRACE] Node 3-1:1 [537]: Obsługuję zaległe zgłoszenia (0) 
+[DEBUG] Node 3-1:1 [537]: S 0: | S 1: 0 | S 2: 1 | S 3: 1 |  
+[TRACE] Node 3-1:1 [538]: Nie chcę już być akceptorem!
+[TRACE] Node 3-1:1 [538]: NIE mogę przekazać NIŻEJ, jestem NAJNIŻEJ w hierarchii.
+[TRACE] Node 3-1:1 [538]: Obsługuję zaległe zgłoszenia (0) 
+[TRACE] Node 3-1:1 [538]: Nie chcę już być akceptorem!
+[TRACE] Node 3-1:2 [538]: Chcę przekazać akceptora na swoim poziomie!
+[TRACE] Node 3-1:3 [550]: Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!
+ Nowym akceptorem zostanie: 2!
+[TRACE] Node 3--1:0 [560]: Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (0)...
+[DEBUG] Node 3--1:0 [560]: IDLE
+[INFO] Node 3--1:0 [560]: Uff, już NIE jestem akceptorem. Został nim 2)
+[TRACE] Node 3-1:4 [618]: (from 1) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (2)
+[INFO] Node 3-1:1 [628]: Zostałem NOWYM AKCEPTOREM (1)!
+[TRACE] Node 3-1:1 [628]: Obsługuję zaległe zgłoszenia (0) 
+[DEBUG] Node 3-1:1 [628]: S 0: | S 1: 0 | S 2: 1 | S 3: 1 |  
+[TRACE] Node 3-1:1 [629]: Nie chcę już być akceptorem!
+[TRACE] Node 3-1:2 [629]: Chcę przekazać akceptora na swoim poziomie!
+[TRACE] Node 3-1:3 [641]: Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!
+ Nowym akceptorem zostanie: 2!
+[TRACE] Node 3--1:0 [651]: Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (0)...
+[DEBUG] Node 3--1:0 [651]: IDLE
+[INFO] Node 3--1:0 [651]: Uff, już NIE jestem akceptorem. Został nim 2)
+[TRACE] Node 3-1:4 [654]: (from 1) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (2)
+[INFO] Node 3-1:1 [664]: Zostałem NOWYM AKCEPTOREM (1)!
+[TRACE] Node 3-1:1 [664]: Obsługuję zaległe zgłoszenia (0) 
+[DEBUG] Node 3-1:1 [664]: S 0: | S 1: 0 | S 2: 1 | S 3: 1 |  
+[TRACE] Node 3-1:1 [779]: Nie chcę już być akceptorem!
+[TRACE] Node 3-1:2 [779]: Chcę przekazać akceptora na swoim poziomie!
+[TRACE] Node 3-1:3 [791]: Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!
+ Nowym akceptorem zostanie: 2!
+[TRACE] Node 3--1:0 [801]: Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (0)...
+[DEBUG] Node 3--1:0 [801]: IDLE
+[INFO] Node 3--1:0 [801]: Uff, już NIE jestem akceptorem. Został nim 2)
+[TRACE] Node 3-1:4 [860]: (from 1) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (2)
+[INFO] Node 3-1:1 [870]: Zostałem NOWYM AKCEPTOREM (1)!
+[TRACE] Node 3-1:1 [870]: Obsługuję zaległe zgłoszenia (0) 
+[DEBUG] Node 3-1:1 [870]: S 0: | S 1: 0 | S 2: 1 | S 3: 1 |  
+[TRACE] Node 3-1:1 [871]: Nie chcę już być akceptorem!
+[TRACE] Node 3-1:1 [871]: NIE mogę przekazać NIŻEJ, jestem NAJNIŻEJ w hierarchii.
+[TRACE] Node 3-1:1 [871]: Obsługuję zaległe zgłoszenia (0) 

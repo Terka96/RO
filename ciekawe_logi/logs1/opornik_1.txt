@@ -1,0 +1,102 @@
+[INFO] Node 1-0:0 [0]: Sending order(0) to node 2
+[INFO] Node 1-0:0 [1]: Sending order(0) to node 3
+[INFO] Node 1--1:0 [2]: :Hello, my parent is: 0 SameLevelNodes: 1 I have: dvd(0) 
+[DEBUG] Node 1--1:0 [21]: ASKFORACCEPTATION clock:20 meeting:2 participants:2
+[TRACE] Node 1--1:0 [26]: Przekazuję akceptora clk, meeting: 2 
+[DEBUG] Node 1--1:0 [50]: ASKFORACCEPTATION clock:49 meeting:3 participants:2
+[TRACE] Node 1--1:0 [59]: Przekazuję akceptora clk, meeting: 3 
+[TRACE] Node 1--1:0 [59]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [59]: spotkanie! 1
+[TRACE] Node 1--1:0 [64]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [64]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [70]: Rozejść się!
+[TRACE] Node 1--1:0 [73]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1--1:0 [118]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [118]: spotkanie! 1
+[TRACE] Node 1--1:0 [123]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [123]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [130]: Rozejść się!
+[TRACE] Node 1--1:0 [133]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1--1:0 [145]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [145]: spotkanie! 1
+[TRACE] Node 1--1:0 [150]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [150]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [157]: Rozejść się!
+[TRACE] Node 1--1:0 [160]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1-0:4 [237]: (from 3) Jestem DOBRYM KANDYDATEM na akceptora, muszę o tym dać znać do (3)
+[INFO] Node 1-0:1 [241]: Zostałem NOWYM AKCEPTOREM (0)!
+[DEBUG] Node 1-0:1 [241]: Otrzymałem zaległe zgłoszenie w wiadomości od starego akceptora (meeting: 1) 
+[DEBUG] Node 1-0:1 [241]: Otrzymałem zaległe zgłoszenie w wiadomości od starego akceptora (meeting: 1) 
+[TRACE] Node 1-0:1 [241]: Obsługuję zaległe zgłoszenia (2) 
+[TRACE] Node 1-0:1 [241]: Shareuje mój zegar
+[TRACE] Node 1-0:1 [242]: Zaległe zgłoszenie (meeting: 1 particip: 0) 
+[DEBUG] Node 1-0:1 [242]: S 0: | S 1: | S 2: 1 | S 3: 1 |  
+[DEBUG] Node 1-0:1 [247]: S 0: | S 1: 0 | S 2: 1 | S 3: 1 |  
+[TRACE] Node 1-0:1 [247]: Przekazuję akceptora clk, meeting: 1 
+[TRACE] Node 1-0:1 [247]: Organizuję spotkanie!
+[DEBUG] Node 1-0:1 [247]: spotkanie! 1
+[TRACE] Node 1-0:1 [252]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1-0:1 [252]: Dajcie mi zasób!
+[TRACE] Node 1-0:1 [259]: Rozejść się!
+[TRACE] Node 1-0:1 [262]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1-0:1 [266]: Organizuję spotkanie!
+[DEBUG] Node 1-0:1 [266]: spotkanie! 1
+[TRACE] Node 1-0:1 [271]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1-0:1 [271]: Dajcie mi zasób!
+[TRACE] Node 1-0:1 [278]: Rozejść się!
+[TRACE] Node 1-0:1 [281]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1-0:1 [331]: Nie chcę już być akceptorem!
+[TRACE] Node 1-0:1 [331]: Chcę przekazać akceptora w górę!
+[TRACE] Node 1-0:3 [335]: Dostałem PIERWSZE zgłoszenie na KANDYDATa do zmiany akceptora!
+ Nowym akceptorem zostanie: 0!
+[TRACE] Node 1--1:0 [339]: Przeglądam kolejkę otrzymanych próśb o zmianę akceptora (0)...
+[DEBUG] Node 1--1:0 [339]: IDLE
+[INFO] Node 1--1:0 [339]: Uff, już NIE jestem akceptorem. Został nim 0)
+[TRACE] Node 1--1:0 [339]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [339]: spotkanie! 1
+[TRACE] Node 1--1:0 [344]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [344]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [351]: Rozejść się!
+[TRACE] Node 1--1:0 [354]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1--1:0 [421]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [421]: spotkanie! 1
+[TRACE] Node 1--1:0 [426]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [426]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [433]: Rozejść się!
+[TRACE] Node 1--1:0 [436]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1--1:0 [458]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [458]: spotkanie! 1
+[TRACE] Node 1--1:0 [463]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [463]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [470]: Rozejść się!
+[TRACE] Node 1--1:0 [473]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1--1:0 [504]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [504]: spotkanie! 1
+[TRACE] Node 1--1:0 [509]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [509]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [516]: Rozejść się!
+[TRACE] Node 1--1:0 [519]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1--1:0 [724]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [724]: spotkanie! 1
+[TRACE] Node 1--1:0 [729]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [729]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [736]: Rozejść się!
+[TRACE] Node 1--1:0 [739]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1--1:0 [743]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [743]: spotkanie! 1
+[TRACE] Node 1--1:0 [749]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [749]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [756]: Rozejść się!
+[TRACE] Node 1--1:0 [759]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1--1:0 [763]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [763]: spotkanie! 1
+[TRACE] Node 1--1:0 [768]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [768]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [775]: Rozejść się!
+[TRACE] Node 1--1:0 [778]: Wszystkie zasoby są pozajmowane
+[TRACE] Node 1--1:0 [874]: Organizuję spotkanie!
+[DEBUG] Node 1--1:0 [874]: spotkanie! 1
+[TRACE] Node 1--1:0 [880]: Jest 3 chętnych na spotkanie, ale nie mamy zasobu
+[TRACE] Node 1--1:0 [880]: Dajcie mi zasób!
+[TRACE] Node 1--1:0 [887]: Rozejść się!
+[TRACE] Node 1--1:0 [890]: Wszystkie zasoby są pozajmowane

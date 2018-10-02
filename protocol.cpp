@@ -295,7 +295,7 @@ void Opornik::receiveResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 			if (meeting == end->meetingId) {
 				meeting = NONE;
 			}
-            if(acceptorToken!=NONE)
+            if(acceptorStatus==isAcceptor)
                 freeSlots+=end->returnedParticipants;
 			break;
 		}

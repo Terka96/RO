@@ -82,6 +82,7 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 			// Uzupełnienie wartości (nowy akceptor)
 			acceptorToken = msg.msg.tokenId;
 			acceptorInfo = msg.acceptorInfo; // przypisanie tablicy informacjami o akceptowaniu spotkań
+			freeSlots = msg.acceptorInfo.freeSlots;
 			std::copy (msg.acceptorInfo.meetingInfo, msg.acceptorInfo.meetingInfo + NUM_CONSPIR, knownMeetings);
 			// knownMeetings = msg.acceptorInfo.meetingInfo;
 			acceptorStatus = isAcceptor;
@@ -90,7 +91,7 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 
 			for (int i = 0; i < NUM_CONSPIR; i++) {
 				if (msg.acceptation_ask[i].clock != 0){
-					log (debug, "Otrzymałem zaległe zgłoszenie w wiadomości od starego akceptora (%d) \n", i);
+					log (debug, "Otrzymałem zaległe zgłoszenie w wiadomości od starego akceptora (meeting: %d) \n", msg.acceptation_ask[i].meeting);
 					askForAcceptation_vector.push_back(&msg.acceptation_ask[i]);
 				}
 				else{
@@ -127,16 +128,22 @@ void Opornik::handleAResponseMsg (int sender, Msg_pass_acceptor_final msg) {
 void Opornik::checkAskVector(){
 	log (trace, "Obsługuję zaległe zgłoszenia (%d) \n", askForAcceptation_vector.size() );
 	if (askForAcceptation_vector.size() > 0) {
-				bool sent[NUM_CONSPIR] = {false}; // Mogliśmy otrzymać acceptation_ask które już mieliśmy, trzeba usunąć duplikaty
-				for (int i = 0; i < askForAcceptation_vector.size(); i++) {
-					if(!sent[askForAcceptation_vector[i]->meeting]){
-						shareClock (askForAcceptation_vector[i]);
-						log (trace, "Zaległe zgłoszenie (%d\\%d) \n", i, askForAcceptation_vector.size() );
-						sent[askForAcceptation_vector[i]->meeting] = true;
-					}
-				}
-				askForAcceptation_vector.clear();
+		bool sent[NUM_CONSPIR] = {false}; // Mogliśmy otrzymać acceptation_ask które już mieliśmy, trzeba usunąć duplikaty
+		for (int i = 0; i < askForAcceptation_vector.size(); i++) {
+			if(!sent[askForAcceptation_vector[i]->meeting]){
+				shareClock (askForAcceptation_vector[i]);
+				log (trace, "Zaległe zgłoszenie (meeting: %d particip: %d) \n", askForAcceptation_vector[i]->meeting,  askForAcceptation_vector[i]->participants);
+				sent[askForAcceptation_vector[i]->meeting] = true;
 			}
+		}
+		askForAcceptation_vector.clear();
+	}
+	// Wyślij wszystkie swoje wiadomości (Bo były wstrzymane)
+	// for (int i=0; i<NUM_CONSPIR; i++){
+	// 	if (knownMeetings[i].acceptors[acceptorToken] != NONE){
+	// 		shareClock(askForAcceptation_vector[i]);
+	// 	}
+	// }
 }
 
 void Opornik::handleACandidateMsg (int sender, Msg_pass_acceptor msg) {
@@ -149,6 +156,7 @@ void Opornik::handleACandidateMsg (int sender, Msg_pass_acceptor msg) {
 			//przekaż dobrą nowinę kandydatowi (wiadomośc zwrotna)
 			msg.failure = 0;
 			std::copy (knownMeetings, knownMeetings + NUM_CONSPIR, acceptorInfo.meetingInfo);
+			acceptorInfo.freeSlots = freeSlots;
 			//acceptorInfo.meetingInfo = knownMeetings[];
 			Msg_pass_acceptor_final final_msg{msg, acceptorInfo, {}};
 			// przekazanie żądań otrzymanych podczas wymiany akceptora
@@ -168,10 +176,10 @@ void Opornik::handleACandidateMsg (int sender, Msg_pass_acceptor msg) {
 	}
 	else if (msg.initializator_id == id && acceptorStatus != candidate  && msg.failure == 1) {
 		if (candidatesAnswers >= sameLevelNodes - 1) { // możliwe, że dostaniemy jakieś stare wiadomości. Nie ma to większego znaczenia, bo spróbujemy przekazać token jeszcze raz. Może się jednak wydawać niezbyt właściwe.
-			log (info, "Wszyscy kandydaci na akceptorów również byli akceptorami. Muszę spróbować jeszcze raz\n");
+			log (info, "Wszyscy kandydaci na akceptorów również byli akceptorami.\n");
 			acceptorStatus = isAcceptor;
 			checkAskVector();
-			pass_acceptor (true); //musisz spróbować przekazać jeszcze raz od nowa, bo kandydaci byli zajęci (np. byli także akceptorami)
+			//pass_acceptor (true); //musisz spróbować przekazać jeszcze raz od nowa, bo kandydaci byli zajęci (np. byli także akceptorami)
 		}
 	}
 	else {
@@ -210,6 +218,7 @@ void Opornik::acceptorMsgSend (Msg_pass_acceptor msg, int sender) {
 	}
 	else {
 		log (trace, "(from %d) Byłbym DOBRYM KANDYDATEM na akceptora, niestety mam już WŁASNY TOKEN. Dam znać (%d)\n", sender, msg.initializator_id);
+		msg.failure = 1;
 	}
 	Ibsend (&msg, sizeof (msg) / sizeof (int), sender, TAG_ACCEPTOR_CANDIDATE);
 	// Można by przekazać jeszcze wyżej i przeskoczyć na inne gałęzie lub do sąsiadów, ale nie robimy sobie konkurencji

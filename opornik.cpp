@@ -47,7 +47,7 @@ int inline Opornik::log (log_enum type, const char* format, ...) {
 		}
 	}
 	if (type >= MIN_CONSOLE_LOG) {
-        printf ("[%s] Node %d-%d:%d_%d[%d]:", logType, id, acceptorToken, acceptorStatus,meeting, clock);
+        printf ("[%s] Node %d-%d:%d\t %d\t [%d]:", logType, id, acceptorToken, acceptorStatus,freeSlots, clock);
 		va_list args;
 		va_start (args, format);
 		res = vprintf (format, args);
@@ -91,9 +91,10 @@ Opornik::Opornik() {
 	MPI_Barrier (MPI_COMM_WORLD);
 	distributeAcceptorsAndResources();
 	MPI_Barrier (MPI_COMM_WORLD);
-	findLowestKids();
+    findLowestKids();
     MPI_Barrier (MPI_COMM_WORLD);
 	introduce();
+    clock=0;
 }
 
 void Opornik::makeTree() {
@@ -305,7 +306,7 @@ void Opornik::live() {
 				endMeeting();
             }
 			else if (actionRand >= 985 && acceptorToken != NONE) {
-                //pass_acceptor();
+                pass_acceptor();
 			}
 	}
 }

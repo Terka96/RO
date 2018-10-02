@@ -53,6 +53,7 @@ void Opornik::listen() {
 						shareClock(a);
 					}
                     else if (acceptorToken != NONE){
+                        knownMeetings[a->meeting].meetingClk=a->meetingClk;
                         log(trace, "Zapisuję askForAcceptation \n");
                         askForAcceptation_vector.push_back (a);
                     }
@@ -87,17 +88,16 @@ void Opornik::listen() {
 							Ibsend (a, sizeof(accept)/sizeof(int),  children[i], ACCEPT);
 						}
 					if (acceptorToken != NONE) {
-						if (a->decision == TRUE) {
-							freeSlots -= knownMeetings[a->meeting].participants;
-						}
                         //wyczyść info
-                        knownMeetings[a->meeting].priority = 0;
+                        knownMeetings[a->meeting].meetingClk = NONE;
                         knownMeetings[a->meeting].participants = 0;
                         for (int i = 0; i < NUM_ACCEPTORS; i++) {
                             knownMeetings[a->meeting].acceptors[i] = NONE;
                         }
+                        checkDecisions();
 					}
 					if (a->decision == TRUE) {
+                        freeSlots -= part;
 						if (a->meeting == id) {
                             log (info, "Spotkanie (%d) jest zaakceptowane[%d]\n", id, part);
 							duringMyMeeting = true;
@@ -161,6 +161,7 @@ void Opornik::getAcceptation (int p) {
 	askForAcceptation a;
 	a.meeting = id;
 	a.participants = p;
+    a.meetingClk=clock;
 	log (debug, "DgetAcceptation meeting: %d\n", a.meeting);
 	Ibsend (&a, sizeof(askForAcceptation)/sizeof(int),  id, ASKFORACCEPTATION);
 }
@@ -295,8 +296,7 @@ void Opornik::receiveResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 			if (meeting == end->meetingId) {
 				meeting = NONE;
 			}
-            if(acceptorToken!=NONE)
-                freeSlots+=end->returnedParticipants;
+            freeSlots+=end->returnedParticipants;
 			break;
 		}
 	}
@@ -394,76 +394,37 @@ void Opornik::sendResponseMsg (int* buffer, int tag, msgBcastInfo* bcast) {
 
 void Opornik::checkDecisions() {
 	if (acceptorToken != NONE && acceptorStatus == isAcceptor) {
-		std::list<int> ready;
-		char debug[700] = {};
-		char buffer[10];
-		for (int j = 0; j < NUM_CONSPIR; j++) {
-			snprintf (buffer, sizeof (buffer), "S %d: ", j);
-			strcat (debug, buffer);
-			bool rd = true;
-			//Pierwszy warunek- info od wszystkich akceptorów
-			for (int i = 0; i < NUM_ACCEPTORS; i++) {
-				if (knownMeetings[j].acceptors[i] == NONE) {
-					rd = false;
-				}
-				else {
-					snprintf (buffer, sizeof (buffer), "%d ", i);
-					strcat (debug, buffer);
-				}
-			}
-			//drugi warunek- zegar ma najmniejszą wartość
-			int lowestClk = clock;
-			for (int i = 0; i < NUM_ACCEPTORS; i++)
-				if (knownMeetings[j].acceptors[i] < lowestClk) {
-					lowestClk = knownMeetings[j].acceptors[i];
-				}
-			//trzeci warunek- token akceptora najniższy
-			for (int i = 0; i < NUM_ACCEPTORS; i++)
-				if (knownMeetings[j].acceptors[i] == lowestClk) {
-					if (i != acceptorToken) {
-						rd = false;
-					}
-					break;
-				}
-			if (rd) {
-				ready.push_back (j);
-			}
-			strcat (debug, "| ");
-		}
-		log (log_enum::debug, "%s \n", debug);
-		while (!ready.empty() ) {
-			//find maxPriority
-			int meetingId = 0;
-			int maxPriority = 0;
-			for (auto i : ready)
-				if (knownMeetings[i].priority > maxPriority) {
-					maxPriority = knownMeetings[i].priority;
-				}
-			//select meetingId
-			for (auto i : ready)
-				if (knownMeetings[i].priority == maxPriority) {
-					meetingId = i;
-					log (log_enum::debug, "meetingId from checkDecisions[433]:%d\n", meetingId);
-					ready.remove (i);
-					break;
-				}
-			//advance priorities
-			for (auto i : ready) {
-				knownMeetings[i].priority++;
-			}
-			accept a;
-			log (log_enum::debug, "knownMeetings[meetingId].participants : %d\n", knownMeetings[meetingId].participants);
-			if (knownMeetings[meetingId].participants <= freeSlots) {
-				a.decision = TRUE;
-			}
-			else {
-				a.decision = FALSE;
-			}
-			a.meeting = meetingId;
-			Ibsend (&a, sizeof(accept)/sizeof(int),  id, ACCEPT);
-			log (trace, "zdecydowałem\n");
-		}
-	}
+        int minMeetingClk=clock;
+        int minAcceptorClk=clock;
+        int selectedMeeting=NONE;
+        int selectedAcceptor=NONE;
+        for(int i=0;i<NUM_CONSPIR;i++)
+            if(knownMeetings[i].meetingClk<minMeetingClk && knownMeetings[i].meetingClk!=NONE)
+            {
+                minMeetingClk=knownMeetings[i].meetingClk;
+                selectedMeeting=i;
+            }
+        for(int i=0;i<NUM_ACCEPTORS;i++)
+            if(knownMeetings[selectedAcceptor].acceptors[i]<minAcceptorClk && knownMeetings[selectedMeeting].acceptors[i]!=NONE)
+            {
+                minAcceptorClk=knownMeetings[selectedMeeting].acceptors[i];
+                selectedAcceptor=i;
+            }
+        if(selectedAcceptor==acceptorToken)
+        {
+            accept a;
+            if (knownMeetings[selectedMeeting].participants <= freeSlots) {
+                a.decision = TRUE;
+            }
+            else {
+                a.decision = FALSE;
+            }
+            a.meeting = selectedMeeting;
+            Ibsend (&a, sizeof(accept)/sizeof(int),  id, ACCEPT);
+            log (trace, "zdecydowałem\n");
+        }
+
+    }
 }
 
 void Opornik::Ibsend (void* buf, int count, int dest, int tag) {

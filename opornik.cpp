@@ -82,7 +82,7 @@ Opornik::Opornik() {
     freeSlots=MAX_MEETINGS_PARTICIPANTS;
 	for (int i = 0; i < NUM_CONSPIR; i++) {
 		knownMeetings[i].participants = 0;
-		knownMeetings[i].priority = 0;
+        knownMeetings[i].meetingClk = NONE;
 		for (int j = 0; j < NUM_ACCEPTORS; j++) {
 			knownMeetings[i].acceptors[j] = NONE;
 		}
